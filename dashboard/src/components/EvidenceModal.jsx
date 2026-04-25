@@ -1,6 +1,6 @@
 ﻿import { motion } from "framer-motion"
 
-export default function EvidenceModal({ accountId, evidence, flagged, blacklisted, sharedDevices, riskScore, onClose }) {
+export default function EvidenceModal({ accountId, evidence, flagged, blacklisted, sharedDevices, riskScore, fraudPath, wccCluster, cosineScore, cosineMatch, onClose }) {
   const hopSteps = [
     { hop:0, label:`Account #${accountId}`, sub:"Target account", color:"var(--cyan)", icon:"👤" },
     { hop:1, label:`Device ${sharedDevices?.[0] || "XYZ-999"}`, sub:"Hop 1 — Shared device", color:"var(--purple)", icon:"📱" },
@@ -41,6 +41,35 @@ export default function EvidenceModal({ accountId, evidence, flagged, blackliste
               style={{ height:"100%", background:`linear-gradient(90deg,var(--yellow),var(--orange),var(--red))`, borderRadius:4 }} />
           </div>
         </div>
+
+        {/* Fraud path — the GSQL reasoning trace */}
+        {fraudPath && (
+          <div style={{ marginBottom:24, padding:"14px 18px", background:"rgba(191,90,242,0.06)", border:"1px solid rgba(191,90,242,0.25)", borderRadius:10 }}>
+            <div style={{ fontSize:11, fontWeight:700, color:"var(--purple)", marginBottom:8, fontFamily:"var(--mono)" }}>⬡ GSQL REASONING TRACE — Fraud Path</div>
+            <code style={{ fontSize:12, color:"var(--cyan)", fontFamily:"var(--mono)", lineHeight:1.8, display:"block", whiteSpace:"pre-wrap" }}>{fraudPath}</code>
+            <div style={{ fontSize:10, color:"var(--text-muted)", marginTop:8 }}>This path was deduced from the graph — the LLM did not generate it. Zero hallucination.</div>
+          </div>
+        )}
+
+        {/* WCC + Cosine */}
+        {(wccCluster || cosineScore) && (
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:24 }}>
+            {wccCluster && (
+              <div style={{ padding:"12px 14px", background:"rgba(191,90,242,0.06)", border:"1px solid rgba(191,90,242,0.2)", borderRadius:10 }}>
+                <div style={{ fontSize:10, fontWeight:700, color:"var(--purple)", fontFamily:"var(--mono)", marginBottom:6 }}>WCC CLUSTER</div>
+                <div style={{ fontSize:18, fontWeight:900, color:"var(--purple)", fontFamily:"var(--mono)" }}>{wccCluster}</div>
+                <div style={{ fontSize:10, color:"var(--text-muted)", marginTop:4 }}>Weakly Connected Component — fraud ring membership</div>
+              </div>
+            )}
+            {cosineScore && (
+              <div style={{ padding:"12px 14px", background:"rgba(255,214,10,0.06)", border:"1px solid rgba(255,214,10,0.2)", borderRadius:10 }}>
+                <div style={{ fontSize:10, fontWeight:700, color:"var(--yellow)", fontFamily:"var(--mono)", marginBottom:6 }}>COSINE SIMILARITY</div>
+                <div style={{ fontSize:18, fontWeight:900, color: cosineScore > 0.85 ? "var(--red)" : "var(--yellow)", fontFamily:"var(--mono)" }}>{cosineScore} {cosineMatch ? `↔ #${cosineMatch}` : ""}</div>
+                <div style={{ fontSize:10, color:"var(--text-muted)", marginTop:4 }}>Behavioral match with {cosineScore > 0.85 ? "banned" : "flagged"} account</div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* 3-hop path */}
         <div style={{ marginBottom:24 }}>
