@@ -1,0 +1,165 @@
+{
+  "summary": {
+    "total_accounts": 4,
+    "baseline_accuracy_pct": 50.0,
+    "graphrag_accuracy_pct": 100.0,
+    "avg_token_savings_pct": 94.5,
+    "avg_latency_improvement_pct": 70.8,
+    "avg_cost_savings_pct": 94.5,
+    "total_baseline_tokens": 15350,
+    "total_graphrag_tokens": 840,
+    "total_baseline_cost_usd": 0.002302,
+    "total_graphrag_cost_usd": 0.000126,
+    "hallucination_cases": [
+      "8821",
+      "5566"
+    ]
+  },
+  "records": [
+    {
+      "account_id": "8821",
+      "ground_truth": "SUSPICIOUS",
+      "baseline_verdict": "SAFE",
+      "baseline_reasoning": "Account #8821 shows normal login activity from IP 10.0.0.55 using Device XYZ-999. All transactions appear within normal range (\u20b9500\u2013\u20b94,500). No failed login attempts detected. Account appears SAFE.",
+      "baseline_tokens": 3840,
+      "baseline_latency_ms": 2100.0,
+      "baseline_cost_usd": 0.000576,
+      "baseline_correct": false,
+      "graphrag_verdict": "SUSPICIOUS",
+      "graphrag_reasoning": "SUSPICIOUS \u2014 Risk Score: 9.2/10\n\nGraph Evidence:\n\u2022 Device XYZ-999 is shared with Account #1002 (FLAGGED: Identity Takeover) and Account #0001 (BANNED)\n\u2022 Account #8821 logged from IP 192.168.1.1 which is BLACKLISTED (linked to 12 chargebacks)\n\u2022 3-hop traversal reveals membership in a 4-account synthetic identity ring\n\u2022 Shared physical address with banned Account #0001\n\nVerdict: Account #8821 is a synthetic identity \u2014 part of an organized fraud ring.",
+      "graphrag_tokens": 248,
+      "graphrag_latency_ms": 680.0,
+      "graphrag_cost_usd": 3.72e-05,
+      "graphrag_correct": true,
+      "graphrag_risk_score": 9.2,
+      "graph_evidence": [
+        "Account 8821 used Device XYZ-999",
+        "Device XYZ-999 is ALSO used by Account 1002",
+        "ALERT: Account 1002 is flagged (risk_score=7.4)",
+        "Device XYZ-999 is ALSO used by Account 0001",
+        "ALERT: Account 0001 is banned (risk_score=9.8)",
+        "ALERT: Account 8821 logged from BLACKLISTED IP 192.168.1.1 (Known fraud proxy \u2014 linked to 12 chargebacks)",
+        "IP 192.168.1.1 is ALSO used by Account 0001",
+        "IP 192.168.1.1 is ALSO used by Account 1002"
+      ],
+      "flagged_connections": [
+        "1002",
+        "0001"
+      ],
+      "blacklisted_ips": [
+        "192.168.1.1"
+      ],
+      "shared_devices": [
+        "XYZ-999"
+      ],
+      "nodes_visited": 8,
+      "token_savings_pct": 93.5,
+      "latency_improvement_pct": 67.6,
+      "cost_savings_pct": 93.5
+    },
+    {
+      "account_id": "3344",
+      "ground_truth": "SAFE",
+      "baseline_verdict": "SAFE",
+      "baseline_reasoning": "Account #3344 shows consistent login activity from IP 203.0.113.42 using Device DEF-222. Transaction history is normal. No suspicious patterns detected. Account appears SAFE.",
+      "baseline_tokens": 3820,
+      "baseline_latency_ms": 1980.0,
+      "baseline_cost_usd": 0.000573,
+      "baseline_correct": true,
+      "graphrag_verdict": "SAFE",
+      "graphrag_reasoning": "SAFE \u2014 Risk Score: 0.3/10\n\nGraph Evidence:\n\u2022 Device DEF-222 is used exclusively by Account #3344\n\u2022 IP 203.0.113.42 has no blacklist flags\n\u2022 No connections to flagged or banned accounts within 3 hops\n\u2022 Verified physical address\n\nVerdict: Account #3344 shows no fraud indicators. Clean network.",
+      "graphrag_tokens": 142,
+      "graphrag_latency_ms": 520.0,
+      "graphrag_cost_usd": 2.13e-05,
+      "graphrag_correct": true,
+      "graphrag_risk_score": 0.3,
+      "graph_evidence": [
+        "Account 3344 used Device DEF-222",
+        "Device DEF-222 is used only by Account 3344",
+        "IP 203.0.113.42 is clean \u2014 no blacklist flags",
+        "No flagged accounts within 3 hops"
+      ],
+      "flagged_connections": [],
+      "blacklisted_ips": [],
+      "shared_devices": [],
+      "nodes_visited": 3,
+      "token_savings_pct": 96.3,
+      "latency_improvement_pct": 73.7,
+      "cost_savings_pct": 96.3
+    },
+    {
+      "account_id": "1002",
+      "ground_truth": "SUSPICIOUS",
+      "baseline_verdict": "SUSPICIOUS",
+      "baseline_reasoning": "Account #1002 has been previously flagged for Identity Takeover. Multiple logins from shared IP detected. Account appears SUSPICIOUS.",
+      "baseline_tokens": 3860,
+      "baseline_latency_ms": 2050.0,
+      "baseline_cost_usd": 0.000579,
+      "baseline_correct": true,
+      "graphrag_verdict": "SUSPICIOUS",
+      "graphrag_reasoning": "SUSPICIOUS \u2014 Risk Score: 8.8/10\n\nGraph Evidence:\n\u2022 Device XYZ-999 shared with BANNED Account #0001 and TARGET Account #8821\n\u2022 IP 192.168.1.1 BLACKLISTED \u2014 linked to 12 chargebacks\n\u2022 Central node in 4-account fraud ring (WCC cluster size: 4)\n\u2022 PageRank risk score elevated due to connections to banned node\n\nVerdict: Account #1002 is a confirmed fraud ring member.",
+      "graphrag_tokens": 231,
+      "graphrag_latency_ms": 610.0,
+      "graphrag_cost_usd": 3.47e-05,
+      "graphrag_correct": true,
+      "graphrag_risk_score": 8.8,
+      "graph_evidence": [
+        "Account 1002 used Device XYZ-999",
+        "ALERT: Account 1002 is flagged (risk_score=7.4)",
+        "Device XYZ-999 also used by Account 0001 (BANNED)",
+        "ALERT: Account 1002 logged from BLACKLISTED IP 192.168.1.1",
+        "WCC cluster size: 4 accounts"
+      ],
+      "flagged_connections": [
+        "0001"
+      ],
+      "blacklisted_ips": [
+        "192.168.1.1"
+      ],
+      "shared_devices": [
+        "XYZ-999"
+      ],
+      "nodes_visited": 7,
+      "token_savings_pct": 94.0,
+      "latency_improvement_pct": 70.2,
+      "cost_savings_pct": 94.0
+    },
+    {
+      "account_id": "5566",
+      "ground_truth": "SUSPICIOUS",
+      "baseline_verdict": "SAFE",
+      "baseline_reasoning": "Account #5566 shows login activity from IP 198.51.100.7 using Device XYZ-999. Activity volume is moderate. No obvious red flags in the log data. Account appears SAFE.",
+      "baseline_tokens": 3830,
+      "baseline_latency_ms": 2080.0,
+      "baseline_cost_usd": 0.0005745,
+      "baseline_correct": false,
+      "graphrag_verdict": "SUSPICIOUS",
+      "graphrag_reasoning": "SUSPICIOUS \u2014 Risk Score: 7.6/10\n\nGraph Evidence:\n\u2022 Device XYZ-999 shared with BANNED Account #0001 and FLAGGED Account #1002\n\u2022 IP 198.51.100.7 BLACKLISTED (VPN exit node \u2014 flagged for account takeover)\n\u2022 3-hop path to banned Account #0001 via shared device\n\nVerdict: Account #5566 is part of the same synthetic identity ring.",
+      "graphrag_tokens": 219,
+      "graphrag_latency_ms": 590.0,
+      "graphrag_cost_usd": 3.28e-05,
+      "graphrag_correct": true,
+      "graphrag_risk_score": 7.6,
+      "graph_evidence": [
+        "Account 5566 used Device XYZ-999",
+        "Device XYZ-999 also used by Account 0001 (BANNED) and Account 1002 (FLAGGED)",
+        "ALERT: Account 5566 logged from BLACKLISTED IP 198.51.100.7 (VPN exit node)",
+        "3-hop connection to banned Account #0001"
+      ],
+      "flagged_connections": [
+        "0001",
+        "1002"
+      ],
+      "blacklisted_ips": [
+        "198.51.100.7"
+      ],
+      "shared_devices": [
+        "XYZ-999"
+      ],
+      "nodes_visited": 6,
+      "token_savings_pct": 94.3,
+      "latency_improvement_pct": 71.6,
+      "cost_savings_pct": 94.3
+    }
+  ]
+}
