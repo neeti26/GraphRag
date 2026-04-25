@@ -1,0 +1,125 @@
+// ─────────────────────────────────────────────────────────────
+//  FraudGraph GSQL Queries
+//  Install in TigerGraph Studio after creating the schema
+// ─────────────────────────────────────────────────────────────
+
+// ── Query 1: Multi-hop Fraud Context (3 hops) ─────────────────
+// Core GraphRAG query: given a target account, traverse up to
+// 3 hops and return all connected entities + risk signals.
+CREATE QUERY multi_hop_fraud_context(STRING target_account, INT max_hops = 3)
+FOR GRAPH FraudGraph {
+  SetAccum<VERTEX>  @@visited;
+  ListAccum<STRING> @@evidence;
+  SetAccum<STRING>  @@flagged_accounts;
+  SetAccum<STRING>  @@blacklisted_ips;
+  SetAccum<STRING>  @@shared_devices;
+
+  // Seed
+  seed = {Account.*};
+  seed = SELECT a FROM seed:a WHERE a.id == target_account;
+
+  // Hop 1: direct connections
+  hop1_devices = SELECT d FROM seed:a -(USED_DEVICE)-> DeviceID:d
+    ACCUM @@visited += d,
+          @@evidence += "Account " + target_account + " used Device " + d.device_id;
+
+  hop1_ips = SELECT ip FROM seed:a -(LOGGED_FROM_IP)-> IPAddress:ip
+    ACCUM @@visited += ip,
+          IF ip.is_blacklisted THEN
+            @@evidence += "ALERT: Account " + target_account + " logged from BLACKLISTED IP " + ip.ip + " (" + ip.blacklist_reason + ")",
+            @@blacklisted_ips += ip.ip
+          END;
+
+  // Hop 2: other accounts sharing same device
+  hop2_accounts = SELECT a2 FROM hop1_devices:d -(USED_DEVICE)- Account:a2
+    WHERE a2.id != target_account
+    ACCUM @@visited += a2,
+          @@evidence += "Device " + d.device_id + " is ALSO used by Account " + a2.id,
+          IF a2.status == "flagged" OR a2.status == "banned" THEN
+            @@evidence += "ALERT: Account " + a2.id + " is " + a2.status + " (risk_score=" + (STRING)a2.risk_score + ")",
+            @@flagged_accounts += a2.id
+          END,
+          @@shared_devices += d.device_id;
+
+  // Hop 2b: other accounts sharing same IP
+  hop2_ip_accounts = SELECT a3 FROM hop1_ips:ip -(LOGGED_FROM_IP)- Account:a3
+    WHERE a3.id != target_account
+    ACCUM @@visited += a3,
+          @@evidence += "IP " + ip.ip + " is ALSO used by Account " + a3.id,
+          IF a3.status == "flagged" OR a3.status == "banned" THEN
+            @@evidence += "ALERT: Account " + a3.id + " sharing IP is " + a3.status,
+            @@flagged_accounts += a3.id
+          END;
+
+  // Hop 3: connections of flagged accounts
+  all_hop2 = hop2_accounts UNION hop2_ip_accounts;
+  hop3_devices = SELECT d2 FROM all_hop2:a -(USED_DEVICE)-> DeviceID:d2
+    WHERE d2 NOT IN @@visited
+    ACCUM @@visited += d2,
+          @@evidence += "Hop-3: Account " + a.id + " also used Device " + d2.device_id;
+
+  PRINT @@evidence AS evidence,
+        @@flagged_accounts AS flagged_accounts,
+        @@blacklisted_ips AS blacklisted_ips,
+        @@shared_devices AS shared_devices,
+        @@visited.size() AS total_nodes_traversed;
+}
+
+// ── Query 2: Weakly Connected Components (WCC) ────────────────
+// Identifies fraud rings — clusters of accounts sharing
+// devices/IPs. High-connectivity = high risk.
+CREATE QUERY fraud_ring_wcc(INT min_cluster_size = 2)
+FOR GRAPH FraudGraph {
+  MapAccum<VERTEX<Account>, INT> @@component;
+  ListAccum<STRING> @@rings;
+  INT comp_id = 0;
+
+  all_accounts = {Account.*};
+
+  // Simple union-find via device sharing
+  device_clusters = SELECT a FROM all_accounts:a -(USED_DEVICE)-> DeviceID:d -(USED_DEVICE)- Account:a2
+    WHERE a.id != a2.id
+    ACCUM @@component += (a -> comp_id),
+          @@component += (a2 -> comp_id)
+    POST-ACCUM comp_id += 1;
+
+  PRINT @@component AS components;
+}
+
+// ── Query 3: PageRank Risk Score ──────────────────────────────
+// Accounts connected to many flagged nodes get higher risk scores.
+CREATE QUERY pagerank_risk(INT max_iter = 10, FLOAT damping = 0.85)
+FOR GRAPH FraudGraph {
+  MapAccum<VERTEX<Account>, FLOAT> @@rank;
+  all = {Account.*};
+
+  all = SELECT a FROM all:a
+    ACCUM @@rank += (a -> 1.0);
+
+  FOREACH i IN RANGE[1, max_iter] DO
+    all = SELECT a FROM all:a -(USED_DEVICE|LOGGED_FROM_IP)- Account:nb
+      ACCUM @@rank += (a -> damping * @@rank.get(nb) / nb.outdegree("USED_DEVICE"));
+  END;
+
+  PRINT @@rank AS risk_scores;
+}
+
+// ── Query 4: Shortest Fraud Path ──────────────────────────────
+// Find the shortest connection between two accounts.
+CREATE QUERY shortest_fraud_path(STRING account_a, STRING account_b)
+FOR GRAPH FraudGraph {
+  ListAccum<EDGE> @@path;
+  seed = {Account.*};
+  src  = SELECT a FROM seed:a WHERE a.id == account_a;
+  tgt  = SELECT a FROM seed:a WHERE a.id == account_b;
+
+  // BFS shortest path
+  visited = src;
+  WHILE visited.size() > 0 LIMIT 6 DO
+    visited = SELECT nb FROM visited:v -(USED_DEVICE|LOGGED_FROM_IP|HAS_PHONE:e)- :nb
+      WHERE nb NOT IN visited
+      ACCUM @@path += e;
+  END;
+
+  PRINT @@path AS path;
+}

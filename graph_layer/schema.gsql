@@ -1,0 +1,70 @@
+// ─────────────────────────────────────────────────────────────
+//  FraudGraph Schema — Synthetic Identity Detection
+//  Run this in TigerGraph Studio or via pyTigerGraph
+// ─────────────────────────────────────────────────────────────
+
+// ── Vertex Types ──────────────────────────────────────────────
+CREATE VERTEX Account (
+  PRIMARY_ID id       STRING,
+  name                STRING,
+  email               STRING,
+  created_at          STRING,
+  status              STRING DEFAULT "active",   // active | flagged | banned
+  risk_score          FLOAT  DEFAULT 0.0
+) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+
+CREATE VERTEX PhoneNumber (
+  PRIMARY_ID number   STRING,
+  carrier             STRING,
+  country             STRING DEFAULT "IN"
+) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+
+CREATE VERTEX IPAddress (
+  PRIMARY_ID ip       STRING,
+  country             STRING,
+  is_blacklisted      BOOL   DEFAULT FALSE,
+  blacklist_reason    STRING DEFAULT ""
+) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+
+CREATE VERTEX DeviceID (
+  PRIMARY_ID device_id STRING,
+  device_type          STRING,   // mobile | desktop | tablet
+  os                   STRING
+) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+
+CREATE VERTEX PhysicalAddress (
+  PRIMARY_ID addr_id  STRING,
+  street              STRING,
+  city                STRING,
+  pincode             STRING
+) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+
+// ── Edge Types ────────────────────────────────────────────────
+CREATE DIRECTED EDGE HAS_PHONE (
+  FROM Account, TO PhoneNumber,
+  since STRING
+)
+
+CREATE DIRECTED EDGE LOGGED_FROM_IP (
+  FROM Account, TO IPAddress,
+  last_seen   STRING,
+  login_count INT DEFAULT 1
+)
+
+CREATE DIRECTED EDGE USED_DEVICE (
+  FROM Account, TO DeviceID,
+  first_seen  STRING,
+  last_seen   STRING,
+  login_count INT DEFAULT 1
+)
+
+CREATE DIRECTED EDGE REGISTERED_AT (
+  FROM Account, TO PhysicalAddress,
+  verified BOOL DEFAULT FALSE
+)
+
+// ── Graph ─────────────────────────────────────────────────────
+CREATE GRAPH FraudGraph (
+  Account, PhoneNumber, IPAddress, DeviceID, PhysicalAddress,
+  HAS_PHONE, LOGGED_FROM_IP, USED_DEVICE, REGISTERED_AT
+)

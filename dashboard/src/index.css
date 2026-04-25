@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#020912;--bg2:#040e1c;--surface:#071525;--surface2:#0c1e32;--surface3:#112540;
+  --border:#162e4a;--border2:#1e3f66;
+  --red:#ff3b5c;--red2:#ff6b85;--red-glow:rgba(255,59,92,0.25);
+  --green:#00e676;--green2:#69f0ae;--green-glow:rgba(0,230,118,0.25);
+  --cyan:#00b4d8;--cyan2:#48cae4;--yellow:#ffd60a;--purple:#bf5af2;--orange:#ff9f0a;
+  --text:#f0f6ff;--text-dim:#8ba3c0;--text-muted:#3d5a7a;
+  --radius:14px;--radius-sm:9px;
+  --font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#root{min-height:100vh}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.card{background:linear-gradient(145deg,rgba(7,21,37,0.95),rgba(12,30,50,0.8));border:1px solid var(--border);border-radius:var(--radius);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;border-radius:var(--radius);background:linear-gradient(135deg,rgba(255,59,92,0.02) 0%,transparent 50%,rgba(0,230,118,0.02) 100%);pointer-events:none}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(0,230,118,0.5);animation:pulse-ring 2.5s ease-out infinite}
+@keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(0,230,118,0.5)}70%{box-shadow:0 0 0 10px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
+.shimmer{background:linear-gradient(90deg,var(--surface) 25%,var(--surface2) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.scan-line{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent);opacity:0.3;animation:scan 5s linear infinite}
+@keyframes scan{0%{top:0%;opacity:0}5%{opacity:.3}95%{opacity:.3}100%{top:100%;opacity:0}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.cursor{animation:blink 1s step-end infinite}
+.recharts-tooltip-wrapper{outline:none!important}

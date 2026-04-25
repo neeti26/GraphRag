@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.env
+dashboard/node_modules/
+dashboard/dist/
+results.json
+.DS_Store
+Thumbs.db
+.vscode/
