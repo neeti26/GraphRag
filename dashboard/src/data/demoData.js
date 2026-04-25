@@ -34,6 +34,10 @@ export const DEMO_DATA = {
       flagged_connections: ["1002","0001"], blacklisted_ips: ["192.168.1.1"],
       shared_devices: ["XYZ-999"], nodes_visited: 8,
       token_savings_pct: 93.5, latency_improvement_pct: 67.6, cost_savings_pct: 93.5,
+      fraud_path: "Account #8821 → USED_DEVICE → Device XYZ-999 → USED_BY → Account #1002 (Flagged) → LOGGED_FROM_IP → IP 192.168.1.1 (Blacklisted)",
+      wcc_cluster: "C1 — 4 members",
+      cosine_score: 0.94,
+      cosine_match: "0001",
     },
     {
       account_id: "3344", ground_truth: "SAFE",
@@ -51,6 +55,7 @@ export const DEMO_DATA = {
       ],
       flagged_connections: [], blacklisted_ips: [], shared_devices: [], nodes_visited: 3,
       token_savings_pct: 96.3, latency_improvement_pct: 73.7, cost_savings_pct: 96.3,
+      fraud_path: null, wcc_cluster: "C2 — 1 member (isolated)", cosine_score: 0.12, cosine_match: null,
     },
     {
       account_id: "1002", ground_truth: "SUSPICIOUS",
@@ -70,6 +75,8 @@ export const DEMO_DATA = {
       flagged_connections: ["0001"], blacklisted_ips: ["192.168.1.1"],
       shared_devices: ["XYZ-999"], nodes_visited: 7,
       token_savings_pct: 94.0, latency_improvement_pct: 70.2, cost_savings_pct: 94.0,
+      fraud_path: "Account #1002 → USED_DEVICE → Device XYZ-999 → USED_BY → Account #0001 (BANNED) → LOGGED_FROM_IP → IP 192.168.1.1 (Blacklisted)",
+      wcc_cluster: "C1 — 4 members", cosine_score: 0.91, cosine_match: "0001",
     },
     {
       account_id: "5566", ground_truth: "SUSPICIOUS",
@@ -88,6 +95,8 @@ export const DEMO_DATA = {
       flagged_connections: ["0001","1002"], blacklisted_ips: ["198.51.100.7"],
       shared_devices: ["XYZ-999"], nodes_visited: 6,
       token_savings_pct: 94.3, latency_improvement_pct: 71.6, cost_savings_pct: 94.3,
+      fraud_path: "Account #5566 → USED_DEVICE → Device XYZ-999 → USED_BY → Account #0001 (BANNED) → LOGGED_FROM_IP → IP 192.168.1.1 (Blacklisted)",
+      wcc_cluster: "C1 — 4 members", cosine_score: 0.87, cosine_match: "1002",
     },
   ]
 }

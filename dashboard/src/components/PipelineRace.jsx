@@ -1,6 +1,8 @@
 ﻿import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import EvidenceModal from "./EvidenceModal.jsx"
+import TokenTax from "./TokenTax.jsx"
+import GSQLTrace from "./GSQLTrace.jsx"
 
 const ACCOUNTS = [
   { id: "8821", label: "Account #8821", desc: "The Hallucination Case — looks innocent", icon: "🎯", highlight: true },
@@ -50,11 +52,21 @@ function useDemoRace(accountId, records) {
       blacklisted: rec.blacklisted_ips || [],
       shared_devices: rec.shared_devices || [],
       nodes_visited: rec.nodes_visited || 0,
+      fraud_path: rec.fraud_path || null,
+      wcc_cluster: rec.wcc_cluster || null,
+      cosine_score: rec.cosine_score || null,
+      cosine_match: rec.cosine_match || null,
     },
   }
 }
 
+const SUB_TABS = [
+  { key: "race",  label: "⚡ Pipeline Race" },
+  { key: "token", label: "📉 Token Tax" },
+]
+
 export default function PipelineRace({ records, summary }) {
+  const [subTab, setSubTab]         = useState("race")
   const [selectedId, setSelectedId] = useState("8821")
   const [racing, setRacing]         = useState(false)
   const [done, setDone]             = useState(false)
@@ -64,6 +76,7 @@ export default function PipelineRace({ records, summary }) {
   const [gDone, setGDone]           = useState(false)
   const [result, setResult]         = useState(null)
   const [evidenceOpen, setEvidenceOpen] = useState(false)
+  const [gsqlOpen, setGsqlOpen]     = useState(false)
   const timers = useRef([])
 
   const demoResult = useDemoRace(selectedId, records)
@@ -116,6 +129,23 @@ export default function PipelineRace({ records, summary }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+
+      {/* ── Sub-tab toggle ── */}
+      <div style={{ display: "flex", gap: 4, padding: "4px", background: "var(--surface2)", borderRadius: 10, width: "fit-content", border: "1px solid var(--border)" }}>
+        {SUB_TABS.map(t => (
+          <button key={t.key} onClick={() => setSubTab(t.key)}
+            style={{ padding: "8px 20px", borderRadius: 8, border: "none", cursor: "pointer", fontFamily: "var(--mono)", fontSize: 12, fontWeight: 700, transition: "all 0.2s",
+              background: subTab === t.key ? "linear-gradient(90deg,#7f1d1d,var(--red))" : "transparent",
+              color: subTab === t.key ? "#fff" : "var(--text-muted)",
+              boxShadow: subTab === t.key ? "var(--shadow-red)" : "none" }}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {subTab === "token" && <TokenTax records={records} summary={summary} />}
+
+      {subTab === "race" && <>
 
       {/* ── Hero ── */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
@@ -181,7 +211,7 @@ export default function PipelineRace({ records, summary }) {
       </div>
 
       {/* ── Race button ── */}
-      <div style={{ display:"flex", gap:12, alignItems:"center" }}>
+      <div style={{ display:"flex", gap:12, alignItems:"center", flexWrap:"wrap" }}>
         <motion.button
           whileHover={{ scale:1.03, boxShadow:"0 0 32px rgba(255,59,92,0.5)" }}
           whileTap={{ scale:0.97 }}
@@ -198,10 +228,18 @@ export default function PipelineRace({ records, summary }) {
           {racing ? "⏳ RACING..." : done ? "🔄 RUN AGAIN" : "▶ START RACE"}
         </motion.button>
         {done && result && (
-          <motion.div initial={{ opacity:0, x:10 }} animate={{ opacity:1, x:0 }}
-            style={{ fontSize:13, color:"var(--green)", fontWeight:700, fontFamily:"var(--mono)" }}>
-            ✓ Race complete — GraphRAG wins
-          </motion.div>
+          <>
+            <motion.div initial={{ opacity:0, x:10 }} animate={{ opacity:1, x:0 }}
+              style={{ fontSize:13, color:"var(--green)", fontWeight:700, fontFamily:"var(--mono)" }}>
+              ✓ Race complete — GraphRAG wins
+            </motion.div>
+            <motion.button initial={{ opacity:0, x:10 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.2 }}
+              whileHover={{ scale:1.04 }} whileTap={{ scale:0.97 }}
+              onClick={() => setGsqlOpen(true)}
+              style={{ padding:"10px 22px", borderRadius:"var(--radius-sm)", border:"1px solid rgba(191,90,242,0.5)", background:"rgba(191,90,242,0.1)", color:"var(--purple)", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"var(--mono)", letterSpacing:0.5 }}>
+              ⬡ GSQL Trace
+            </motion.button>
+          </>
         )}
       </div>
 
@@ -257,10 +295,23 @@ export default function PipelineRace({ records, summary }) {
             blacklisted={result.graphrag.blacklisted}
             sharedDevices={result.graphrag.shared_devices}
             riskScore={result.graphrag.risk_score}
+            fraudPath={result.graphrag.fraud_path}
+            wccCluster={result.graphrag.wcc_cluster}
+            cosineScore={result.graphrag.cosine_score}
+            cosineMatch={result.graphrag.cosine_match}
             onClose={() => setEvidenceOpen(false)}
           />
         )}
       </AnimatePresence>
+
+      {/* ── GSQL Trace modal ── */}
+      <AnimatePresence>
+        {gsqlOpen && (
+          <GSQLTrace accountId={selectedId} onClose={() => setGsqlOpen(false)} />
+        )}
+      </AnimatePresence>
+
+      </>}
     </div>
   )
 }

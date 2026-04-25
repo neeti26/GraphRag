@@ -4,12 +4,16 @@ import Header from './components/Header.jsx'
 import PipelineRace from './components/PipelineRace.jsx'
 import ScoreBoard from './components/ScoreBoard.jsx'
 import FraudRingGraph from './components/FraudRingGraph.jsx'
+import HallucinationTest from './components/HallucinationTest.jsx'
+import LiveQuery from './components/LiveQuery.jsx'
 import { DEMO_DATA } from './data/demoData.js'
 
 const TABS = [
-  { key: 'race',       icon: '⚡', label: 'Pipeline Race' },
-  { key: 'scoreboard', icon: '📊', label: 'Benchmark Results' },
-  { key: 'graph',      icon: '🕸️', label: 'Fraud Ring Graph' },
+  { key: 'race',          icon: '⚡', label: 'Pipeline Race' },
+  { key: 'hallucination', icon: '🧪', label: 'Hallucination Test' },
+  { key: 'scoreboard',    icon: '📊', label: 'Benchmark Results' },
+  { key: 'graph',         icon: '🕸️', label: 'Fraud Ring Graph' },
+  { key: 'live',          icon: '🔍', label: 'Live Query' },
 ]
 
 export default function App() {
@@ -79,9 +83,11 @@ export default function App() {
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }}
             >
-              {tab === 'race'       && <PipelineRace records={records} summary={summary} />}
-              {tab === 'scoreboard' && <ScoreBoard summary={summary} records={records} />}
-              {tab === 'graph'      && <FraudRingGraph records={records} />}
+              {tab === 'race'          && <PipelineRace records={records} summary={summary} />}
+              {tab === 'hallucination' && <HallucinationTest records={records} />}
+              {tab === 'scoreboard'    && <ScoreBoard summary={summary} records={records} />}
+              {tab === 'graph'         && <FraudRingGraph records={records} />}
+              {tab === 'live'          && <LiveQuery />}
             </motion.div>
           </AnimatePresence>
         </div>
