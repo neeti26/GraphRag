@@ -20,8 +20,16 @@ export default function App() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/api/results').then(r => r.json()).then(d => { setData(d); setLoading(false) })
-      .catch(() => { setData(DEMO_DATA); setLoading(false) })
+    // Try live API first, then static results.json, then built-in demo data
+    fetch('/api/results')
+      .then(r => { if (!r.ok) throw new Error(); return r.json() })
+      .then(d => { setData(d); setLoading(false) })
+      .catch(() =>
+        fetch('/results.json')
+          .then(r => { if (!r.ok) throw new Error(); return r.json() })
+          .then(d => { setData(d); setLoading(false) })
+          .catch(() => { setData(DEMO_DATA); setLoading(false) })
+      )
   }, [])
 
   if (loading) return <Loader />

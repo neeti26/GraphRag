@@ -26,7 +26,9 @@ export default function LiveQuery() {
       if (!res.ok) throw new Error(await res.text())
       setResult(await res.json())
     } catch(e) {
-      setError(e.message.includes('fetch') ? 'API server not running — run: python api_server.py' : e.message)
+      setError(e.message.includes('fetch') || e.message.includes('Failed')
+        ? '⚡ Live queries require the local API server. Run: python api_server.py — or try the demo accounts above to see pre-computed results.'
+        : e.message)
     } finally { setLoading(false); setStage(-1) }
   }
 
