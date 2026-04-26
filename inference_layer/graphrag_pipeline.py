@@ -36,6 +36,9 @@ class GraphRAGResult:
     nodes_visited: int = 0
     llm_response: LLMResponse = None
     pipeline: str = "graphrag"
+    neighborhood_summary: str = ""
+    agentic_loop_triggered: bool = False
+    agentic_refinement: str = ""
 
 
 class GraphRAGPipeline:
@@ -53,12 +56,17 @@ class GraphRAGPipeline:
         shared_devices = graph_data.get("shared_devices", [])
         nodes_visited  = graph_data.get("total_nodes_traversed", 0)
 
+        # Step 1b: Neighborhood summary
+        neighborhood_data = self.tg.neighborhood_summary(account_id)
+        neighborhood_summary = neighborhood_data.get("summary", "")
+
         # Step 2: Build focused graph-context prompt (~250 tokens)
         evidence_text = "\n".join(f"  • {e}" for e in evidence) if evidence else "  • No suspicious connections found."
 
         prompt = f"""Target: Account #{account_id}
 
 GRAPH EVIDENCE (extracted by TigerGraph — 3-hop traversal):
+Neighborhood Context: {neighborhood_summary}
 {evidence_text}
 
 SUMMARY:
@@ -83,6 +91,25 @@ Provide: verdict (SAFE/SUSPICIOUS), risk_score (0-10), and reasoning."""
         elif verdict == "SUSPICIOUS":
             risk_score = 8.5 if flagged or blacklisted else 5.0
 
+        # Agentic loop: refine if SUSPICIOUS with mid-range risk and blacklisted IPs
+        agentic_loop_triggered = False
+        agentic_refinement = ""
+        if verdict == "SUSPICIOUS" and 5.0 <= risk_score <= 8.0 and blacklisted:
+            ip_data = self.tg.ip_transaction_volume(blacklisted[0])
+            second_prompt = f"""Initial Analysis:
+{content}
+
+Additional IP Intelligence for {blacklisted[0]}:
+  - Total login count: {ip_data.get('total_login_count', 'N/A')}
+  - Unique accounts using this IP: {ip_data.get('unique_accounts', 'N/A')}
+  - Chargeback rate: {ip_data.get('chargeback_rate', 'N/A')}%
+
+Based on this additional IP volume data, refine your fraud verdict for Account #{account_id}.
+Provide updated verdict (SAFE/SUSPICIOUS), risk_score (0-10), and refined reasoning."""
+            refined = self.llm.complete_with_metrics(second_prompt, system=SYSTEM_PROMPT, max_tokens=400)
+            agentic_loop_triggered = True
+            agentic_refinement = refined.content.strip()
+
         return GraphRAGResult(
             account_id=account_id,
             verdict=verdict,
@@ -95,4 +122,7 @@ Provide: verdict (SAFE/SUSPICIOUS), risk_score (0-10), and reasoning."""
             hops_traversed=3,
             nodes_visited=nodes_visited,
             llm_response=response,
+            neighborhood_summary=neighborhood_summary,
+            agentic_loop_triggered=agentic_loop_triggered,
+            agentic_refinement=agentic_refinement,
         )

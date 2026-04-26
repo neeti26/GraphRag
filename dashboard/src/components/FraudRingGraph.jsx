@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 
+// Module-level flag: persists across tab switches without unmounting
+let graphHasAnimated = false
+
 const NODES = [
   { id:'0001', label:'Account\n#0001', type:'Account', status:'banned',    color:'#ff3b5c', size:30 },
   { id:'1002', label:'Account\n#1002', type:'Account', status:'flagged',   color:'#ff9f0a', size:28 },
@@ -61,6 +64,12 @@ export default function FraudRingGraph({ records }) {
     if (!nodesRef.current) nodesRef.current = initPos(W, H)
     const nodes = nodesRef.current
     const getN = id => nodes.find(n=>n.id===id)
+
+    // Animation state: track per-node animScale (0→1) for first-render expansion
+    // animScale is stored on each node object; initialize only once per mount
+    if (!graphHasAnimated) {
+      nodes.forEach(n => { if (n.animScale === undefined) n.animScale = 0 })
+    }
 
     const tick = () => {
       frameRef.current++
@@ -145,10 +154,29 @@ export default function FraudRingGraph({ records }) {
         ctx.fillStyle=p.color+Math.floor(alpha*200).toString(16).padStart(2,'0'); ctx.fill()
       })
 
+      // Node-Expansion Animation: update animScale on first render
+      if (!graphHasAnimated) {
+        // 300ms animation duration at ~60fps ≈ 18 frames; 40ms stagger ≈ 2.4 frames per node
+        const fps = 60
+        const animDuration = 300  // ms
+        const staggerMs = 40      // ms per node index
+        const framesPerMs = fps / 1000
+        let allDone = true
+        nodes.forEach((n, i) => {
+          const staggerFrames = i * staggerMs * framesPerMs
+          const elapsed = (frameRef.current - staggerFrames) / (animDuration * framesPerMs)
+          n.animScale = Math.min(1, Math.max(0, elapsed))
+          if (n.animScale < 1) allDone = false
+        })
+        if (allDone) graphHasAnimated = true
+      }
+
       // Nodes
       nodes.forEach(n => {
+        const animScale = graphHasAnimated ? 1 : (n.animScale ?? 1)
+        if (animScale <= 0) return  // skip rendering until stagger delay passes
         const isHov=n.id===hov, isPin=n.id===pinned, hi=isHov||isPin
-        const r=n.size+(hi?4:0)
+        const r=(n.size+(hi?4:0))*animScale
         if (isPin) {
           const pulse=0.5+0.5*Math.sin(frameRef.current*0.07)
           ctx.beginPath(); ctx.arc(n.x,n.y,r+8+pulse*4,0,Math.PI*2)
@@ -160,12 +188,17 @@ export default function FraudRingGraph({ records }) {
         ctx.beginPath(); ctx.arc(n.x,n.y,r,0,Math.PI*2)
         ctx.fillStyle=hi?n.color+'25':'rgba(7,21,37,0.9)'; ctx.fill()
         ctx.strokeStyle=n.color; ctx.lineWidth=hi?2.5:1.5; ctx.stroke()
-        ctx.fillStyle=hi?n.color:n.color+'cc'
-        ctx.font=`${hi?'bold ':''}${hi?9.5:8.5}px Inter,sans-serif`; ctx.textAlign='center'
-        n.label.split('\n').forEach((w,i,arr)=>ctx.fillText(w,n.x,n.y+(i-(arr.length-1)/2)*11+1))
-        if (n.status) {
-          ctx.fillStyle='rgba(71,85,105,0.7)'; ctx.font='7px Inter,sans-serif'
-          ctx.fillText(n.status.toUpperCase(),n.x,n.y+r+11)
+        // Only render glyph text when animScale is large enough to be readable
+        if (animScale > 0.3) {
+          ctx.globalAlpha = Math.min(1, (animScale - 0.3) / 0.4)
+          ctx.fillStyle=hi?n.color:n.color+'cc'
+          ctx.font=`${hi?'bold ':''}${hi?9.5:8.5}px Inter,sans-serif`; ctx.textAlign='center'
+          n.label.split('\n').forEach((w,i,arr)=>ctx.fillText(w,n.x,n.y+(i-(arr.length-1)/2)*11+1))
+          if (n.status) {
+            ctx.fillStyle='rgba(71,85,105,0.7)'; ctx.font='7px Inter,sans-serif'
+            ctx.fillText(n.status.toUpperCase(),n.x,n.y+r+11)
+          }
+          ctx.globalAlpha = 1
         }
       })
 
@@ -263,7 +296,7 @@ export default function FraudRingGraph({ records }) {
         <motion.div initial={{ opacity:0, x:20 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.4 }} className="card" style={{ padding:16, borderTop:'2px solid var(--orange)' }}>
           <div style={{ fontSize:10, fontWeight:700, color:'var(--orange)', textTransform:'uppercase', letterSpacing:1.5, marginBottom:10, fontFamily:'var(--mono)' }}>⚠️ GSQL Algorithms Used</div>
           {[['WCC','Identifies fraud ring clusters'],['PageRank','Ranks most influential nodes'],['ShortestPath','Finds connection between accounts'],['3-hop BFS','Traverses fraud network']].map(([algo,desc])=>(
-            <div key={algo} style={{ marginBottom:8, padding:'7px 10px', background:'rgba(255,159,10,0.06)', borderRadius:7, border:'1px solid rgba(255,159,10,0.15)' }}>
+            <div key={algo} style={{ marginBottom:8, padding:'7px 10px', background:'rgba(255,184,0,0.06)', borderRadius:7, border:'1px solid rgba(255,184,0,0.15)' }}>
               <div style={{ fontSize:11, fontWeight:700, color:'var(--yellow)', fontFamily:'var(--mono)' }}>{algo}</div>
               <div style={{ fontSize:10, color:'var(--text-muted)', marginTop:2 }}>{desc}</div>
             </div>

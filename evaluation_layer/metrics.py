@@ -37,6 +37,12 @@ class BenchmarkRecord:
     latency_improvement_pct: float
     cost_savings_pct: float
 
+    # Agentic / entity fields
+    neighborhood_summary: str = ""
+    agentic_loop_triggered: bool = False
+    agentic_refinement: str = ""
+    entity_link: dict = None
+
     def to_dict(self):
         return asdict(self)
 

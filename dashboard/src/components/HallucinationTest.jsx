@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import EvidenceString from './EvidenceString'
+import EvidenceTrace from './EvidenceTrace'
+import NeighborhoodSummaryCallout from './NeighborhoodSummaryCallout'
 
 export default function HallucinationTest({ records }) {
   const hallucinations = records.filter(r => !r.baseline_correct && r.graphrag_correct)
@@ -33,10 +36,10 @@ export default function HallucinationTest({ records }) {
           {hallucinations.map((r, i) => (
             <motion.button key={r.account_id} onClick={() => setSelected(i)} whileHover={{ scale:1.05 }} whileTap={{ scale:0.97 }}
               style={{ padding:'7px 18px', borderRadius:20, fontSize:12, cursor:'pointer', fontFamily:'var(--mono)', fontWeight:700,
-                background: selected===i ? 'linear-gradient(90deg,#7f1d1d,var(--red))' : 'var(--surface2)',
+                background: selected===i ? 'linear-gradient(90deg,var(--surface4),var(--red))' : 'var(--surface2)',
                 color: selected===i ? '#fff' : 'var(--text-muted)',
                 border:`1px solid ${selected===i ? 'var(--red)' : 'var(--border)'}`,
-                boxShadow: selected===i ? '0 0 12px rgba(255,59,92,0.3)' : 'none',
+                boxShadow: selected===i ? '0 1px 3px rgba(0,0,0,0.4)' : 'none',
                 transition:'all 0.2s' }}>
               Account #{r.account_id}
             </motion.button>
@@ -57,22 +60,22 @@ export default function HallucinationTest({ records }) {
                   <div style={{ fontSize:10, color:'var(--text-muted)', fontFamily:'var(--mono)', marginTop:2 }}>Reading 50 raw log lines · {rec.baseline_tokens} tokens</div>
                 </div>
                 <motion.div initial={{ scale:0 }} animate={{ scale:1 }} transition={{ type:'spring', delay:0.3 }}
-                  style={{ padding:'4px 12px', borderRadius:10, background:'rgba(255,59,92,0.2)', border:'1px solid rgba(255,59,92,0.4)', fontSize:11, fontWeight:900, color:'var(--red)' }}>
+                  style={{ padding:'4px 12px', borderRadius:10, background:'rgba(255,77,77,0.2)', border:'1px solid rgba(255,77,77,0.4)', fontSize:11, fontWeight:900, color:'var(--red)' }}>
                   ✗ WRONG
                 </motion.div>
               </div>
 
-              <div style={{ padding:'14px 16px', background:'rgba(0,230,118,0.08)', border:'1px solid rgba(0,230,118,0.2)', borderRadius:10, marginBottom:14 }}>
+              <div style={{ padding:'14px 16px', background:'rgba(0,245,255,0.08)', border:'1px solid rgba(0,245,255,0.2)', borderRadius:10, marginBottom:14 }}>
                 <div style={{ fontSize:11, color:'var(--text-muted)', marginBottom:4, fontFamily:'var(--mono)' }}>VERDICT</div>
                 <div style={{ fontSize:22, fontWeight:900, color:'var(--green)' }}>✓ SAFE</div>
                 <div style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>← This is the hallucination</div>
               </div>
 
-              <div style={{ fontSize:12, color:'var(--text-dim)', lineHeight:1.65, fontStyle:'italic', padding:'12px 14px', background:'rgba(0,0,0,0.2)', borderRadius:8, borderLeft:'3px solid rgba(255,59,92,0.4)' }}>
+              <div style={{ fontSize:12, color:'var(--text-dim)', lineHeight:1.65, fontStyle:'italic', padding:'12px 14px', background:'rgba(0,0,0,0.2)', borderRadius:8, borderLeft:'3px solid rgba(255,77,77,0.4)' }}>
                 "{rec.baseline_reasoning}"
               </div>
 
-              <div style={{ marginTop:14, padding:'10px 14px', background:'rgba(255,159,10,0.08)', border:'1px solid rgba(255,159,10,0.2)', borderRadius:8, fontSize:11, color:'var(--orange)' }}>
+              <div style={{ marginTop:14, padding:'10px 14px', background:'rgba(255,184,0,0.08)', border:'1px solid rgba(255,184,0,0.2)', borderRadius:8, fontSize:11, color:'var(--orange)' }}>
                 ⚠️ The LLM sees normal transactions and a clean IP — it cannot see the 3-hop connection to a banned fraudster.
               </div>
             </div>
@@ -86,12 +89,12 @@ export default function HallucinationTest({ records }) {
                   <div style={{ fontSize:10, color:'var(--text-muted)', fontFamily:'var(--mono)', marginTop:2 }}>Graph traversal · {rec.graphrag_tokens} tokens · {rec.nodes_visited} nodes visited</div>
                 </div>
                 <motion.div initial={{ scale:0 }} animate={{ scale:1 }} transition={{ type:'spring', delay:0.4 }}
-                  style={{ padding:'4px 12px', borderRadius:10, background:'rgba(0,230,118,0.2)', border:'1px solid rgba(0,230,118,0.4)', fontSize:11, fontWeight:900, color:'var(--green)' }}>
+                  style={{ padding:'4px 12px', borderRadius:10, background:'rgba(0,245,255,0.2)', border:'1px solid rgba(0,245,255,0.4)', fontSize:11, fontWeight:900, color:'var(--green)' }}>
                   ✓ CORRECT
                 </motion.div>
               </div>
 
-              <div style={{ padding:'14px 16px', background:'rgba(255,59,92,0.08)', border:'1px solid rgba(255,59,92,0.2)', borderRadius:10, marginBottom:14 }}>
+              <div style={{ padding:'14px 16px', background:'rgba(255,77,77,0.08)', border:'1px solid rgba(255,77,77,0.2)', borderRadius:10, marginBottom:14 }}>
                 <div style={{ fontSize:11, color:'var(--text-muted)', marginBottom:4, fontFamily:'var(--mono)' }}>VERDICT · Risk {rec.graphrag_risk_score}/10</div>
                 <div style={{ fontSize:22, fontWeight:900, color:'var(--red)' }}>⚠️ SUSPICIOUS</div>
                 <div style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>Fraud ring detected via graph</div>
@@ -100,11 +103,12 @@ export default function HallucinationTest({ records }) {
               {/* Graph evidence */}
               <div style={{ marginBottom:12 }}>
                 <div style={{ fontSize:10, fontWeight:700, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:1, marginBottom:8, fontFamily:'var(--mono)' }}>Graph Evidence ({rec.graph_evidence?.length} signals)</div>
+                <NeighborhoodSummaryCallout summary={rec.neighborhood_summary} />
                 <div style={{ display:'flex', flexDirection:'column', gap:5 }}>
                   {rec.graph_evidence?.map((e, i) => (
                     <motion.div key={i} initial={{ opacity:0, x:-8 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.3+i*0.07 }}
-                      style={{ fontSize:11, color: e.includes('ALERT') || e.includes('BLACKLISTED') ? 'var(--red2)' : 'var(--text-dim)', fontFamily:'var(--mono)', padding:'5px 10px', background: e.includes('ALERT') ? 'rgba(255,59,92,0.08)' : 'rgba(0,0,0,0.2)', borderRadius:6, borderLeft:`2px solid ${e.includes('ALERT') ? 'var(--red)' : 'var(--border2)'}` }}>
-                      {e.includes('ALERT') ? '🚨 ' : '• '}{e}
+                      style={{ padding:'5px 10px', background:'var(--bg)', borderRadius:6, borderLeft:`2px solid var(--border2)` }}>
+                      <EvidenceString text={e} />
                     </motion.div>
                   ))}
                 </div>
@@ -115,7 +119,12 @@ export default function HallucinationTest({ records }) {
           {/* Hop path visualization */}
           <motion.div initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.3 }} className="card" style={{ padding:22 }}>
             <div style={{ fontSize:13, fontWeight:700, color:'var(--text)', marginBottom:16 }}>3-Hop Traversal Path — How TigerGraph Found the Ring</div>
-            <HopPath accountId={rec.account_id} sharedDevices={rec.shared_devices} flagged={rec.flagged_connections} blacklisted={rec.blacklisted_ips} />
+            <EvidenceTrace
+              accountId={rec.account_id}
+              sharedDevice={rec.shared_devices?.[0]}
+              bannedAccount={rec.flagged_connections?.[0]}
+              blacklistedIp={rec.blacklisted_ips?.[0]}
+            />
           </motion.div>
         </motion.div>
       </AnimatePresence>

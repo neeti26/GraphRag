@@ -63,8 +63,15 @@ CREATE DIRECTED EDGE REGISTERED_AT (
   verified BOOL DEFAULT FALSE
 )
 
+CREATE UNDIRECTED EDGE ENTITY_LINK (
+  FROM Account, TO Account,
+  shared_identifiers LIST<STRING>,
+  confidence_score   FLOAT
+)
+
 // ── Graph ─────────────────────────────────────────────────────
 CREATE GRAPH FraudGraph (
   Account, PhoneNumber, IPAddress, DeviceID, PhysicalAddress,
-  HAS_PHONE, LOGGED_FROM_IP, USED_DEVICE, REGISTERED_AT
+  HAS_PHONE, LOGGED_FROM_IP, USED_DEVICE, REGISTERED_AT,
+  ENTITY_LINK
 )

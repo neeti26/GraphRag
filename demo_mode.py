@@ -31,6 +31,10 @@ ACCOUNTS = [
         "shared_devices": ["XYZ-999"], "nodes": 8, "risk_score": 9.2,
         "base_tokens": 3840, "rag_tokens": 248,
         "base_ms": 2100, "rag_ms": 680,
+        "neighborhood_summary": "This account is part of a cluster with 4 other accounts, 75.0% of which have been flagged for chargebacks in the last 72 hours.",
+        "agentic_loop_triggered": True,
+        "agentic_refinement": "Refined Analysis — Risk Score: 9.5/10\n\nIP Intelligence confirms elevated risk: IP 192.168.1.1 has 47 total logins across 4 unique accounts with a 75.0% chargeback rate. Combined with device sharing and fraud ring membership, this account is a high-confidence synthetic identity. Verdict: SUSPICIOUS — escalate for immediate review.",
+        "entity_link": {"account_a": "8821", "account_b": "1002", "shared_identifiers": ["XYZ-999", "192.168.1.1"], "confidence_score": 1.0},
     },
     {
         "id": "3344", "gt": "SAFE",
@@ -48,6 +52,10 @@ ACCOUNTS = [
         "nodes": 3, "risk_score": 0.3,
         "base_tokens": 3820, "rag_tokens": 142,
         "base_ms": 1980, "rag_ms": 520,
+        "neighborhood_summary": "This account is isolated with no connections to flagged or banned accounts within 3 hops.",
+        "agentic_loop_triggered": False,
+        "agentic_refinement": "",
+        "entity_link": None,
     },
     {
         "id": "1002", "gt": "SUSPICIOUS",
@@ -66,6 +74,10 @@ ACCOUNTS = [
         "shared_devices": ["XYZ-999"], "nodes": 7, "risk_score": 8.8,
         "base_tokens": 3860, "rag_tokens": 231,
         "base_ms": 2050, "rag_ms": 610,
+        "neighborhood_summary": "This account is part of a cluster with 4 other accounts, 75.0% of which have been flagged for chargebacks in the last 72 hours.",
+        "agentic_loop_triggered": True,
+        "agentic_refinement": "Refined Analysis — Risk Score: 9.0/10\n\nIP Intelligence for 192.168.1.1: 47 total logins, 4 unique accounts, 75.0% chargeback rate. This IP is a confirmed fraud proxy. Account #1002 is a central node in the fraud ring — immediate action recommended. Verdict: SUSPICIOUS — confirmed fraud ring member.",
+        "entity_link": None,
     },
     {
         "id": "5566", "gt": "SUSPICIOUS",
@@ -83,6 +95,10 @@ ACCOUNTS = [
         "shared_devices": ["XYZ-999"], "nodes": 6, "risk_score": 7.6,
         "base_tokens": 3830, "rag_tokens": 219,
         "base_ms": 2080, "rag_ms": 590,
+        "neighborhood_summary": "This account is part of a cluster with 3 other accounts, 66.7% of which have been flagged for chargebacks in the last 72 hours.",
+        "agentic_loop_triggered": False,
+        "agentic_refinement": "",
+        "entity_link": None,
     },
 ]
 
@@ -114,6 +130,10 @@ def make_record(a) -> BenchmarkRecord:
         token_savings_pct=savings(a["base_tokens"], a["rag_tokens"]),
         latency_improvement_pct=savings(a["base_ms"], a["rag_ms"]),
         cost_savings_pct=savings(base_cost, rag_cost),
+        neighborhood_summary=a.get("neighborhood_summary", ""),
+        agentic_loop_triggered=a.get("agentic_loop_triggered", False),
+        agentic_refinement=a.get("agentic_refinement", ""),
+        entity_link=a.get("entity_link", None),
     )
 
 

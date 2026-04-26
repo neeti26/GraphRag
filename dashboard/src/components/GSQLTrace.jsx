@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import GhostButton from "./GhostButton"
 
 const QUERIES = [
   {
@@ -165,19 +166,17 @@ export default function GSQLTrace({ accountId = "8821", onClose }) {
             </div>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
-            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
-              onClick={runTrace} disabled={running}
-              style={{ padding: "7px 18px", borderRadius: 8, border: "none", cursor: running ? "not-allowed" : "pointer", background: running ? "var(--surface2)" : "linear-gradient(90deg,#4c1d95,var(--purple))", color: running ? "var(--text-muted)" : "#fff", fontSize: 11, fontWeight: 700, fontFamily: "var(--mono)" }}>
+            <GhostButton accent="var(--purple)" onClick={runTrace} disabled={running}>
               {running ? "⏳ Running..." : "▶ Replay Trace"}
-            </motion.button>
-            <button onClick={onClose} style={{ padding: "7px 14px", borderRadius: 8, background: "rgba(255,59,92,0.15)", border: "1px solid rgba(255,59,92,0.3)", color: "var(--red)", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "var(--mono)" }}>
+            </GhostButton>
+            <button onClick={onClose} style={{ padding: "7px 14px", borderRadius: 8, background: "rgba(255,77,77,0.15)", border: "1px solid rgba(255,77,77,0.3)", color: "var(--red)", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "var(--mono)" }}>
               ✕
             </button>
           </div>
         </div>
 
         {/* Key message */}
-        <div style={{ marginBottom: 20, padding: "12px 16px", background: "rgba(191,90,242,0.08)", border: "1px solid rgba(191,90,242,0.25)", borderRadius: 10, fontSize: 12, color: "var(--text-dim)", lineHeight: 1.6 }}>
+        <div style={{ marginBottom: 20, padding: "12px 16px", background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.25)", borderRadius: 10, fontSize: 12, color: "var(--text-dim)", lineHeight: 1.6 }}>
           <strong style={{ color: "var(--purple)" }}>Zero Hallucination Guarantee:</strong> Every fraud signal below was deduced from the graph structure.
           The LLM received only these extracted facts — it cannot fabricate connections that don't exist in TigerGraph.
         </div>
@@ -237,7 +236,7 @@ export default function GSQLTrace({ accountId = "8821", onClose }) {
         </div>
 
         {/* Total execution */}
-        <div style={{ padding: "12px 16px", background: "rgba(0,230,118,0.06)", border: "1px solid rgba(0,230,118,0.2)", borderRadius: 10, marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ padding: "12px 16px", background: "rgba(0,245,255,0.06)", border: "1px solid rgba(0,245,255,0.2)", borderRadius: 10, marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ fontSize: 12, color: "var(--text-dim)" }}>
             Total graph execution time: <strong style={{ color: "var(--green)", fontFamily: "var(--mono)" }}>{totalMs}ms</strong>
             <span style={{ color: "var(--text-muted)", marginLeft: 12 }}>vs LLM reading raw logs: ~2,100ms</span>

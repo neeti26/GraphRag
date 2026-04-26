@@ -1,6 +1,8 @@
 ﻿import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadialBarChart, RadialBar, PolarAngleAxis } from "recharts"
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+import RadialGauge from "./RadialGauge"
+import TigerGraphMetrics from "./TigerGraphMetrics"
 
 function useCountUp(target, delay=0) {
   const [val, setVal] = useState(0)
@@ -33,7 +35,6 @@ const Tip = ({ active, payload, label }) => {
 export default function ScoreBoard({ summary, records }) {
   const tokenData   = records.map(r=>({ id:r.account_id, Baseline:r.baseline_tokens, GraphRAG:r.graphrag_tokens }))
   const latencyData = records.map(r=>({ id:r.account_id, Baseline:Math.round(r.baseline_latency_ms), GraphRAG:Math.round(r.graphrag_latency_ms) }))
-  const radialData  = [{ name:"GraphRAG", value:summary.graphrag_accuracy_pct, fill:"#00e676" }, { name:"Baseline", value:summary.baseline_accuracy_pct, fill:"#ff3b5c" }]
 
   const kpis = [
     { icon:"🎯", label:"Detection Accuracy", bVal:summary.baseline_accuracy_pct, gVal:summary.graphrag_accuracy_pct, unit:"%", color:"var(--green)" },
@@ -74,15 +75,10 @@ export default function ScoreBoard({ summary, records }) {
           </div>
           <div style={{ textAlign:"center" }}>
             <div style={{ fontSize:10, fontWeight:700, color:"var(--text-muted)", textTransform:"uppercase", letterSpacing:1.5, marginBottom:8, fontFamily:"var(--mono)" }}>Detection Accuracy</div>
-            <ResponsiveContainer width={160} height={160}>
-              <RadialBarChart cx="50%" cy="50%" innerRadius="40%" outerRadius="90%" data={radialData} startAngle={90} endAngle={-270}>
-                <PolarAngleAxis type="number" domain={[0,100]} tick={false} />
-                <RadialBar dataKey="value" cornerRadius={6} />
-                <text x="50%" y="44%" textAnchor="middle" dominantBaseline="middle" style={{ fontSize:26, fontWeight:900, fill:"#00e676", fontFamily:"var(--mono)" }}>100%</text>
-                <text x="50%" y="62%" textAnchor="middle" dominantBaseline="middle" style={{ fontSize:10, fill:"#3d5a7a", fontFamily:"var(--mono)" }}>GraphRAG</text>
-              </RadialBarChart>
-            </ResponsiveContainer>
-            <div style={{ fontSize:11, color:"var(--red)", fontFamily:"var(--mono)", fontWeight:700 }}>Baseline: 50%</div>
+            <div style={{ display:"flex", gap:16, alignItems:"center", justifyContent:"center" }}>
+              <RadialGauge value={summary.graphrag_accuracy_pct} label="GraphRAG" size={140} />
+              <RadialGauge value={summary.baseline_accuracy_pct} label="Baseline" size={140} />
+            </div>
           </div>
         </div>
       </motion.div>
@@ -100,11 +96,11 @@ export default function ScoreBoard({ summary, records }) {
               <div style={{ fontSize:18, marginBottom:10 }}>{k.icon}</div>
               <div style={{ fontSize:9, fontWeight:700, color:"var(--text-muted)", textTransform:"uppercase", letterSpacing:1.5, marginBottom:12, fontFamily:"var(--mono)" }}>{k.label}</div>
               <div style={{ display:"flex", gap:8 }}>
-                <div style={{ flex:1, textAlign:"center", padding:"8px 4px", background:"rgba(255,59,92,0.08)", borderRadius:8, border:"1px solid rgba(255,59,92,0.2)" }}>
+                <div style={{ flex:1, textAlign:"center", padding:"8px 4px", background:"rgba(255,77,77,0.08)", borderRadius:8, border:"1px solid rgba(255,77,77,0.2)" }}>
                   <div style={{ fontSize:9, color:"var(--text-muted)", marginBottom:3 }}>Baseline</div>
                   <div style={{ fontSize:18, fontWeight:800, color:"var(--red)", fontFamily:"var(--mono)", letterSpacing:"-0.5px" }}>{bAnim}{k.unit}</div>
                 </div>
-                <div style={{ flex:1, textAlign:"center", padding:"8px 4px", background:"rgba(0,230,118,0.08)", borderRadius:8, border:"1px solid rgba(0,230,118,0.2)" }}>
+                <div style={{ flex:1, textAlign:"center", padding:"8px 4px", background:"rgba(0,245,255,0.08)", borderRadius:8, border:"1px solid rgba(0,245,255,0.2)" }}>
                   <div style={{ fontSize:9, color:"var(--text-muted)", marginBottom:3 }}>GraphRAG</div>
                   <div style={{ fontSize:18, fontWeight:800, color:"var(--green)", fontFamily:"var(--mono)", letterSpacing:"-0.5px" }}>{gAnim}{k.unit}</div>
                 </div>
@@ -135,7 +131,7 @@ export default function ScoreBoard({ summary, records }) {
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(22,46,74,0.4)" vertical={false} />
                 <XAxis dataKey="id" tick={{ fill:"var(--text-muted)", fontSize:11, fontFamily:"var(--mono)" }} tickFormatter={v=>`#${v}`} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fill:"var(--text-muted)", fontSize:11, fontFamily:"var(--mono)" }} axisLine={false} tickLine={false} unit={c.unit||""} />
-                <Tooltip content={<Tip />} cursor={{ fill:"rgba(255,59,92,0.04)" }} />
+                <Tooltip content={<Tip />} cursor={{ fill:"rgba(255,77,77,0.04)" }} />
                 <Bar dataKey="Baseline" fill="var(--red)"  radius={[5,5,0,0]} maxBarSize={36} fillOpacity={0.85} name="Baseline" />
                 <Bar dataKey="GraphRAG" fill={c.gColor}    radius={[5,5,0,0]} maxBarSize={36} fillOpacity={0.85} name="GraphRAG" />
               </BarChart>
@@ -146,24 +142,23 @@ export default function ScoreBoard({ summary, records }) {
 
       {/* Results table */}
       <motion.div initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.4 }} className="card" style={{ padding:24 }}>
-        <div style={{ fontSize:13, fontWeight:700, color:"var(--text)", marginBottom:18 }}>Per-Account Detection Results</div>
-        <div style={{ display:"grid", gridTemplateColumns:"90px 1fr 1fr 110px 110px 100px 140px", fontSize:9, fontWeight:700, color:"var(--text-muted)", textTransform:"uppercase", letterSpacing:1.2, fontFamily:"var(--mono)", padding:"0 14px 12px", borderBottom:"1px solid var(--border)" }}>
+        <div style={{ fontSize:13, fontWeight:700, color:"var(--text)", marginBottom:18 }}>Per-Account Detection Results</div>        <div style={{ display:"grid", gridTemplateColumns:"90px 1fr 1fr 110px 110px 100px 140px", fontSize:9, fontWeight:700, color:"var(--text-muted)", textTransform:"uppercase", letterSpacing:1.2, fontFamily:"var(--mono)", padding:"0 14px 12px", borderBottom:"1px solid var(--border)" }}>
           <span>Account</span><span>Baseline</span><span>GraphRAG</span><span>Tokens ↓</span><span>Latency ↓</span><span>Risk</span><span>Outcome</span>
         </div>
         {records.map((r,i)=>{
           const isH = !r.baseline_correct && r.graphrag_correct
           return (
             <motion.div key={r.account_id} initial={{ opacity:0, x:-10 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.45+i*0.07 }}
-              style={{ display:"grid", gridTemplateColumns:"90px 1fr 1fr 110px 110px 100px 140px", padding:"13px 14px", borderBottom:"1px solid var(--border)", alignItems:"center", background:isH?"rgba(255,159,10,0.04)":"transparent", transition:"background 0.2s", cursor:"default" }}
-              onMouseEnter={e=>e.currentTarget.style.background="rgba(255,59,92,0.04)"}
-              onMouseLeave={e=>e.currentTarget.style.background=isH?"rgba(255,159,10,0.04)":"transparent"}>
+              style={{ display:"grid", gridTemplateColumns:"90px 1fr 1fr 110px 110px 100px 140px", padding:"13px 14px", borderBottom:"1px solid var(--border)", alignItems:"center", background:isH?"rgba(255,184,0,0.04)":"transparent", transition:"background 0.2s", cursor:"default" }}
+              onMouseEnter={e=>e.currentTarget.style.background="rgba(255,77,77,0.04)"}
+              onMouseLeave={e=>e.currentTarget.style.background=isH?"rgba(255,184,0,0.04)":"transparent"}>
               <span style={{ fontFamily:"var(--mono)", fontWeight:700, color:"var(--cyan)", fontSize:14 }}>#{r.account_id}</span>
               <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                <span style={{ padding:"3px 10px", borderRadius:12, fontSize:11, fontWeight:700, background:r.baseline_verdict==="SUSPICIOUS"?"rgba(255,59,92,0.15)":"rgba(0,230,118,0.1)", color:r.baseline_verdict==="SUSPICIOUS"?"var(--red)":"var(--green)", border:`1px solid ${r.baseline_verdict==="SUSPICIOUS"?"rgba(255,59,92,0.3)":"rgba(0,230,118,0.2)"}` }}>{r.baseline_verdict}</span>
-                {!r.baseline_correct && <span style={{ fontSize:9, color:"var(--orange)", fontWeight:800, fontFamily:"var(--mono)", padding:"1px 6px", background:"rgba(255,159,10,0.15)", borderRadius:6 }}>WRONG</span>}
+                <span style={{ padding:"3px 10px", borderRadius:12, fontSize:11, fontWeight:700, background:r.baseline_verdict==="SUSPICIOUS"?"rgba(255,77,77,0.15)":"rgba(0,245,255,0.1)", color:r.baseline_verdict==="SUSPICIOUS"?"var(--red)":"var(--green)", border:`1px solid ${r.baseline_verdict==="SUSPICIOUS"?"rgba(255,77,77,0.3)":"rgba(0,245,255,0.2)"}` }}>{r.baseline_verdict}</span>
+                {!r.baseline_correct && <span style={{ fontSize:9, color:"var(--orange)", fontWeight:800, fontFamily:"var(--mono)", padding:"1px 6px", background:"rgba(255,184,0,0.15)", borderRadius:6 }}>WRONG</span>}
               </div>
               <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                <span style={{ padding:"3px 10px", borderRadius:12, fontSize:11, fontWeight:700, background:r.graphrag_verdict==="SUSPICIOUS"?"rgba(255,59,92,0.15)":"rgba(0,230,118,0.1)", color:r.graphrag_verdict==="SUSPICIOUS"?"var(--red)":"var(--green)", border:`1px solid ${r.graphrag_verdict==="SUSPICIOUS"?"rgba(255,59,92,0.3)":"rgba(0,230,118,0.2)"}` }}>{r.graphrag_verdict}</span>
+                <span style={{ padding:"3px 10px", borderRadius:12, fontSize:11, fontWeight:700, background:r.graphrag_verdict==="SUSPICIOUS"?"rgba(255,77,77,0.15)":"rgba(0,245,255,0.1)", color:r.graphrag_verdict==="SUSPICIOUS"?"var(--red)":"var(--green)", border:`1px solid ${r.graphrag_verdict==="SUSPICIOUS"?"rgba(255,77,77,0.3)":"rgba(0,245,255,0.2)"}` }}>{r.graphrag_verdict}</span>
                 {r.graphrag_correct && <span style={{ fontSize:9, color:"var(--green)", fontWeight:800, fontFamily:"var(--mono)" }}>✓</span>}
               </div>
               <span style={{ fontFamily:"var(--mono)", color:"var(--cyan)", fontSize:12, fontWeight:700 }}>{r.token_savings_pct}%</span>
@@ -192,6 +187,9 @@ export default function ScoreBoard({ summary, records }) {
           ))}
         </div>
       </motion.div>
+
+      {/* TigerGraph Metrics */}
+      <TigerGraphMetrics summary={summary} records={records} />
     </div>
   )
 }

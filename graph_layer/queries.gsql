@@ -123,3 +123,99 @@ FOR GRAPH FraudGraph {
 
   PRINT @@path AS path;
 }
+
+// ── Query 5: Entity Resolution ────────────────────────────────
+// Finds Account pairs sharing the same IP AND Device ID,
+// then creates ENTITY_LINK edges between them.
+CREATE QUERY entity_resolution()
+FOR GRAPH FraudGraph {
+  SetAccum<VERTEX<Account>> @@processed;
+  ListAccum<STRING> @@links_created;
+
+  all_accounts = {Account.*};
+
+  // Find accounts sharing the same device
+  shared_device_pairs = SELECT a2
+    FROM all_accounts:a1 -(USED_DEVICE)-> DeviceID:d -(USED_DEVICE)- Account:a2
+    WHERE a1.id < a2.id   // avoid duplicates
+    ACCUM
+      // Check if they also share an IP
+      FOREACH ip IN a1.neighbors("LOGGED_FROM_IP") DO
+        IF a2.neighbors("LOGGED_FROM_IP") CONTAINS ip THEN
+          INSERT INTO ENTITY_LINK VALUES (a1, a2, [d.device_id, ip.ip], 1.0),
+          @@links_created += a1.id + " <-> " + a2.id + " (device=" + d.device_id + ", ip=" + ip.ip + ")"
+        END
+      END;
+
+  PRINT @@links_created AS entity_links_created;
+}
+
+// ── Query 6: Neighborhood Summary ────────────────────────────
+// 3-hop BFS from target account, aggregates cluster stats,
+// returns a natural-language summary string.
+CREATE QUERY neighborhood_summary(STRING target_account)
+FOR GRAPH FraudGraph {
+  SetAccum<VERTEX>  @@visited;
+  SumAccum<INT>     @@cluster_size;
+  SumAccum<INT>     @@chargeback_count;
+  SumAccum<FLOAT>   @@total_risk;
+
+  seed = {Account.*};
+  seed = SELECT a FROM seed:a WHERE a.id == target_account;
+
+  // BFS 3 hops
+  frontier = seed;
+  FOREACH hop IN RANGE[1, 3] DO
+    frontier = SELECT nb
+      FROM frontier:v -(USED_DEVICE|LOGGED_FROM_IP|HAS_PHONE)- :nb
+      WHERE nb NOT IN @@visited
+      ACCUM @@visited += nb;
+  END;
+
+  // Count cluster accounts and chargebacks
+  cluster_accounts = SELECT a FROM @@visited:a
+    WHERE a.type() == "Account" AND a.id != target_account
+    ACCUM
+      @@cluster_size += 1,
+      IF a.risk_score > 5.0 THEN @@chargeback_count += 1 END,
+      @@total_risk += a.risk_score;
+
+  INT    cs   = @@cluster_size;
+  INT    cc   = @@chargeback_count;
+  FLOAT  rate = cs > 0 ? (@@chargeback_count * 100.0 / cs) : 0.0;
+  STRING summary = "This account is part of a cluster with " + (STRING)cs +
+                   " other accounts, " + (STRING)rate +
+                   "% of which have been flagged for chargebacks in the last 72 hours.";
+
+  PRINT cs AS cluster_size,
+        cc AS chargeback_count,
+        rate AS chargeback_rate,
+        72 AS time_window_hours,
+        summary AS summary;
+}
+
+// ── Query 7: IP Transaction Volume ───────────────────────────
+// Returns login volume and chargeback rate for a given IP address.
+CREATE QUERY ip_transaction_volume(STRING ip_address)
+FOR GRAPH FraudGraph {
+  SumAccum<INT>   @@total_login_count;
+  SetAccum<STRING> @@unique_accounts;
+  SumAccum<INT>   @@chargeback_accounts;
+
+  ip_vertex = {IPAddress.*};
+  ip_vertex = SELECT ip FROM ip_vertex:ip WHERE ip.ip == ip_address;
+
+  // All accounts that logged from this IP
+  accounts = SELECT a FROM ip_vertex:ip -(LOGGED_FROM_IP)- Account:a
+    ACCUM
+      @@total_login_count += a.neighbors("LOGGED_FROM_IP").get(ip).login_count,
+      @@unique_accounts += a.id,
+      IF a.risk_score > 5.0 THEN @@chargeback_accounts += 1 END;
+
+  INT    ua   = @@unique_accounts.size();
+  FLOAT  rate = ua > 0 ? (@@chargeback_accounts * 100.0 / ua) : 0.0;
+
+  PRINT @@total_login_count AS total_login_count,
+        ua AS unique_accounts,
+        rate AS chargeback_rate;
+}

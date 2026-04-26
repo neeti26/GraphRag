@@ -26,7 +26,7 @@ function useCountUp(target, delay = 0, duration = 1200) {
 const Tip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null
   return (
-    <div style={{ background: "rgba(2,9,18,0.97)", border: "1px solid var(--border2)", borderRadius: 10, padding: "12px 16px", fontSize: 12 }}>
+    <div style={{ background: "rgba(11,14,20,0.97)", border: "1px solid var(--border2)", borderRadius: 10, padding: "12px 16px", fontSize: 12 }}>
       <div style={{ color: "var(--text-muted)", marginBottom: 8, fontFamily: "var(--mono)", fontSize: 11 }}>Account #{label}</div>
       {payload.map(p => (
         <div key={p.name} style={{ display: "flex", justifyContent: "space-between", gap: 20, marginBottom: 4 }}>
@@ -155,7 +155,7 @@ export default function TokenTax({ records, summary }) {
             </motion.div>
           ))}
         </div>
-        <div style={{ marginTop: 16, padding: "12px 16px", background: "rgba(255,159,10,0.06)", border: "1px solid rgba(255,159,10,0.2)", borderRadius: 10, fontSize: 12, color: "var(--text-dim)", lineHeight: 1.6 }}>
+        <div style={{ marginTop: 16, padding: "12px 16px", background: "rgba(255,184,0,0.06)", border: "1px solid rgba(255,184,0,0.2)", borderRadius: 10, fontSize: 12, color: "var(--text-dim)", lineHeight: 1.6 }}>
           <strong style={{ color: "var(--orange)" }}>Why this matters:</strong> A false negative in fraud detection means a fraudster goes undetected.
           The baseline LLM misses 2 out of 3 fraud cases because it reads raw logs without graph context.
           GraphRAG's 3-hop traversal catches 100% by revealing hidden connections the LLM cannot see in flat text.
@@ -267,7 +267,7 @@ function ChartCard({ title, sub, data, keys, colors, tag }) {
       </div>
       <ResponsiveContainer width="100%" height={160}>
         <BarChart data={data} barCategoryGap="30%">
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(22,46,74,0.4)" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--surface4)" vertical={false} />
           <XAxis dataKey="id" tick={{ fill: "var(--text-muted)", fontSize: 10, fontFamily: "var(--mono)" }} tickFormatter={v => `#${v}`} axisLine={false} tickLine={false} />
           <YAxis tick={{ fill: "var(--text-muted)", fontSize: 10, fontFamily: "var(--mono)" }} axisLine={false} tickLine={false} />
           <Tooltip content={<Tip />} cursor={{ fill: "rgba(255,59,92,0.04)" }} />

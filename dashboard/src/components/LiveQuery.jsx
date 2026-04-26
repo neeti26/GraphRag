@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import GhostButton from './GhostButton'
 
 const SAMPLES = [
   { q:'8821', label:'Account #8821 — The Hallucination Case', icon:'🎯' },
@@ -49,7 +50,7 @@ export default function LiveQuery() {
       <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:20 }}>
         {SAMPLES.map(({ q, label, icon }) => (
           <motion.button key={q} initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }}
-            whileHover={{ borderColor:'var(--red)', background:'rgba(255,59,92,0.05)' }} whileTap={{ scale:0.98 }}
+            whileHover={{ borderColor:'var(--red)', background:'rgba(255,77,77,0.05)' }} whileTap={{ scale:0.98 }}
             onClick={() => { setAccountId(q); run(q) }}
             style={{ textAlign:'left', padding:'12px 16px', background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'var(--radius-sm)', color:'var(--text-dim)', fontSize:12, cursor:'pointer', fontFamily:'var(--font)', transition:'all 0.15s', display:'flex', gap:10, alignItems:'center' }}>
             <span style={{ fontSize:18 }}>{icon}</span><span>{label}</span>
@@ -61,13 +62,11 @@ export default function LiveQuery() {
         <input value={accountId} onChange={e=>setAccountId(e.target.value)} onKeyDown={e=>e.key==='Enter'&&run()}
           placeholder="Enter Account ID (e.g. 8821)…"
           style={{ flex:1, padding:'13px 18px', background:'var(--surface2)', border:'1px solid var(--border)', borderRadius:'var(--radius-sm)', color:'var(--text)', fontSize:13, outline:'none', fontFamily:'var(--mono)', transition:'border-color 0.2s, box-shadow 0.2s' }}
-          onFocus={e=>{e.target.style.borderColor='var(--red)';e.target.style.boxShadow='0 0 0 3px rgba(255,59,92,0.1)'}}
+          onFocus={e=>{e.target.style.borderColor='var(--red)';e.target.style.boxShadow='0 0 0 3px rgba(255,77,77,0.1)'}}
           onBlur={e=>{e.target.style.borderColor='var(--border)';e.target.style.boxShadow='none'}} />
-        <motion.button whileHover={{ scale:1.03, boxShadow:'0 0 20px rgba(255,59,92,0.4)' }} whileTap={{ scale:0.97 }}
-          onClick={()=>run()} disabled={loading}
-          style={{ padding:'13px 32px', background:loading?'var(--surface2)':'linear-gradient(90deg,#7f1d1d,var(--red))', color:loading?'var(--text-muted)':'#fff', border:'none', borderRadius:'var(--radius-sm)', fontWeight:800, fontSize:13, cursor:loading?'not-allowed':'pointer', fontFamily:'var(--mono)', letterSpacing:0.5 }}>
-          {loading?'SCANNING…':'🔍 SCAN'}
-        </motion.button>
+        <GhostButton accent="var(--red)" onClick={()=>run()} disabled={loading}>
+          {loading ? 'SCANNING…' : '🔍 SCAN'}
+        </GhostButton>
       </div>
 
       <AnimatePresence>
@@ -94,7 +93,7 @@ export default function LiveQuery() {
       <AnimatePresence>
         {error && (
           <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
-            style={{ background:'rgba(255,59,92,0.08)', border:'1px solid rgba(255,59,92,0.3)', borderLeft:'3px solid var(--red)', borderRadius:'0 10px 10px 0', padding:'12px 16px', fontSize:12, color:'var(--red)', marginBottom:16 }}>
+            style={{ background:'rgba(255,77,77,0.08)', border:'1px solid rgba(255,77,77,0.3)', borderLeft:'3px solid var(--red)', borderRadius:'0 10px 10px 0', padding:'12px 16px', fontSize:12, color:'var(--red)', marginBottom:16 }}>
             ⚠️ {error}
           </motion.div>
         )}
@@ -127,8 +126,8 @@ export default function LiveQuery() {
 
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
               {[
-                { label:'Baseline', sub:'LLM Only — No Graph', answer:result.baseline_reasoning, tokens:result.baseline_tokens, latency:result.baseline_latency_ms, accent:'var(--red)', bg:'rgba(255,59,92,0.06)', border:'rgba(255,59,92,0.2)', icon:'🔴', correct:result.baseline_correct },
-                { label:'GraphRAG', sub:'TigerGraph 3-hop + LLM', answer:result.graphrag_reasoning, tokens:result.graphrag_tokens, latency:result.graphrag_latency_ms, accent:'var(--green)', bg:'rgba(0,230,118,0.05)', border:'rgba(0,230,118,0.2)', icon:'🟢', correct:result.graphrag_correct, winner:true },
+                { label:'Baseline', sub:'LLM Only — No Graph', answer:result.baseline_reasoning, tokens:result.baseline_tokens, latency:result.baseline_latency_ms, accent:'var(--red)', bg:'rgba(255,77,77,0.06)', border:'rgba(255,77,77,0.2)', icon:'🔴', correct:result.baseline_correct },
+                { label:'GraphRAG', sub:'TigerGraph 3-hop + LLM', answer:result.graphrag_reasoning, tokens:result.graphrag_tokens, latency:result.graphrag_latency_ms, accent:'var(--green)', bg:'rgba(0,245,255,0.05)', border:'rgba(0,245,255,0.2)', icon:'🟢', correct:result.graphrag_correct, winner:true },
               ].map(p=>(
                 <motion.div key={p.label} initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }}
                   style={{ background:p.bg, border:`1px solid ${p.border}`, borderRadius:12, padding:18, position:'relative' }}>

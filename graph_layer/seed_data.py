@@ -93,6 +93,25 @@ def seed(tg: TigerGraphClient):
     print("  Blacklisted IP: 192.168.1.1")
 
 
+def seed_entity_links(tg: TigerGraphClient):
+    """Seeds ENTITY_LINK edges for confirmed same-entity account pairs."""
+    print("Seeding entity links...")
+
+    # Account 8821 ↔ Account 1002: share device XYZ-999 and IP 192.168.1.1
+    tg.conn.upsertEdge(
+        "Account", "8821", "ENTITY_LINK", "Account", "1002",
+        {"shared_identifiers": ["XYZ-999", "192.168.1.1"], "confidence_score": 1.0}
+    )
+
+    # Account 0001 ↔ Account 5566: share device XYZ-999
+    tg.conn.upsertEdge(
+        "Account", "0001", "ENTITY_LINK", "Account", "5566",
+        {"shared_identifiers": ["XYZ-999"], "confidence_score": 0.5}
+    )
+
+    print("✓ Entity links seeded: 8821↔1002 (confidence=1.0), 0001↔5566 (confidence=0.5)")
+
+
 if __name__ == "__main__":
     import sys, os
     sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))

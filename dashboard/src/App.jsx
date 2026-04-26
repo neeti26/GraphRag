@@ -135,6 +135,30 @@ export default function App() {
                 </div>
               ))}
             </div>
+
+            {/* System Architecture */}
+            <div style={{ marginTop: 28, display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 1.5, fontFamily: 'var(--mono)', marginBottom: 4 }}>
+                System Architecture
+              </div>
+              {[
+                ['Graph Layer',         'var(--cyan)',   'TigerGraph GSQL 3-hop BFS'],
+                ['Orchestration Layer', 'var(--purple)', 'GraphRAG Pipeline'],
+                ['LLM Layer',           'var(--red)',    'OpenAI GPT-4o'],
+                ['Evaluation Layer',    'var(--yellow)', 'Benchmark Metrics'],
+              ].map(([label, color, value]) => (
+                <div key={label} style={{
+                  padding: '8px 12px',
+                  borderLeft: `3px solid ${color}`,
+                  background: `${color}08`,
+                  borderRadius: '0 8px 8px 0',
+                  fontSize: 10,
+                }}>
+                  <div style={{ color: 'var(--text-muted)', marginBottom: 2 }}>{label}</div>
+                  <div style={{ color, fontFamily: 'var(--mono)', fontWeight: 700 }}>{value}</div>
+                </div>
+              ))}
+            </div>
           </aside>
 
           {/* ── Comparison Engine (70%) ── */}
