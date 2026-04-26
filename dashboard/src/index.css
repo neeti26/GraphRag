@@ -1,22 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#020912;--bg2:#040e1c;
-  --surface:#071525;--surface2:#0c1e32;--surface3:#112540;--surface4:#162d4a;
-  --border:#162e4a;--border2:#1e3f66;--border3:#254d7a;
-  --red:#ff3b5c;--red2:#ff6b85;--red-dim:#7f1d1d;
-  --green:#00e676;--green2:#69f0ae;--green-dim:#065f46;
-  --cyan:#00b4d8;--cyan2:#48cae4;--cyan-dim:#0369a1;
-  --yellow:#ffd60a;--yellow2:#fbbf24;
+  /* Deep Space palette */
+  --bg:#0B0E14;--bg2:#0D1117;
+  --surface:#151921;--surface2:#1C2128;--surface3:#21262D;--surface4:#2D333B;
+  --border:#2D333B;--border2:#444C56;--border3:#545D68;
+  --red:#FF4D4D;--red2:#FF6B6B;--red-dim:#7f1d1d;
+  --green:#00F5FF;--green2:#48CAE4;--green-dim:#065f46;
+  --cyan:#00F5FF;--cyan2:#48CAE4;--cyan-dim:#0369a1;
+  --yellow:#FFB800;--yellow2:#FFD166;
   --purple:#bf5af2;--purple2:#a78bfa;
-  --orange:#ff9f0a;--orange2:#fb923c;
-  --text:#f0f6ff;--text-dim:#8ba3c0;--text-muted:#3d5a7a;
+  --orange:#FFB800;--orange2:#FFD166;
+  --text:#F0F6FF;--text-dim:#8B949E;--text-muted:#484F58;
   --radius:14px;--radius-sm:9px;--radius-xs:6px;
   --font:'Inter',system-ui,sans-serif;
   --mono:'JetBrains Mono',monospace;
-  --shadow-red:0 0 20px rgba(255,59,92,0.25),0 0 60px rgba(255,59,92,0.08);
-  --shadow-green:0 0 20px rgba(0,230,118,0.25),0 0 60px rgba(0,230,118,0.08);
-  --shadow-cyan:0 0 20px rgba(0,180,216,0.25),0 0 60px rgba(0,180,216,0.08);
+  /* Glow shadows — retained for interactive elements only */
+  --shadow-red:0 0 20px rgba(255,77,77,0.3),0 0 60px rgba(255,77,77,0.1);
+  --shadow-green:0 0 20px rgba(0,245,255,0.25),0 0 60px rgba(0,245,255,0.08);
+  --shadow-cyan:0 0 20px rgba(0,245,255,0.25),0 0 60px rgba(0,245,255,0.08);
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -27,17 +29,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 ::-webkit-scrollbar-thumb:hover{background:var(--red)}
 
 /* ── Card ── */
-.card{background:linear-gradient(145deg,rgba(7,21,37,0.96),rgba(12,30,50,0.85));border:1px solid var(--border);border-radius:var(--radius);position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;inset:0;border-radius:var(--radius);background:linear-gradient(135deg,rgba(255,59,92,0.02) 0%,transparent 50%,rgba(0,230,118,0.015) 100%);pointer-events:none;z-index:0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);position:relative;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.4);transition:border-color 150ms}
+.card:hover{border-color:var(--border2)}
 .card>*{position:relative;z-index:1}
 
-/* ── Neon cards ── */
-.card-red{border-color:rgba(255,59,92,0.35);box-shadow:0 0 0 1px rgba(255,59,92,0.08) inset}
-.card-green{border-color:rgba(0,230,118,0.35);box-shadow:0 0 0 1px rgba(0,230,118,0.08) inset}
+/* ── Accent cards ── */
+.card-red{border-color:rgba(255,77,77,0.35)}
+.card-green{border-color:rgba(0,245,255,0.35)}
 
 /* ── Pulse dot ── */
-.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(0,230,118,0.5);animation:pulse-ring 2.5s ease-out infinite}
-@keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(0,230,118,0.5)}70%{box-shadow:0 0 0 10px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(0,245,255,0.5);animation:pulse-ring 2.5s ease-out infinite}
+@keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(0,245,255,0.5)}70%{box-shadow:0 0 0 10px rgba(0,245,255,0)}100%{box-shadow:0 0 0 0 rgba(0,245,255,0)}}
 
 /* ── Alert pulse ── */
 .alert-pulse{animation:alert-pulse 1.8s ease-in-out infinite}
@@ -63,8 +65,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 
 /* ── Recharts ── */
 .recharts-tooltip-wrapper{outline:none!important}
-.recharts-cartesian-grid-horizontal line{stroke:rgba(22,46,74,0.4)!important}
-.recharts-cartesian-grid-vertical line{stroke:rgba(22,46,74,0.2)!important}
+.recharts-cartesian-grid-horizontal line{stroke:rgba(45,51,59,0.6)!important}
+.recharts-cartesian-grid-vertical line{stroke:rgba(45,51,59,0.3)!important}
 
 /* ── Modal overlay ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(2,9,18,0.85);backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px}
