@@ -246,7 +246,7 @@ function TokenBar({ label, tokens, max, color, delay }) {
       <div style={{ flex: 1, height: 18, background: "var(--surface3)", borderRadius: 4, overflow: "hidden", position: "relative" }}>
         <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ duration: 0.9, ease: "easeOut", delay }}
           style={{ height: "100%", background: `linear-gradient(90deg,${color}80,${color})`, borderRadius: 4 }} />
-        <span style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", fontSize: 9, fontFamily: "var(--mono)", color: "#fff", fontWeight: 700, mixBlendMode: "screen" }}>
+        <span style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", fontSize: 9, fontFamily: "var(--mono)", color: "var(--text)", fontWeight: 700, mixBlendMode: "screen" }}>
           {tokens.toLocaleString()}
         </span>
       </div>

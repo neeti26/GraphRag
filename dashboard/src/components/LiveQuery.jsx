@@ -74,7 +74,7 @@ export default function LiveQuery() {
           <motion.div initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0 }}
             style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:10, marginBottom:24 }}>
             {STAGES.map((s,i) => (
-              <div key={s.label} style={{ padding:'14px 16px', background:i===stage?`${s.color}10`:i<stage?'rgba(0,230,118,0.05)':'var(--surface)', border:`1px solid ${i===stage?s.color+'50':i<stage?'rgba(0,230,118,0.3)':'var(--border)'}`, borderRadius:'var(--radius-sm)', transition:'all 0.3s' }}>
+              <div key={s.label} style={{ padding:'14px 16px', background:i===stage?`${s.color}10`:i<stage?'rgba(0,245,255,0.05)':'var(--surface)', border:`1px solid ${i===stage?s.color+'50':i<stage?'rgba(0,245,255,0.3)':'var(--border)'}`, borderRadius:'var(--radius-sm)', transition:'all 0.3s' }}>
                 <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:8 }}>
                   <span style={{ fontSize:16 }}>{i<stage?'✓':s.icon}</span>
                   <div style={{ fontSize:11, fontWeight:700, color:i===stage?s.color:i<stage?'var(--green)':'var(--text-muted)' }}>{s.label}</div>
@@ -131,7 +131,7 @@ export default function LiveQuery() {
               ].map(p=>(
                 <motion.div key={p.label} initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }}
                   style={{ background:p.bg, border:`1px solid ${p.border}`, borderRadius:12, padding:18, position:'relative' }}>
-                  {p.winner && <div style={{ position:'absolute', top:12, right:12, padding:'3px 10px', borderRadius:10, fontSize:9, fontWeight:900, background:p.accent, color:'#000', boxShadow:`0 0 10px ${p.accent}60` }}>✓ WINNER</div>}
+                  {p.winner && <div style={{ position:'absolute', top:12, right:12, padding:'3px 10px', borderRadius:10, fontSize:9, fontWeight:900, background:p.accent, color:'var(--bg)', boxShadow:`0 0 10px ${p.accent}60` }}>✓ WINNER</div>}
                   <div style={{ fontSize:12, fontWeight:800, color:p.accent, marginBottom:10 }}>{p.icon} {p.label} <span style={{ fontSize:10, fontWeight:400, color:'var(--text-muted)' }}>— {p.sub}</span></div>
                   <div style={{ fontSize:11.5, fontFamily:'var(--mono)', color:'var(--text)', lineHeight:1.7, marginBottom:12, whiteSpace:'pre-wrap' }}>{p.answer}</div>
                   <div style={{ display:'flex', gap:12, fontSize:11, color:'var(--text-muted)', borderTop:`1px solid ${p.border}`, paddingTop:10, fontFamily:'var(--mono)' }}>

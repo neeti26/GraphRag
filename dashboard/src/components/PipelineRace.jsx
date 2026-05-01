@@ -16,16 +16,23 @@ const ACCOUNTS = [
 
 const PIPELINE_STAGES = {
   baseline: [
-    { id: "read",   label: "Reading 50 raw logs",      ms: 120, icon: "📄" },
-    { id: "prompt", label: "Building prompt (~3,800 tokens)", ms: 80,  icon: "✍️" },
-    { id: "llm",    label: "LLM inference",             ms: 1800, icon: "🤖" },
+    { id: "read",   label: "Reading 50 raw logs",      ms: 120, icon: "📄", layer: "Orchestration" },
+    { id: "prompt", label: "Building prompt (~3,800 tokens)", ms: 80,  icon: "✍️", layer: "Orchestration" },
+    { id: "llm",    label: "LLM inference",             ms: 1800, icon: "🤖", layer: "LLM" },
   ],
   graphrag: [
-    { id: "gsql",    label: "TigerGraph 3-hop GSQL",   ms: 180, icon: "⬡" },
-    { id: "extract", label: "Evidence extraction",      ms: 60,  icon: "🔍" },
-    { id: "prompt",  label: "Building prompt (~250 tokens)", ms: 40, icon: "✍️" },
-    { id: "llm",     label: "LLM inference",            ms: 600, icon: "🧠" },
+    { id: "gsql",    label: "TigerGraph 3-hop GSQL",   ms: 180, icon: "⬡", layer: "Graph" },
+    { id: "extract", label: "Evidence extraction",      ms: 60,  icon: "🔍", layer: "Orchestration" },
+    { id: "prompt",  label: "Building prompt (~250 tokens)", ms: 40, icon: "✍️", layer: "Orchestration" },
+    { id: "llm",     label: "LLM inference",            ms: 600, icon: "🧠", layer: "LLM" },
   ],
+}
+
+const LAYER_COLORS = {
+  "Graph": "var(--cyan)",
+  "Orchestration": "var(--purple)",
+  "LLM": "var(--red)",
+  "Evaluation": "var(--yellow)",
 }
 
 function useDemoRace(accountId, records) {
@@ -159,46 +166,60 @@ export default function PipelineRace({ records, summary, onRacingChange }) {
 
       {/* ── Hero ── */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-        className="card" style={{ padding: "28px 32px", borderTop: "2px solid var(--red)", position: "relative", overflow: "hidden" }}>
-        <div className="scan-line" />
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 20 }}>
-          <div>
-            <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
-              {[["PARALLEL PIPELINE RACE","var(--red)"],["AI FACTORY MODEL","var(--cyan)"],["TIGERGRAPH HACKATHON 2025","var(--green)"]].map(([l,c])=>(
-                <span key={l} style={{ padding:"3px 12px", borderRadius:20, fontSize:9, fontWeight:700, background:`${c}12`, color:c, border:`1px solid ${c}30`, fontFamily:"var(--mono)", letterSpacing:1.5 }}>{l}</span>
-              ))}
+        className="card" style={{ padding: "28px 32px", borderTop: "2px solid var(--border2)", position: "relative", overflow: "hidden" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 24 }}>
+          <div style={{ flex: 1, minWidth: 400 }}>
+            {/* Single badge row - cleaner */}
+            <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+              <span style={{ padding:"4px 10px", borderRadius:6, fontSize:9, fontWeight:700, background:"rgba(88,166,255,0.08)", color:"var(--cyan)", border:"1px solid rgba(88,166,255,0.2)", fontFamily:"var(--mono)", letterSpacing:1 }}>
+                AI FACTORY MODEL
+              </span>
+              <span style={{ padding:"4px 10px", borderRadius:6, fontSize:9, fontWeight:700, background:"rgba(248,81,73,0.08)", color:"var(--red)", border:"1px solid rgba(248,81,73,0.2)", fontFamily:"var(--mono)", letterSpacing:1 }}>
+                DUAL PIPELINE
+              </span>
             </div>
-            {/* AI Factory Schema layer chips */}
-            <div style={{ display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" }}>
-              {[
-                ["Graph Layer",         "var(--cyan)"],
-                ["Orchestration Layer", "var(--purple)"],
-                ["LLM Layer",           "var(--red)"],
-                ["Evaluation Layer",    "var(--yellow)"],
-              ].map(([l, c]) => (
-                <span key={l} style={{ fontFamily:"var(--mono)", fontSize:9, fontWeight:700, letterSpacing:1.5, borderRadius:20, padding:"3px 12px", background:`${c}12`, color:c, border:`1px solid ${c}30` }}>{l}</span>
-              ))}
-            </div>
-            <div style={{ fontSize:9, color:"var(--text-muted)", fontFamily:"var(--mono)", marginBottom:12, lineHeight:1.6 }}>
-              Graph Layer = TigerGraph GSQL · Orchestration Layer = GraphRAG pipeline · LLM Layer = OpenAI inference · Evaluation Layer = benchmark metrics
-            </div>            <h1 style={{ fontSize:38, fontWeight:900, letterSpacing:"-2px", lineHeight:1.1, marginBottom:10, background:"linear-gradient(135deg, var(--text) 0%, var(--red2) 45%, var(--orange) 100%)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
+            
+            <h1 style={{ fontSize:32, fontWeight:900, letterSpacing:"-1.5px", lineHeight:1.2, marginBottom:12, color:"var(--text)" }}>
               Inference Benchmarking Engine
             </h1>
-            <p style={{ fontSize:13, color:"var(--text-dim)", maxWidth:560, lineHeight:1.7 }}>
-              Select an account and watch <strong style={{color:"var(--red)"}}>Baseline LLM</strong> vs <strong style={{color:"var(--green)"}}>GraphRAG</strong> race in real time.
-              The baseline reads 50 raw logs and misses the fraud ring.
-              TigerGraph runs a 3-hop GSQL traversal and catches it in <strong style={{color:"var(--cyan)"}}>94% fewer tokens</strong>.
+            <p style={{ fontSize:13, color:"var(--text-dim)", maxWidth:560, lineHeight:1.7, marginBottom:16 }}>
+              Compare <strong style={{color:"var(--red)"}}>Baseline LLM</strong> vs <strong style={{color:"var(--cyan)"}}>GraphRAG</strong> side-by-side.
+              TigerGraph runs a 3-hop GSQL traversal and catches fraud in <strong style={{color:"var(--cyan)"}}>94% fewer tokens</strong>.
             </p>
+            
+            {/* AI Factory layers - subtle */}
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {[
+                ["Graph", "var(--cyan)"],
+                ["Orchestration", "var(--purple)"],
+                ["LLM", "var(--red)"],
+                ["Evaluation", "var(--yellow)"],
+              ].map(([l, c]) => (
+                <span key={l} style={{ 
+                  fontFamily:"var(--mono)", 
+                  fontSize:8, 
+                  fontWeight:600, 
+                  letterSpacing:0.5, 
+                  padding:"2px 8px", 
+                  background:`${c}08`, 
+                  color:c, 
+                  border:`1px solid ${c}15`,
+                  borderRadius:4,
+                  opacity:0.7
+                }}>{l}</span>
+              ))}
+            </div>
           </div>
-          <div style={{ display:"flex", flexDirection:"column", gap:8, minWidth:200 }}>
+          
+          <div style={{ display:"flex", flexDirection:"column", gap:10, minWidth:220 }}>
             {[
-              [`${summary.graphrag_accuracy_pct}% vs ${summary.baseline_accuracy_pct}%`, "Detection Accuracy", "var(--green)"],
-              [`${summary.avg_token_savings_pct}%`, "Avg Token Savings", "var(--cyan)"],
-              [`${summary.hallucination_cases?.length} caught`, "Hallucinations Fixed", "var(--orange)"],
+              [`${summary.graphrag_accuracy_pct}%`, "Detection Accuracy", "var(--green)"],
+              [`${summary.avg_token_savings_pct}%`, "Token Savings", "var(--cyan)"],
+              [`${summary.hallucination_cases?.length}`, "Hallucinations Fixed", "var(--orange)"],
             ].map(([v,l,c])=>(
-              <div key={l} style={{ display:"flex", alignItems:"center", gap:12, padding:"8px 14px", background:`${c}10`, borderRadius:10, border:`1px solid ${c}25` }}>
-                <span style={{ fontSize:16, fontWeight:900, color:c, fontFamily:"var(--mono)", minWidth:80 }}>{v}</span>
-                <span style={{ fontSize:10, color:"var(--text-muted)" }}>{l}</span>
+              <div key={l} style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"10px 14px", background:"var(--surface2)", borderRadius:8, border:`1px solid var(--border)` }}>
+                <span style={{ fontSize:11, color:"var(--text-muted)", fontWeight:500 }}>{l}</span>
+                <span style={{ fontSize:18, fontWeight:900, color:c, fontFamily:"var(--mono)" }}>{v}</span>
               </div>
             ))}
           </div>
@@ -372,7 +393,7 @@ function PipelinePanel({ title, subtitle, color, bg, borderColor, stages, curren
         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
           <div style={{ fontSize:13, fontWeight:800, color }}>{title}</div>
           {isDone && result?.agentic_loop_triggered && (
-            <span style={{ padding:"2px 6px", borderRadius:4, fontSize:10, fontWeight:700, background:"rgba(0,245,255,0.12)", border:"1px solid #00F5FF", color:"#00F5FF", fontFamily:"var(--mono)", letterSpacing:0.5 }}>
+            <span style={{ padding:"2px 6px", borderRadius:4, fontSize:10, fontWeight:700, background:"rgba(0,245,255,0.12)", border:"1px solid var(--cyan)", color:"var(--cyan)", fontFamily:"var(--mono)", letterSpacing:0.5 }}>
               AGENT LOOP
             </span>
           )}
@@ -392,7 +413,25 @@ function PipelinePanel({ title, subtitle, color, bg, borderColor, stages, curren
               transition:"all 0.3s" }}>
               <span style={{ fontSize:14, flexShrink:0 }}>{done ? "✓" : active ? s.icon : s.icon}</span>
               <div style={{ flex:1 }}>
-                <div style={{ fontSize:11, fontWeight:600, color: active ? color : done ? "var(--cyan)" : "var(--text-muted)" }}>{s.label}</div>
+                <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:2 }}>
+                  <div style={{ fontSize:11, fontWeight:600, color: active ? color : done ? "var(--cyan)" : "var(--text-muted)" }}>{s.label}</div>
+                  {s.layer && (
+                    <span style={{ 
+                      fontSize:7, 
+                      fontWeight:600, 
+                      fontFamily:"var(--mono)", 
+                      padding:"1px 5px", 
+                      borderRadius:3, 
+                      background:`${LAYER_COLORS[s.layer]}08`, 
+                      color:LAYER_COLORS[s.layer],
+                      border:`1px solid ${LAYER_COLORS[s.layer]}20`,
+                      letterSpacing:0.3,
+                      opacity:0.6
+                    }}>
+                      {s.layer.toUpperCase()}
+                    </span>
+                  )}
+                </div>
                 <div style={{ height:2, background:"var(--surface3)", borderRadius:1, marginTop:4, overflow:"hidden" }}>
                   {active && (
                     <motion.div initial={{ x:"-100%" }} animate={{ x:"100%" }}
@@ -493,14 +532,14 @@ function PipelinePanel({ title, subtitle, color, bg, borderColor, stages, curren
                 {reasoningDone && result.agentic_refinement && (
                   <>
                     <div style={{ height:1, background:"var(--border)", marginBottom:8 }} />
-                    <div style={{ fontSize:9, fontWeight:700, color:"#00F5FF", textTransform:"uppercase", letterSpacing:1, marginBottom:4, fontFamily:"var(--mono)" }}>
+                    <div style={{ fontSize:9, fontWeight:700, color:"var(--cyan)", textTransform:"uppercase", letterSpacing:1, marginBottom:4, fontFamily:"var(--mono)" }}>
                       Refined Analysis
                     </div>
                     <div style={{ fontSize:11, color:"var(--text-dim)", lineHeight:1.65, fontFamily:"var(--font)", padding:"10px 12px", background:"rgba(0,245,255,0.04)", border:"1px solid rgba(0,245,255,0.15)", borderRadius:8, marginBottom:8, maxHeight:100, overflowY:"auto", whiteSpace:"pre-wrap" }}>
                       {refinementDisplayed}
                       {!refinementDone && (
                         <motion.span animate={{ opacity:[1,0] }} transition={{ repeat:Infinity, duration:0.6, ease:"steps(1)" }}
-                          style={{ display:"inline-block", color:"#00F5FF" }}>▋</motion.span>
+                          style={{ display:"inline-block", color:"var(--cyan)" }}>▋</motion.span>
                       )}
                     </div>
                   </>

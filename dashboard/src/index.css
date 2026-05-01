@@ -1,24 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* Deep Space palette */
-  --bg:#0B0E14;--bg2:#0D1117;
-  --surface:#151921;--surface2:#1C2128;--surface3:#21262D;--surface4:#2D333B;
-  --border:#2D333B;--border2:#444C56;--border3:#545D68;
-  --red:#FF4D4D;--red2:#FF6B6B;--red-dim:#7f1d1d;
-  --green:#00F5FF;--green2:#48CAE4;--green-dim:#065f46;
-  --cyan:#00F5FF;--cyan2:#48CAE4;--cyan-dim:#0369a1;
-  --yellow:#FFB800;--yellow2:#FFD166;
-  --purple:#bf5af2;--purple2:#a78bfa;
-  --orange:#FFB800;--orange2:#FFD166;
-  --text:#F0F6FF;--text-dim:#8B949E;--text-muted:#484F58;
-  --radius:14px;--radius-sm:9px;--radius-xs:6px;
-  --font:'Inter',system-ui,sans-serif;
-  --mono:'JetBrains Mono',monospace;
-  /* Glow shadows — retained for interactive elements only */
-  --shadow-red:0 0 20px rgba(255,77,77,0.3),0 0 60px rgba(255,77,77,0.1);
-  --shadow-green:0 0 20px rgba(0,245,255,0.25),0 0 60px rgba(0,245,255,0.08);
-  --shadow-cyan:0 0 20px rgba(0,245,255,0.25),0 0 60px rgba(0,245,255,0.08);
+  /* Refined Dark Professional - GitHub/Vercel style */
+  --bg:#0D1117;--bg2:#161B22;
+  --surface:#161B22;--surface2:#1C2128;--surface3:#21262D;--surface4:#2D333B;
+  --border:#30363D;--border2:#484F58;--border3:#6E7681;
+  --red:#F85149;--red2:#FF6B6B;--red-dim:#DA3633;
+  --green:#3FB950;--green2:#56D364;--green-dim:#2EA043;
+  --cyan:#58A6FF;--cyan2:#79C0FF;--cyan-dim:#1F6FEB;
+  --yellow:#D29922;--yellow2:#E3B341;
+  --purple:#A371F7;--purple2:#BC8CFF;
+  --orange:#F0883E;--orange2:#FFA657;
+  --text:#E6EDF3;--text-dim:#8B949E;--text-muted:#6E7681;
+  --radius:8px;--radius-sm:6px;--radius-xs:4px;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto',sans-serif;
+  --mono:'SF Mono','Monaco','Inconsolata','Courier New',monospace;
+  /* Subtle shadows - no glow */
+  --shadow-red:0 2px 8px rgba(248,81,73,0.15);
+  --shadow-green:0 2px 8px rgba(63,185,80,0.15);
+  --shadow-cyan:0 2px 8px rgba(88,166,255,0.15);
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -29,8 +29,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 ::-webkit-scrollbar-thumb:hover{background:var(--red)}
 
 /* ── Card ── */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);position:relative;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.4);transition:border-color 150ms}
-.card:hover{border-color:var(--border2)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);position:relative;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.3);transition:border-color 150ms,box-shadow 150ms}
+.card:hover{border-color:var(--border2);box-shadow:0 4px 12px rgba(0,0,0,0.4)}
 .card>*{position:relative;z-index:1}
 
 /* ── Accent cards ── */
@@ -49,10 +49,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .shimmer{background:linear-gradient(90deg,var(--surface) 25%,var(--surface2) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* ── Scan line ── */
-.scan-line{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent);opacity:0.2;animation:scan 6s linear infinite;pointer-events:none;z-index:10}
-@keyframes scan{0%{top:-2px;opacity:0}5%{opacity:.2}95%{opacity:.2}100%{top:100%;opacity:0}}
-
 /* ── Cursor blink ── */
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .cursor{animation:blink 1s step-end infinite}
@@ -69,4 +65,4 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .recharts-cartesian-grid-vertical line{stroke:rgba(45,51,59,0.3)!important}
 
 /* ── Modal overlay ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(2,9,18,0.85);backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px}

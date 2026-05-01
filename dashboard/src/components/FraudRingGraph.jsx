@@ -161,11 +161,13 @@ export default function FraudRingGraph({ records }) {
         const animDuration = 300  // ms
         const staggerMs = 40      // ms per node index
         const framesPerMs = fps / 1000
+        const easeOut = t => 1 - Math.pow(1 - t, 3)  // cubic ease-out
         let allDone = true
         nodes.forEach((n, i) => {
           const staggerFrames = i * staggerMs * framesPerMs
           const elapsed = (frameRef.current - staggerFrames) / (animDuration * framesPerMs)
-          n.animScale = Math.min(1, Math.max(0, elapsed))
+          const linear = Math.min(1, Math.max(0, elapsed))
+          n.animScale = linear > 0 ? easeOut(linear) : 0
           if (n.animScale < 1) allDone = false
         })
         if (allDone) graphHasAnimated = true

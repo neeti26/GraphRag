@@ -78,4 +78,7 @@ def build_record(account_id, ground_truth, baseline_result, graphrag_result) -> 
         token_savings_pct=savings(b.total_tokens, g.total_tokens),
         latency_improvement_pct=savings(b.latency_ms, g.latency_ms),
         cost_savings_pct=savings(b.cost_usd, g.cost_usd),
+        neighborhood_summary=graphrag_result.neighborhood_summary,
+        agentic_loop_triggered=graphrag_result.agentic_loop_triggered,
+        agentic_refinement=graphrag_result.agentic_refinement,
     )

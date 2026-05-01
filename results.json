@@ -55,7 +55,19 @@
       "nodes_visited": 8,
       "token_savings_pct": 93.5,
       "latency_improvement_pct": 67.6,
-      "cost_savings_pct": 93.5
+      "cost_savings_pct": 93.5,
+      "neighborhood_summary": "This account is part of a cluster with 4 other accounts, 75.0% of which have been flagged for chargebacks in the last 72 hours.",
+      "agentic_loop_triggered": true,
+      "agentic_refinement": "Refined Analysis \u2014 Risk Score: 9.5/10\n\nIP Intelligence confirms elevated risk: IP 192.168.1.1 has 47 total logins across 4 unique accounts with a 75.0% chargeback rate. Combined with device sharing and fraud ring membership, this account is a high-confidence synthetic identity. Verdict: SUSPICIOUS \u2014 escalate for immediate review.",
+      "entity_link": {
+        "account_a": "8821",
+        "account_b": "1002",
+        "shared_identifiers": [
+          "XYZ-999",
+          "192.168.1.1"
+        ],
+        "confidence_score": 1.0
+      }
     },
     {
       "account_id": "3344",
@@ -85,7 +97,11 @@
       "nodes_visited": 3,
       "token_savings_pct": 96.3,
       "latency_improvement_pct": 73.7,
-      "cost_savings_pct": 96.3
+      "cost_savings_pct": 96.3,
+      "neighborhood_summary": "This account is isolated with no connections to flagged or banned accounts within 3 hops.",
+      "agentic_loop_triggered": false,
+      "agentic_refinement": "",
+      "entity_link": null
     },
     {
       "account_id": "1002",
@@ -122,7 +138,11 @@
       "nodes_visited": 7,
       "token_savings_pct": 94.0,
       "latency_improvement_pct": 70.2,
-      "cost_savings_pct": 94.0
+      "cost_savings_pct": 94.0,
+      "neighborhood_summary": "This account is part of a cluster with 4 other accounts, 75.0% of which have been flagged for chargebacks in the last 72 hours.",
+      "agentic_loop_triggered": true,
+      "agentic_refinement": "Refined Analysis \u2014 Risk Score: 9.0/10\n\nIP Intelligence for 192.168.1.1: 47 total logins, 4 unique accounts, 75.0% chargeback rate. This IP is a confirmed fraud proxy. Account #1002 is a central node in the fraud ring \u2014 immediate action recommended. Verdict: SUSPICIOUS \u2014 confirmed fraud ring member.",
+      "entity_link": null
     },
     {
       "account_id": "5566",
@@ -159,7 +179,11 @@
       "nodes_visited": 6,
       "token_savings_pct": 94.3,
       "latency_improvement_pct": 71.6,
-      "cost_savings_pct": 94.3
+      "cost_savings_pct": 94.3,
+      "neighborhood_summary": "This account is part of a cluster with 3 other accounts, 66.7% of which have been flagged for chargebacks in the last 72 hours.",
+      "agentic_loop_triggered": false,
+      "agentic_refinement": "",
+      "entity_link": null
     }
   ]
 }

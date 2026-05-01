@@ -129,22 +129,29 @@ FOR GRAPH FraudGraph {
 // then creates ENTITY_LINK edges between them.
 CREATE QUERY entity_resolution()
 FOR GRAPH FraudGraph {
-  SetAccum<VERTEX<Account>> @@processed;
+  SetAccum<STRING> @shared_ips;
+  SetAccum<STRING> @shared_devices;
   ListAccum<STRING> @@links_created;
 
   all_accounts = {Account.*};
 
-  // Find accounts sharing the same device
-  shared_device_pairs = SELECT a2
+  // Find accounts sharing the same IP
+  ip_pairs = SELECT a2
+    FROM all_accounts:a1 -(LOGGED_FROM_IP)-> IPAddress:ip -(LOGGED_FROM_IP)- Account:a2
+    WHERE a1.id < a2.id   // avoid duplicate pairs
+    ACCUM a2.@shared_ips += ip.ip, a1.@shared_ips += ip.ip;
+
+  // Among those, find accounts also sharing the same Device ID
+  device_pairs = SELECT a2
     FROM all_accounts:a1 -(USED_DEVICE)-> DeviceID:d -(USED_DEVICE)- Account:a2
-    WHERE a1.id < a2.id   // avoid duplicates
-    ACCUM
-      // Check if they also share an IP
-      FOREACH ip IN a1.neighbors("LOGGED_FROM_IP") DO
-        IF a2.neighbors("LOGGED_FROM_IP") CONTAINS ip THEN
-          INSERT INTO ENTITY_LINK VALUES (a1, a2, [d.device_id, ip.ip], 1.0),
-          @@links_created += a1.id + " <-> " + a2.id + " (device=" + d.device_id + ", ip=" + ip.ip + ")"
-        END
+    WHERE a1.id < a2.id AND a2.@shared_ips.size() > 0
+    ACCUM a2.@shared_devices += d.device_id, a1.@shared_devices += d.device_id
+    POST-ACCUM
+      IF a2.@shared_devices.size() > 0 THEN
+        INSERT INTO ENTITY_LINK VALUES (a1, a2,
+          a1.@shared_ips.to_list() + a1.@shared_devices.to_list(),
+          (FLOAT)(a1.@shared_ips.size() + a1.@shared_devices.size()) / 4.0),
+        @@links_created += a1.id + " <-> " + a2.id + " (shared: " + (STRING)a1.@shared_ips.size() + " IPs, " + (STRING)a1.@shared_devices.size() + " devices)"
       END;
 
   PRINT @@links_created AS entity_links_created;
@@ -155,7 +162,7 @@ FOR GRAPH FraudGraph {
 // returns a natural-language summary string.
 CREATE QUERY neighborhood_summary(STRING target_account)
 FOR GRAPH FraudGraph {
-  SetAccum<VERTEX>  @@visited;
+  SetAccum<VERTEX<Account>>  @@visited_accounts;
   SumAccum<INT>     @@cluster_size;
   SumAccum<INT>     @@chargeback_count;
   SumAccum<FLOAT>   @@total_risk;
@@ -163,26 +170,42 @@ FOR GRAPH FraudGraph {
   seed = {Account.*};
   seed = SELECT a FROM seed:a WHERE a.id == target_account;
 
-  // BFS 3 hops
-  frontier = seed;
-  FOREACH hop IN RANGE[1, 3] DO
-    frontier = SELECT nb
-      FROM frontier:v -(USED_DEVICE|LOGGED_FROM_IP|HAS_PHONE)- :nb
-      WHERE nb NOT IN @@visited
-      ACCUM @@visited += nb;
-  END;
+  // BFS 3 hops - traverse through devices and IPs to find connected accounts
+  hop1_devices = SELECT d FROM seed:a -(USED_DEVICE)-> DeviceID:d;
+  hop1_ips = SELECT ip FROM seed:a -(LOGGED_FROM_IP)-> IPAddress:ip;
+  
+  hop2_accounts = SELECT a2 FROM hop1_devices:d -(USED_DEVICE)- Account:a2
+    WHERE a2.id != target_account
+    ACCUM @@visited_accounts += a2;
+  
+  hop2_accounts_ip = SELECT a2 FROM hop1_ips:ip -(LOGGED_FROM_IP)- Account:a2
+    WHERE a2.id != target_account
+    ACCUM @@visited_accounts += a2;
 
-  // Count cluster accounts and chargebacks
-  cluster_accounts = SELECT a FROM @@visited:a
-    WHERE a.type() == "Account" AND a.id != target_account
+  // Hop 3 - go one more level out
+  hop2_all = hop2_accounts UNION hop2_accounts_ip;
+  hop3_devices = SELECT d FROM hop2_all:a -(USED_DEVICE)-> DeviceID:d;
+  hop3_ips = SELECT ip FROM hop2_all:a -(LOGGED_FROM_IP)-> IPAddress:ip;
+  
+  hop3_accounts = SELECT a3 FROM hop3_devices:d -(USED_DEVICE)- Account:a3
+    WHERE a3.id != target_account
+    ACCUM @@visited_accounts += a3;
+    
+  hop3_accounts_ip = SELECT a3 FROM hop3_ips:ip -(LOGGED_FROM_IP)- Account:a3
+    WHERE a3.id != target_account
+    ACCUM @@visited_accounts += a3;
+
+  // Count cluster stats
+  all_cluster_accounts = {@@visited_accounts};
+  cluster_stats = SELECT a FROM all_cluster_accounts:a
     ACCUM
       @@cluster_size += 1,
-      IF a.risk_score > 5.0 THEN @@chargeback_count += 1 END,
+      IF a.status == "flagged" OR a.status == "banned" THEN @@chargeback_count += 1 END,
       @@total_risk += a.risk_score;
 
   INT    cs   = @@cluster_size;
   INT    cc   = @@chargeback_count;
-  FLOAT  rate = cs > 0 ? (@@chargeback_count * 100.0 / cs) : 0.0;
+  FLOAT  rate = cs > 0 ? (FLOAT)(@@chargeback_count) * 100.0 / (FLOAT)(cs) : 0.0;
   STRING summary = "This account is part of a cluster with " + (STRING)cs +
                    " other accounts, " + (STRING)rate +
                    "% of which have been flagged for chargebacks in the last 72 hours.";
@@ -206,14 +229,14 @@ FOR GRAPH FraudGraph {
   ip_vertex = SELECT ip FROM ip_vertex:ip WHERE ip.ip == ip_address;
 
   // All accounts that logged from this IP
-  accounts = SELECT a FROM ip_vertex:ip -(LOGGED_FROM_IP)- Account:a
+  accounts = SELECT a FROM ip_vertex:ip -(LOGGED_FROM_IP:e)- Account:a
     ACCUM
-      @@total_login_count += a.neighbors("LOGGED_FROM_IP").get(ip).login_count,
+      @@total_login_count += e.login_count,
       @@unique_accounts += a.id,
-      IF a.risk_score > 5.0 THEN @@chargeback_accounts += 1 END;
+      IF a.status == "flagged" OR a.status == "banned" THEN @@chargeback_accounts += 1 END;
 
   INT    ua   = @@unique_accounts.size();
-  FLOAT  rate = ua > 0 ? (@@chargeback_accounts * 100.0 / ua) : 0.0;
+  FLOAT  rate = ua > 0 ? (FLOAT)(@@chargeback_accounts) * 100.0 / (FLOAT)(ua) : 0.0;
 
   PRINT @@total_login_count AS total_login_count,
         ua AS unique_accounts,

@@ -9,7 +9,7 @@ export default function HallucinationTest({ records }) {
   const [selected, setSelected] = useState(0)
   const rec = hallucinations[selected]
 
-  if (!rec) return <div style={{ color:'var(--text-muted)', padding:40, textAlign:'center' }}>No hallucination cases found.</div>
+  if (!rec) return <div style={{ color:'var(--text-dim)', padding:40, textAlign:'center' }}>No hallucination cases found.</div>
 
   return (
     <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
@@ -22,7 +22,7 @@ export default function HallucinationTest({ records }) {
           <div>
             <div style={{ fontSize:16, fontWeight:800, color:'var(--orange)', marginBottom:6 }}>The Hallucination Test</div>
             <p style={{ fontSize:13, color:'var(--text-dim)', lineHeight:1.7, maxWidth:700 }}>
-              This is the most powerful demo in the submission. The baseline LLM reads 50 raw login logs and says Account #{rec.account_id} is <strong style={{ color:'var(--green)' }}>SAFE</strong> — because in isolation, it looks normal.
+              This is the most powerful demo in the submission. The baseline LLM reads 50 raw login logs and says Account #{rec.account_id} is <strong style={{ color:'var(--cyan)' }}>SAFE</strong> — because in isolation, it looks normal.
               TigerGraph's 3-hop traversal reveals it's connected to a banned fraudster via a shared device and a blacklisted IP.
               The graph sees what the LLM cannot.
             </p>
@@ -66,9 +66,9 @@ export default function HallucinationTest({ records }) {
               </div>
 
               <div style={{ padding:'14px 16px', background:'rgba(0,245,255,0.08)', border:'1px solid rgba(0,245,255,0.2)', borderRadius:10, marginBottom:14 }}>
-                <div style={{ fontSize:11, color:'var(--text-muted)', marginBottom:4, fontFamily:'var(--mono)' }}>VERDICT</div>
-                <div style={{ fontSize:22, fontWeight:900, color:'var(--green)' }}>✓ SAFE</div>
-                <div style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>← This is the hallucination</div>
+                <div style={{ fontSize:11, color:'var(--text-dim)', marginBottom:4, fontFamily:'var(--mono)' }}>VERDICT</div>
+                <div style={{ fontSize:22, fontWeight:900, color:'var(--cyan)' }}>✓ SAFE</div>
+                <div style={{ fontSize:11, color:'var(--text-dim)', marginTop:2 }}>← This is the hallucination</div>
               </div>
 
               <div style={{ fontSize:12, color:'var(--text-dim)', lineHeight:1.65, fontStyle:'italic', padding:'12px 14px', background:'rgba(0,0,0,0.2)', borderRadius:8, borderLeft:'3px solid rgba(255,77,77,0.4)' }}>
@@ -95,19 +95,19 @@ export default function HallucinationTest({ records }) {
               </div>
 
               <div style={{ padding:'14px 16px', background:'rgba(255,77,77,0.08)', border:'1px solid rgba(255,77,77,0.2)', borderRadius:10, marginBottom:14 }}>
-                <div style={{ fontSize:11, color:'var(--text-muted)', marginBottom:4, fontFamily:'var(--mono)' }}>VERDICT · Risk {rec.graphrag_risk_score}/10</div>
+                <div style={{ fontSize:11, color:'var(--text-dim)', marginBottom:4, fontFamily:'var(--mono)' }}>VERDICT · Risk {rec.graphrag_risk_score}/10</div>
                 <div style={{ fontSize:22, fontWeight:900, color:'var(--red)' }}>⚠️ SUSPICIOUS</div>
-                <div style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>Fraud ring detected via graph</div>
+                <div style={{ fontSize:11, color:'var(--text-dim)', marginTop:2 }}>Fraud ring detected via graph</div>
               </div>
 
               {/* Graph evidence */}
               <div style={{ marginBottom:12 }}>
-                <div style={{ fontSize:10, fontWeight:700, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:1, marginBottom:8, fontFamily:'var(--mono)' }}>Graph Evidence ({rec.graph_evidence?.length} signals)</div>
+                <div style={{ fontSize:10, fontWeight:700, color:'var(--text-dim)', textTransform:'uppercase', letterSpacing:1, marginBottom:8, fontFamily:'var(--mono)' }}>Graph Evidence ({rec.graph_evidence?.length} signals)</div>
                 <NeighborhoodSummaryCallout summary={rec.neighborhood_summary} />
                 <div style={{ display:'flex', flexDirection:'column', gap:5 }}>
                   {rec.graph_evidence?.map((e, i) => (
                     <motion.div key={i} initial={{ opacity:0, x:-8 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.3+i*0.07 }}
-                      style={{ padding:'5px 10px', background:'var(--bg)', borderRadius:6, borderLeft:`2px solid var(--border2)` }}>
+                      style={{ padding:'5px 10px', background:'var(--bg)', borderRadius:6, borderLeft:`2px solid var(--border)` }}>
                       <EvidenceString text={e} />
                     </motion.div>
                   ))}
@@ -147,14 +147,14 @@ function HopPath({ accountId, sharedDevices, flagged, blacklisted }) {
             style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:6, minWidth:120 }}>
             <div style={{ width:56, height:56, borderRadius:14, background:`${s.color}18`, border:`2px solid ${s.color}`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:22, boxShadow:`0 0 16px ${s.color}40` }}>{s.icon}</div>
             <div style={{ fontSize:11, fontWeight:700, color:s.color, textAlign:'center', fontFamily:'var(--mono)' }}>{s.label}</div>
-            <div style={{ fontSize:9, color:'var(--text-muted)', textAlign:'center' }}>{s.sub}</div>
+            <div style={{ fontSize:9, color:'var(--text-dim)', textAlign:'center' }}>{s.sub}</div>
             <div style={{ padding:'2px 8px', borderRadius:10, fontSize:9, fontWeight:700, background:`${s.color}15`, color:s.color, border:`1px solid ${s.color}30`, fontFamily:'var(--mono)' }}>HOP {s.hop}</div>
           </motion.div>
           {i < steps.length-1 && (
             <motion.div initial={{ scaleX:0 }} animate={{ scaleX:1 }} transition={{ delay:0.25+i*0.15, duration:0.4 }}
               style={{ width:60, display:'flex', flexDirection:'column', alignItems:'center', gap:4, transformOrigin:'left' }}>
               <div style={{ width:'100%', height:2, background:`linear-gradient(90deg,${steps[i].color},${steps[i+1].color})`, borderRadius:1 }} />
-              <div style={{ fontSize:8, color:'var(--text-muted)', fontFamily:'var(--mono)' }}>linked</div>
+              <div style={{ fontSize:8, color:'var(--text-dim)', fontFamily:'var(--mono)' }}>linked</div>
             </motion.div>
           )}
         </div>

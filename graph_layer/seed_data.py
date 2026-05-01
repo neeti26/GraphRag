@@ -92,6 +92,9 @@ def seed(tg: TigerGraphClient):
     print("  Shared device: XYZ-999")
     print("  Blacklisted IP: 192.168.1.1")
 
+    # Seed entity links
+    seed_entity_links(tg)
+
 
 def seed_entity_links(tg: TigerGraphClient):
     """Seeds ENTITY_LINK edges for confirmed same-entity account pairs."""

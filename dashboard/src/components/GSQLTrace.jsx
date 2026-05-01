@@ -169,7 +169,9 @@ export default function GSQLTrace({ accountId = "8821", onClose }) {
             <GhostButton accent="var(--purple)" onClick={runTrace} disabled={running}>
               {running ? "⏳ Running..." : "▶ Replay Trace"}
             </GhostButton>
-            <button onClick={onClose} style={{ padding: "7px 14px", borderRadius: 8, background: "rgba(255,77,77,0.15)", border: "1px solid rgba(255,77,77,0.3)", color: "var(--red)", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "var(--mono)" }}>
+            <button onClick={onClose} style={{ padding: "7px 14px", borderRadius: 8, background: "var(--surface2)", border: "1px solid var(--border2)", color: "var(--red)", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "var(--mono)", transition: "all 150ms" }}
+              onMouseEnter={e => { e.target.style.background = "rgba(255,77,77,0.15)"; e.target.style.borderColor = "var(--red)" }}
+              onMouseLeave={e => { e.target.style.background = "var(--surface2)"; e.target.style.borderColor = "var(--border2)" }}>
               ✕
             </button>
           </div>
