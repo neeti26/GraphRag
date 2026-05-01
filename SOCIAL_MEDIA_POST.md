@@ -3,7 +3,9 @@
 ## LinkedIn Post
 
 ```
-🚀 Excited to share FraudGraph - my submission for the TigerGraph GraphRAG Inference Hackathon! 
+🚀 Excited to share FraudGraph - our submission for the TigerGraph GraphRAG Inference Hackathon!
+
+Built by Neeti Malu (@neeti-malu) and Sanket Patil (@sanket-patil) 
 
 The Challenge: LLMs hallucinate when analyzing fraud patterns in raw transaction logs.
 
@@ -32,7 +34,7 @@ Built with AI Factory architecture (Graph, Orchestration, LLM, Evaluation layers
 ## Twitter/X Post (Thread)
 
 ```
-🧵 1/6 Just built FraudGraph for @TigerGraphDB's GraphRAG Hackathon!
+🧵 1/6 Just built FraudGraph with @sanket-patil for @TigerGraphDB's GraphRAG Hackathon!
 
 The problem: LLMs hallucinate when detecting fraud in transaction logs.
 
@@ -104,7 +106,7 @@ When GraphRAG returns uncertain verdict (risk 5.0-8.0):
 ```
 🛡️ FraudGraph: Eliminating LLM Hallucinations with TigerGraph GraphRAG
 
-Built for the TigerGraph GraphRAG Inference Hackathon 🚀
+Built by Neeti Malu & Sanket Patil for the TigerGraph GraphRAG Inference Hackathon 🚀
 
 The Problem:
 LLMs analyzing raw transaction logs miss fraud patterns and hallucinate "SAFE" verdicts for accounts that are actually part of synthetic identity rings.
@@ -140,7 +142,7 @@ Built with AI Factory architecture (Graph, Orchestration, LLM, Evaluation layers
 ```
 Title: [P] FraudGraph: Eliminating LLM Hallucinations with TigerGraph GraphRAG (100% accuracy, 94% token reduction)
 
-I built FraudGraph for the TigerGraph GraphRAG Inference Hackathon to solve a critical problem: LLMs hallucinate when analyzing fraud patterns in raw transaction logs.
+We built FraudGraph (Neeti Malu & Sanket Patil) for the TigerGraph GraphRAG Inference Hackathon to solve a critical problem: LLMs hallucinate when analyzing fraud patterns in raw transaction logs.
 
 **The Problem:**
 Baseline LLMs analyzing 50+ transaction logs (3,800 tokens) miss fraud rings hidden in relationship patterns. In my test dataset, baseline achieved only 50% accuracy - missing 2 out of 4 fraud cases entirely.
@@ -224,7 +226,7 @@ GitHub: https://github.com/neeti26/GraphRag
 Live Demo: [Your deployed URL]
 Technical Write-up: https://github.com/neeti26/GraphRag/blob/main/TECHNICAL_WRITEUP.md
 
-🏆 Built for TigerGraph GraphRAG Inference Hackathon 2025
+🏆 Built by Neeti Malu & Sanket Patil for TigerGraph GraphRAG Inference Hackathon 2026
 
 #TigerGraph #GraphRAG #AI #MachineLearning #FraudDetection #LLM #GraphDatabase #Hackathon
 ```

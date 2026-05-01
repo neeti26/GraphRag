@@ -320,7 +320,7 @@ The combination of TigerGraph's multi-hop traversal, agentic loop refinement, an
 
 ## Team
 
-Built by Neeti for the TigerGraph GraphRAG Inference Hackathon 2025.
+Built by **Neeti Malu** and **Sanket Patil** for the TigerGraph GraphRAG Inference Hackathon 2026.
 
 ## License
 
