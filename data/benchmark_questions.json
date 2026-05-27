@@ -1,0 +1,482 @@
+[
+  {
+    "question_id": "Q_FRAUD_FR0492A03",
+    "question": "Is account FR0492A03 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0492A03",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0492A03 is SUSPICIOUS. It shares device DSK-76093 with 6 other accounts and uses blacklisted IP 181.149.148.147. This is a synthetic identity fraud ring with 7 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0254A04",
+    "question": "Is account FR0254A04 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0254A04",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0254A04 is SUSPICIOUS. It shares device MOB-32280 with 7 other accounts and uses blacklisted IP 145.164.198.70. This is a synthetic identity fraud ring with 8 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0043A01",
+    "question": "Is account FR0043A01 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0043A01",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0043A01 is SUSPICIOUS. It shares device DSK-82063 with 5 other accounts and uses blacklisted IP 26.211.169.184. This is a synthetic identity fraud ring with 6 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0239A06",
+    "question": "Is account FR0239A06 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0239A06",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0239A06 is SUSPICIOUS. It shares device DSK-40613 with 6 other accounts and uses blacklisted IP 179.223.122.15. This is a synthetic identity fraud ring with 7 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0315A04",
+    "question": "Is account FR0315A04 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0315A04",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0315A04 is SUSPICIOUS. It shares device DSK-22463 with 6 other accounts and uses blacklisted IP 140.16.91.238. This is a synthetic identity fraud ring with 7 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0394A02",
+    "question": "Is account FR0394A02 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0394A02",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0394A02 is SUSPICIOUS. It shares device MOB-42768 with 5 other accounts and uses blacklisted IP 32.196.179.247. This is a synthetic identity fraud ring with 6 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0001A01",
+    "question": "Is account FR0001A01 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0001A01",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0001A01 is SUSPICIOUS. It shares device MOB-28289 with 2 other accounts and uses blacklisted IP 231.125.77.2. This is a synthetic identity fraud ring with 3 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0382A00",
+    "question": "Is account FR0382A00 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0382A00",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0382A00 is SUSPICIOUS. It shares device MOB-38074 with 3 other accounts and uses blacklisted IP 161.235.8.32. This is a synthetic identity fraud ring with 4 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0362A06",
+    "question": "Is account FR0362A06 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0362A06",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0362A06 is SUSPICIOUS. It shares device DSK-67961 with 6 other accounts and uses blacklisted IP 145.57.31.213. This is a synthetic identity fraud ring with 7 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0101A01",
+    "question": "Is account FR0101A01 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0101A01",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0101A01 is SUSPICIOUS. It shares device MOB-39219 with 2 other accounts and uses blacklisted IP 52.138.139.36. This is a synthetic identity fraud ring with 3 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0331A01",
+    "question": "Is account FR0331A01 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0331A01",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0331A01 is SUSPICIOUS. It shares device MOB-59308 with 6 other accounts and uses blacklisted IP 16.198.214.248. This is a synthetic identity fraud ring with 7 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0286A02",
+    "question": "Is account FR0286A02 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0286A02",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0286A02 is SUSPICIOUS. It shares device DEV-40775 with 3 other accounts and uses blacklisted IP 122.28.4.180. This is a synthetic identity fraud ring with 4 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0085A02",
+    "question": "Is account FR0085A02 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0085A02",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0085A02 is SUSPICIOUS. It shares device MOB-93130 with 5 other accounts and uses blacklisted IP 97.143.201.94. This is a synthetic identity fraud ring with 6 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0237A01",
+    "question": "Is account FR0237A01 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0237A01",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0237A01 is SUSPICIOUS. It shares device TAB-82340 with 5 other accounts and uses blacklisted IP 22.124.86.176. This is a synthetic identity fraud ring with 6 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0187A05",
+    "question": "Is account FR0187A05 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0187A05",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0187A05 is SUSPICIOUS. It shares device DEV-17146 with 7 other accounts and uses blacklisted IP 16.198.214.248. This is a synthetic identity fraud ring with 8 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0192A07",
+    "question": "Is account FR0192A07 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0192A07",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0192A07 is SUSPICIOUS. It shares device DSK-19710 with 7 other accounts and uses blacklisted IP 219.17.75.31. This is a synthetic identity fraud ring with 8 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0362A00",
+    "question": "Is account FR0362A00 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0362A00",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0362A00 is SUSPICIOUS. It shares device DSK-67961 with 6 other accounts and uses blacklisted IP 145.57.31.213. This is a synthetic identity fraud ring with 7 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0473A03",
+    "question": "Is account FR0473A03 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0473A03",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0473A03 is SUSPICIOUS. It shares device DSK-19564 with 3 other accounts and uses blacklisted IP 208.241.183.197. This is a synthetic identity fraud ring with 4 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0048A02",
+    "question": "Is account FR0048A02 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0048A02",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0048A02 is SUSPICIOUS. It shares device MOB-87128 with 4 other accounts and uses blacklisted IP 69.31.77.193. This is a synthetic identity fraud ring with 5 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0354A05",
+    "question": "Is account FR0354A05 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0354A05",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0354A05 is SUSPICIOUS. It shares device MOB-53655 with 7 other accounts and uses blacklisted IP 63.44.222.30. This is a synthetic identity fraud ring with 8 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0270A00",
+    "question": "Is account FR0270A00 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0270A00",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0270A00 is SUSPICIOUS. It shares device DSK-14373 with 5 other accounts and uses blacklisted IP 209.8.188.85. This is a synthetic identity fraud ring with 6 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0206A05",
+    "question": "Is account FR0206A05 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0206A05",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0206A05 is SUSPICIOUS. It shares device DEV-31747 with 5 other accounts and uses blacklisted IP 126.135.46.165. This is a synthetic identity fraud ring with 6 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0176A01",
+    "question": "Is account FR0176A01 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0176A01",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0176A01 is SUSPICIOUS. It shares device DSK-68743 with 6 other accounts and uses blacklisted IP 197.127.181.43. This is a synthetic identity fraud ring with 7 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0351A02",
+    "question": "Is account FR0351A02 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0351A02",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0351A02 is SUSPICIOUS. It shares device DEV-67240 with 7 other accounts and uses blacklisted IP 142.233.4.95. This is a synthetic identity fraud ring with 8 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0485A02",
+    "question": "Is account FR0485A02 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0485A02",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0485A02 is SUSPICIOUS. It shares device DSK-41552 with 2 other accounts and uses blacklisted IP 30.157.203.121. This is a synthetic identity fraud ring with 3 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0400A05",
+    "question": "Is account FR0400A05 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0400A05",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0400A05 is SUSPICIOUS. It shares device TAB-40903 with 6 other accounts and uses blacklisted IP 217.38.24.196. This is a synthetic identity fraud ring with 7 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0217A04",
+    "question": "Is account FR0217A04 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0217A04",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0217A04 is SUSPICIOUS. It shares device TAB-97835 with 6 other accounts and uses blacklisted IP 48.161.230.159. This is a synthetic identity fraud ring with 7 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0412A02",
+    "question": "Is account FR0412A02 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0412A02",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0412A02 is SUSPICIOUS. It shares device TAB-41531 with 7 other accounts and uses blacklisted IP 182.73.237.235. This is a synthetic identity fraud ring with 8 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0212A06",
+    "question": "Is account FR0212A06 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0212A06",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0212A06 is SUSPICIOUS. It shares device DEV-98117 with 6 other accounts and uses blacklisted IP 53.189.160.106. This is a synthetic identity fraud ring with 7 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_FRAUD_FR0421A05",
+    "question": "Is account FR0421A05 part of a fraud ring? Analyze its device sharing and IP connections.",
+    "account_id": "FR0421A05",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Account FR0421A05 is SUSPICIOUS. It shares device DEV-48462 with 7 other accounts and uses blacklisted IP 224.95.187.84. This is a synthetic identity fraud ring with 8 members.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000000",
+    "question": "Is account ACC0000000 suspicious? Check its network connections.",
+    "account_id": "ACC0000000",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000000 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000001",
+    "question": "Is account ACC0000001 suspicious? Check its network connections.",
+    "account_id": "ACC0000001",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000001 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000002",
+    "question": "Is account ACC0000002 suspicious? Check its network connections.",
+    "account_id": "ACC0000002",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000002 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000003",
+    "question": "Is account ACC0000003 suspicious? Check its network connections.",
+    "account_id": "ACC0000003",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000003 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000004",
+    "question": "Is account ACC0000004 suspicious? Check its network connections.",
+    "account_id": "ACC0000004",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000004 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000005",
+    "question": "Is account ACC0000005 suspicious? Check its network connections.",
+    "account_id": "ACC0000005",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000005 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000006",
+    "question": "Is account ACC0000006 suspicious? Check its network connections.",
+    "account_id": "ACC0000006",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000006 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000007",
+    "question": "Is account ACC0000007 suspicious? Check its network connections.",
+    "account_id": "ACC0000007",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000007 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000008",
+    "question": "Is account ACC0000008 suspicious? Check its network connections.",
+    "account_id": "ACC0000008",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000008 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000009",
+    "question": "Is account ACC0000009 suspicious? Check its network connections.",
+    "account_id": "ACC0000009",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000009 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000010",
+    "question": "Is account ACC0000010 suspicious? Check its network connections.",
+    "account_id": "ACC0000010",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000010 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000011",
+    "question": "Is account ACC0000011 suspicious? Check its network connections.",
+    "account_id": "ACC0000011",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000011 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000012",
+    "question": "Is account ACC0000012 suspicious? Check its network connections.",
+    "account_id": "ACC0000012",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000012 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000013",
+    "question": "Is account ACC0000013 suspicious? Check its network connections.",
+    "account_id": "ACC0000013",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000013 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000014",
+    "question": "Is account ACC0000014 suspicious? Check its network connections.",
+    "account_id": "ACC0000014",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000014 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000015",
+    "question": "Is account ACC0000015 suspicious? Check its network connections.",
+    "account_id": "ACC0000015",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000015 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000016",
+    "question": "Is account ACC0000016 suspicious? Check its network connections.",
+    "account_id": "ACC0000016",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000016 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000017",
+    "question": "Is account ACC0000017 suspicious? Check its network connections.",
+    "account_id": "ACC0000017",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000017 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000018",
+    "question": "Is account ACC0000018 suspicious? Check its network connections.",
+    "account_id": "ACC0000018",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000018 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_SAFE_ACC0000019",
+    "question": "Is account ACC0000019 suspicious? Check its network connections.",
+    "account_id": "ACC0000019",
+    "ground_truth": "SAFE",
+    "ground_truth_answer": "Account ACC0000019 is SAFE. It has no connections to flagged accounts, no shared devices with banned users, and no blacklisted IP addresses in its network.",
+    "question_type": "fraud_detection"
+  },
+  {
+    "question_id": "Q_RING_292",
+    "question": "Which accounts share device TAB-17936 and what is the fraud risk?",
+    "account_id": "FR0292A00",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Device TAB-17936 is shared by 8 accounts: FR0292A00, FR0292A01, FR0292A02, FR0292A03, FR0292A04, FR0292A05, FR0292A06, FR0292A07. This device sharing pattern indicates a synthetic identity fraud ring. All accounts using this device should be flagged.",
+    "question_type": "device_sharing"
+  },
+  {
+    "question_id": "Q_RING_270",
+    "question": "Which accounts share device DSK-14373 and what is the fraud risk?",
+    "account_id": "FR0270A00",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Device DSK-14373 is shared by 6 accounts: FR0270A00, FR0270A01, FR0270A02, FR0270A03, FR0270A04, FR0270A05. This device sharing pattern indicates a synthetic identity fraud ring. All accounts using this device should be flagged.",
+    "question_type": "device_sharing"
+  },
+  {
+    "question_id": "Q_RING_326",
+    "question": "Which accounts share device MOB-66244 and what is the fraud risk?",
+    "account_id": "FR0326A00",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Device MOB-66244 is shared by 3 accounts: FR0326A00, FR0326A01, FR0326A02. This device sharing pattern indicates a synthetic identity fraud ring. All accounts using this device should be flagged.",
+    "question_type": "device_sharing"
+  },
+  {
+    "question_id": "Q_RING_124",
+    "question": "Which accounts share device DSK-92544 and what is the fraud risk?",
+    "account_id": "FR0124A00",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Device DSK-92544 is shared by 7 accounts: FR0124A00, FR0124A01, FR0124A02, FR0124A03, FR0124A04, FR0124A05, FR0124A06. This device sharing pattern indicates a synthetic identity fraud ring. All accounts using this device should be flagged.",
+    "question_type": "device_sharing"
+  },
+  {
+    "question_id": "Q_RING_357",
+    "question": "Which accounts share device DEV-29194 and what is the fraud risk?",
+    "account_id": "FR0357A00",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Device DEV-29194 is shared by 4 accounts: FR0357A00, FR0357A01, FR0357A02, FR0357A03. This device sharing pattern indicates a synthetic identity fraud ring. All accounts using this device should be flagged.",
+    "question_type": "device_sharing"
+  },
+  {
+    "question_id": "Q_RING_109",
+    "question": "Which accounts share device DEV-67154 and what is the fraud risk?",
+    "account_id": "FR0109A00",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Device DEV-67154 is shared by 8 accounts: FR0109A00, FR0109A01, FR0109A02, FR0109A03, FR0109A04, FR0109A05, FR0109A06, FR0109A07. This device sharing pattern indicates a synthetic identity fraud ring. All accounts using this device should be flagged.",
+    "question_type": "device_sharing"
+  },
+  {
+    "question_id": "Q_RING_351",
+    "question": "Which accounts share device DEV-67240 and what is the fraud risk?",
+    "account_id": "FR0351A00",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Device DEV-67240 is shared by 8 accounts: FR0351A00, FR0351A01, FR0351A02, FR0351A03, FR0351A04, FR0351A05, FR0351A06, FR0351A07. This device sharing pattern indicates a synthetic identity fraud ring. All accounts using this device should be flagged.",
+    "question_type": "device_sharing"
+  },
+  {
+    "question_id": "Q_RING_206",
+    "question": "Which accounts share device DEV-31747 and what is the fraud risk?",
+    "account_id": "FR0206A00",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Device DEV-31747 is shared by 6 accounts: FR0206A00, FR0206A01, FR0206A02, FR0206A03, FR0206A04, FR0206A05. This device sharing pattern indicates a synthetic identity fraud ring. All accounts using this device should be flagged.",
+    "question_type": "device_sharing"
+  },
+  {
+    "question_id": "Q_RING_480",
+    "question": "Which accounts share device DEV-48038 and what is the fraud risk?",
+    "account_id": "FR0480A00",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Device DEV-48038 is shared by 4 accounts: FR0480A00, FR0480A01, FR0480A02, FR0480A03. This device sharing pattern indicates a synthetic identity fraud ring. All accounts using this device should be flagged.",
+    "question_type": "device_sharing"
+  },
+  {
+    "question_id": "Q_RING_394",
+    "question": "Which accounts share device MOB-42768 and what is the fraud risk?",
+    "account_id": "FR0394A00",
+    "ground_truth": "SUSPICIOUS",
+    "ground_truth_answer": "Device MOB-42768 is shared by 6 accounts: FR0394A00, FR0394A01, FR0394A02, FR0394A03, FR0394A04, FR0394A05. This device sharing pattern indicates a synthetic identity fraud ring. All accounts using this device should be flagged.",
+    "question_type": "device_sharing"
+  }
+]

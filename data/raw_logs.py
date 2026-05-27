@@ -1,0 +1,61 @@
+"""
+Raw transaction logs for the Baseline LLM pipeline.
+
+These 50 log lines represent what the baseline LLM sees — a flat dump
+of transaction records with NO graph context. Account FR0000A00 looks
+completely normal in isolation. The LLM will say SAFE. This is the
+hallucination test that GraphRAG solves.
+"""
+
+RAW_LOGS = [
+    "TXN000001: Account ACC0000001 | $234.50 | electronics | credit_card | device DEV-10001 | IP 10.0.1.1 | 2025-11-01 09:12:00",
+    "TXN000002: Account ACC0000002 | $89.99  | clothing    | debit_card  | device DEV-10002 | IP 10.0.1.2 | 2025-11-01 09:15:00",
+    "TXN000003: Account FR0000A00  | $450.00 | gaming      | credit_card | device DEV-55123 | IP 10.0.2.1 | 2025-11-01 09:18:00",
+    "TXN000004: Account ACC0000003 | $1200.00| travel      | netbanking  | device DEV-10003 | IP 10.0.1.3 | 2025-11-01 09:20:00",
+    "TXN000005: Account ACC0000004 | $55.00  | food        | upi         | device DEV-10004 | IP 10.0.1.4 | 2025-11-01 09:22:00",
+    "TXN000006: Account FR0000A00  | $780.00 | electronics | credit_card | device DEV-55123 | IP 10.0.2.1 | 2025-11-01 09:25:00",
+    "TXN000007: Account ACC0000005 | $320.00 | healthcare  | credit_card | device DEV-10005 | IP 10.0.1.5 | 2025-11-01 09:28:00",
+    "TXN000008: Account ACC0000006 | $67.50  | food        | wallet      | device DEV-10006 | IP 10.0.1.6 | 2025-11-01 09:30:00",
+    "TXN000009: Account ACC0000007 | $2300.00| automotive  | credit_card | device DEV-10007 | IP 10.0.1.7 | 2025-11-01 09:33:00",
+    "TXN000010: Account FR0000A00  | $990.00 | gaming      | debit_card  | device DEV-55123 | IP 10.0.2.1 | 2025-11-01 09:35:00",
+    "TXN000011: Account ACC0000008 | $145.00 | clothing    | upi         | device DEV-10008 | IP 10.0.1.8 | 2025-11-01 09:38:00",
+    "TXN000012: Account ACC0000009 | $890.00 | electronics | credit_card | device DEV-10009 | IP 10.0.1.9 | 2025-11-01 09:40:00",
+    "TXN000013: Account ACC0000010 | $34.00  | food        | wallet      | device DEV-10010 | IP 10.0.1.10| 2025-11-01 09:42:00",
+    "TXN000014: Account ACC0000011 | $560.00 | travel      | netbanking  | device DEV-10011 | IP 10.0.1.11| 2025-11-01 09:45:00",
+    "TXN000015: Account FR0000A00  | $1100.00| electronics | credit_card | device DEV-55123 | IP 10.0.2.1 | 2025-11-01 09:47:00",
+    "TXN000016: Account ACC0000012 | $78.00  | sports      | debit_card  | device DEV-10012 | IP 10.0.1.12| 2025-11-01 09:50:00",
+    "TXN000017: Account ACC0000013 | $430.00 | home        | credit_card | device DEV-10013 | IP 10.0.1.13| 2025-11-01 09:52:00",
+    "TXN000018: Account ACC0000014 | $210.00 | clothing    | upi         | device DEV-10014 | IP 10.0.1.14| 2025-11-01 09:55:00",
+    "TXN000019: Account ACC0000015 | $3400.00| automotive  | credit_card | device DEV-10015 | IP 10.0.1.15| 2025-11-01 09:57:00",
+    "TXN000020: Account FR0000A00  | $670.00 | gaming      | credit_card | device DEV-55123 | IP 10.0.2.1 | 2025-11-01 10:00:00",
+    "TXN000021: Account ACC0000016 | $95.00  | food        | wallet      | device DEV-10016 | IP 10.0.1.16| 2025-11-01 10:02:00",
+    "TXN000022: Account ACC0000017 | $1800.00| travel      | netbanking  | device DEV-10017 | IP 10.0.1.17| 2025-11-01 10:05:00",
+    "TXN000023: Account ACC0000018 | $340.00 | electronics | credit_card | device DEV-10018 | IP 10.0.1.18| 2025-11-01 10:07:00",
+    "TXN000024: Account ACC0000019 | $56.00  | food        | upi         | device DEV-10019 | IP 10.0.1.19| 2025-11-01 10:10:00",
+    "TXN000025: Account FR0000A00  | $2200.00| electronics | credit_card | device DEV-55123 | IP 10.0.2.1 | 2025-11-01 10:12:00",
+    "TXN000026: Account ACC0000020 | $780.00 | healthcare  | credit_card | device DEV-10020 | IP 10.0.1.20| 2025-11-01 10:15:00",
+    "TXN000027: Account ACC0000021 | $123.00 | clothing    | debit_card  | device DEV-10021 | IP 10.0.1.21| 2025-11-01 10:17:00",
+    "TXN000028: Account ACC0000022 | $4500.00| automotive  | credit_card | device DEV-10022 | IP 10.0.1.22| 2025-11-01 10:20:00",
+    "TXN000029: Account ACC0000023 | $67.00  | food        | wallet      | device DEV-10023 | IP 10.0.1.23| 2025-11-01 10:22:00",
+    "TXN000030: Account FR0000A00  | $890.00 | gaming      | credit_card | device DEV-55123 | IP 10.0.2.1 | 2025-11-01 10:25:00",
+    "TXN000031: Account ACC0000024 | $230.00 | sports      | upi         | device DEV-10024 | IP 10.0.1.24| 2025-11-01 10:27:00",
+    "TXN000032: Account ACC0000025 | $1560.00| travel      | netbanking  | device DEV-10025 | IP 10.0.1.25| 2025-11-01 10:30:00",
+    "TXN000033: Account ACC0000026 | $89.00  | food        | wallet      | device DEV-10026 | IP 10.0.1.26| 2025-11-01 10:32:00",
+    "TXN000034: Account ACC0000027 | $670.00 | home        | credit_card | device DEV-10027 | IP 10.0.1.27| 2025-11-01 10:35:00",
+    "TXN000035: Account FR0000A00  | $3300.00| electronics | credit_card | device DEV-55123 | IP 10.0.2.1 | 2025-11-01 10:37:00",
+    "TXN000036: Account ACC0000028 | $45.00  | food        | upi         | device DEV-10028 | IP 10.0.1.28| 2025-11-01 10:40:00",
+    "TXN000037: Account ACC0000029 | $2100.00| automotive  | credit_card | device DEV-10029 | IP 10.0.1.29| 2025-11-01 10:42:00",
+    "TXN000038: Account ACC0000030 | $340.00 | clothing    | debit_card  | device DEV-10030 | IP 10.0.1.30| 2025-11-01 10:45:00",
+    "TXN000039: Account ACC0000031 | $780.00 | healthcare  | credit_card | device DEV-10031 | IP 10.0.1.31| 2025-11-01 10:47:00",
+    "TXN000040: Account FR0000A00  | $1450.00| gaming      | credit_card | device DEV-55123 | IP 10.0.2.1 | 2025-11-01 10:50:00",
+    "TXN000041: Account ACC0000032 | $56.00  | food        | wallet      | device DEV-10032 | IP 10.0.1.32| 2025-11-01 10:52:00",
+    "TXN000042: Account ACC0000033 | $890.00 | electronics | credit_card | device DEV-10033 | IP 10.0.1.33| 2025-11-01 10:55:00",
+    "TXN000043: Account ACC0000034 | $230.00 | sports      | upi         | device DEV-10034 | IP 10.0.1.34| 2025-11-01 10:57:00",
+    "TXN000044: Account ACC0000035 | $1200.00| travel      | netbanking  | device DEV-10035 | IP 10.0.1.35| 2025-11-01 11:00:00",
+    "TXN000045: Account FR0000A00  | $560.00 | electronics | credit_card | device DEV-55123 | IP 10.0.2.1 | 2025-11-01 11:02:00",
+    "TXN000046: Account ACC0000036 | $78.00  | food        | wallet      | device DEV-10036 | IP 10.0.1.36| 2025-11-01 11:05:00",
+    "TXN000047: Account ACC0000037 | $3400.00| automotive  | credit_card | device DEV-10037 | IP 10.0.1.37| 2025-11-01 11:07:00",
+    "TXN000048: Account ACC0000038 | $145.00 | clothing    | debit_card  | device DEV-10038 | IP 10.0.1.38| 2025-11-01 11:10:00",
+    "TXN000049: Account ACC0000039 | $670.00 | home        | credit_card | device DEV-10039 | IP 10.0.1.39| 2025-11-01 11:12:00",
+    "TXN000050: Account FR0000A00  | $4100.00| electronics | credit_card | device DEV-55123 | IP 10.0.2.1 | 2025-11-01 11:15:00",
+]

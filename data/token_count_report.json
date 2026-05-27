@@ -1,0 +1,26 @@
+{
+  "tokenizer": "gemini-2.0-flash",
+  "tokenizer_api": "google.generativeai.GenerativeModel.count_tokens",
+  "files": {
+    "transactions": {
+      "path": "data/transactions.csv",
+      "total_rows": 2000002,
+      "sample_rows": 1000,
+      "sample_tokens": 108999,
+      "tokens_per_row": 109.0,
+      "estimated_total_tokens": 217998217
+    },
+    "accounts": {
+      "path": "data/accounts.csv",
+      "total_rows": 500000,
+      "sample_rows": 1000,
+      "sample_tokens": 104561,
+      "tokens_per_row": 104.56,
+      "estimated_total_tokens": 52280500
+    }
+  },
+  "total_tokens_estimated": 270278717,
+  "total_tokens_sampled": 0,
+  "target_tokens": 100000000,
+  "meets_requirement": true
+}

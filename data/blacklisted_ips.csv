@@ -1,0 +1,501 @@
+ip,reason,country
+190.153.172.130,identity theft,GB
+213.250.153.122,identity theft,AU
+209.8.188.85,identity theft,US
+173.56.213.150,bot traffic,FR
+79.13.242.68,bot traffic,FR
+248.116.26.150,VPN abuse,AU
+123.87.194.38,VPN abuse,AU
+211.124.16.147,identity theft,SG
+243.56.97.5,identity theft,AU
+113.160.214.39,VPN abuse,FR
+106.104.210.129,identity theft,SG
+199.241.31.181,identity theft,FR
+36.106.166.170,known fraud ring,IN
+123.192.160.245,identity theft,DE
+45.235.175.140,bot traffic,FR
+91.135.247.50,identity theft,AE
+246.126.142.143,bot traffic,DE
+77.115.152.198,bot traffic,AE
+74.106.250.82,12 chargebacks,FR
+123.178.140.74,VPN abuse,SG
+32.194.202.210,known fraud ring,AU
+89.74.148.11,identity theft,IN
+74.40.177.237,identity theft,FR
+114.131.245.55,bot traffic,US
+52.138.139.36,12 chargebacks,GB
+28.122.124.13,VPN abuse,US
+172.115.119.14,bot traffic,DE
+26.211.169.184,12 chargebacks,DE
+121.51.70.2,known fraud ring,AE
+247.80.208.168,known fraud ring,SG
+240.243.244.167,known fraud ring,GB
+52.147.164.74,known fraud ring,SG
+166.30.45.167,bot traffic,SG
+147.118.19.234,bot traffic,US
+236.89.213.226,known fraud ring,AE
+215.90.18.215,12 chargebacks,AU
+102.253.95.240,identity theft,IN
+192.148.19.3,known fraud ring,SG
+77.54.171.73,identity theft,US
+117.252.68.218,12 chargebacks,AU
+130.239.139.50,12 chargebacks,SG
+208.57.169.42,known fraud ring,AU
+188.234.131.184,VPN abuse,AU
+48.7.172.203,bot traffic,US
+76.98.89.157,12 chargebacks,US
+220.207.218.132,identity theft,FR
+84.44.205.172,12 chargebacks,GB
+25.94.71.123,VPN abuse,FR
+83.127.3.67,12 chargebacks,DE
+99.120.228.193,bot traffic,GB
+69.168.154.150,12 chargebacks,US
+186.5.133.168,identity theft,AU
+93.120.31.171,bot traffic,FR
+31.238.157.41,12 chargebacks,US
+104.159.60.164,VPN abuse,GB
+235.151.188.158,known fraud ring,FR
+57.112.68.123,VPN abuse,GB
+40.232.191.107,bot traffic,GB
+180.241.111.196,12 chargebacks,GB
+64.41.228.136,known fraud ring,FR
+181.185.39.235,VPN abuse,FR
+145.57.31.213,bot traffic,SG
+141.103.76.43,VPN abuse,DE
+84.226.59.175,VPN abuse,IN
+53.250.46.231,12 chargebacks,AE
+131.228.28.117,known fraud ring,AE
+34.212.233.145,VPN abuse,DE
+15.236.157.186,identity theft,GB
+6.202.130.210,bot traffic,IN
+1.111.37.12,bot traffic,GB
+109.176.32.139,identity theft,IN
+16.35.241.9,12 chargebacks,AE
+74.209.92.197,known fraud ring,GB
+35.215.191.229,VPN abuse,AE
+98.229.193.97,bot traffic,AE
+21.68.178.31,identity theft,GB
+46.201.65.187,VPN abuse,IN
+251.114.1.194,VPN abuse,US
+6.152.237.173,12 chargebacks,IN
+185.217.194.211,known fraud ring,GB
+59.126.235.89,12 chargebacks,GB
+40.141.96.240,VPN abuse,AE
+225.57.16.208,12 chargebacks,GB
+170.214.8.62,VPN abuse,FR
+53.34.51.153,VPN abuse,IN
+9.228.24.63,bot traffic,GB
+190.22.205.113,identity theft,DE
+60.111.28.36,identity theft,AE
+129.148.119.209,bot traffic,DE
+235.163.164.61,12 chargebacks,DE
+78.73.113.106,bot traffic,US
+77.140.31.143,bot traffic,DE
+243.89.218.143,VPN abuse,AE
+127.24.176.242,known fraud ring,DE
+165.195.163.179,12 chargebacks,DE
+107.209.76.77,bot traffic,US
+97.94.242.62,VPN abuse,AE
+218.115.153.220,identity theft,US
+182.73.237.235,VPN abuse,US
+15.211.213.143,bot traffic,IN
+136.68.198.63,VPN abuse,US
+66.104.169.166,known fraud ring,IN
+21.230.189.24,12 chargebacks,FR
+138.97.26.69,known fraud ring,DE
+97.20.37.49,bot traffic,FR
+206.111.245.54,identity theft,IN
+223.170.155.245,bot traffic,US
+233.7.108.240,known fraud ring,US
+49.60.245.235,identity theft,DE
+63.104.203.235,bot traffic,US
+62.164.144.98,identity theft,FR
+120.183.157.67,identity theft,AE
+93.254.238.26,12 chargebacks,FR
+206.240.163.235,known fraud ring,US
+53.189.160.106,known fraud ring,US
+12.113.74.5,12 chargebacks,FR
+67.213.151.40,12 chargebacks,FR
+51.168.117.98,VPN abuse,IN
+146.125.255.141,known fraud ring,US
+168.172.131.196,VPN abuse,AU
+211.250.251.118,identity theft,GB
+44.180.86.36,VPN abuse,AE
+185.250.94.235,12 chargebacks,IN
+228.30.17.215,VPN abuse,AU
+217.38.24.196,known fraud ring,IN
+2.211.70.216,VPN abuse,FR
+162.118.34.182,identity theft,US
+39.4.111.130,12 chargebacks,GB
+117.191.30.159,VPN abuse,SG
+164.247.249.5,known fraud ring,GB
+2.210.6.5,12 chargebacks,GB
+136.140.146.5,known fraud ring,IN
+129.220.91.28,known fraud ring,US
+236.49.76.62,VPN abuse,AE
+50.129.181.69,bot traffic,DE
+204.203.40.96,bot traffic,US
+246.207.235.145,bot traffic,AU
+63.115.153.176,identity theft,US
+212.41.16.24,VPN abuse,IN
+104.194.193.142,known fraud ring,IN
+122.28.4.180,bot traffic,DE
+44.42.255.217,12 chargebacks,GB
+112.169.48.230,12 chargebacks,AU
+136.21.117.55,12 chargebacks,SG
+231.243.138.12,known fraud ring,DE
+237.38.143.231,12 chargebacks,DE
+140.16.91.238,identity theft,US
+218.161.8.247,VPN abuse,DE
+54.73.203.238,known fraud ring,FR
+20.153.83.145,bot traffic,SG
+62.199.169.99,bot traffic,GB
+194.71.40.129,12 chargebacks,FR
+191.177.27.26,12 chargebacks,US
+112.118.38.88,VPN abuse,SG
+155.203.167.8,VPN abuse,AU
+163.139.230.126,identity theft,IN
+59.182.192.111,bot traffic,AE
+48.194.43.198,identity theft,IN
+159.151.126.183,known fraud ring,US
+19.42.137.40,12 chargebacks,GB
+98.78.199.82,12 chargebacks,US
+93.54.46.2,VPN abuse,SG
+242.157.227.93,12 chargebacks,AU
+195.138.52.34,identity theft,IN
+23.95.220.115,bot traffic,IN
+143.208.52.7,12 chargebacks,GB
+23.181.47.153,bot traffic,SG
+154.166.197.4,bot traffic,FR
+75.211.198.200,VPN abuse,GB
+22.124.86.176,bot traffic,AE
+98.86.71.69,identity theft,US
+78.137.252.38,bot traffic,AU
+17.85.222.71,known fraud ring,IN
+108.153.247.201,identity theft,US
+20.184.128.242,identity theft,SG
+64.253.100.118,identity theft,DE
+28.69.155.2,known fraud ring,GB
+243.202.170.216,bot traffic,SG
+159.194.168.113,VPN abuse,GB
+86.220.69.77,bot traffic,AE
+83.102.245.81,identity theft,FR
+46.203.163.75,bot traffic,FR
+189.251.124.84,identity theft,GB
+97.143.201.94,known fraud ring,GB
+30.102.92.175,known fraud ring,US
+197.13.236.242,12 chargebacks,US
+182.107.224.205,identity theft,DE
+75.35.209.173,12 chargebacks,SG
+128.71.155.62,VPN abuse,GB
+65.78.216.203,bot traffic,AU
+97.37.229.254,VPN abuse,US
+154.245.205.137,bot traffic,AU
+130.214.18.203,bot traffic,GB
+248.184.43.28,bot traffic,DE
+197.127.181.43,bot traffic,FR
+166.22.204.248,known fraud ring,AU
+193.169.220.28,bot traffic,SG
+3.50.132.57,VPN abuse,IN
+131.113.228.96,VPN abuse,IN
+101.237.77.89,12 chargebacks,GB
+7.247.53.76,bot traffic,AU
+107.43.59.213,12 chargebacks,DE
+241.72.178.80,known fraud ring,US
+88.233.105.134,12 chargebacks,DE
+124.178.243.25,bot traffic,US
+113.231.163.18,VPN abuse,US
+77.22.58.6,VPN abuse,FR
+218.175.55.174,identity theft,GB
+205.84.124.133,known fraud ring,DE
+45.81.169.144,bot traffic,SG
+110.236.118.205,bot traffic,FR
+104.94.95.164,VPN abuse,AE
+169.221.202.8,known fraud ring,DE
+189.101.230.152,12 chargebacks,DE
+110.199.2.181,known fraud ring,AE
+55.105.142.193,bot traffic,US
+181.32.52.205,12 chargebacks,AE
+224.95.187.84,identity theft,DE
+51.234.58.68,12 chargebacks,GB
+172.250.160.153,VPN abuse,IN
+100.200.58.90,12 chargebacks,AE
+91.234.88.209,12 chargebacks,DE
+173.152.43.173,identity theft,SG
+35.160.60.62,VPN abuse,SG
+79.59.93.96,bot traffic,DE
+178.72.198.108,VPN abuse,AE
+153.70.196.109,known fraud ring,GB
+48.249.88.143,12 chargebacks,AU
+43.250.147.36,bot traffic,AE
+48.161.230.159,identity theft,AU
+14.183.4.125,known fraud ring,AE
+35.99.196.247,identity theft,US
+144.253.209.176,known fraud ring,AU
+126.212.227.126,identity theft,US
+43.42.15.204,known fraud ring,AE
+195.112.149.9,VPN abuse,AU
+71.115.147.44,known fraud ring,DE
+200.234.253.141,VPN abuse,US
+131.57.58.69,identity theft,IN
+199.187.21.195,bot traffic,GB
+185.225.111.254,bot traffic,AE
+109.52.126.77,bot traffic,AE
+224.16.230.68,identity theft,AE
+90.44.224.222,known fraud ring,AU
+31.121.107.208,VPN abuse,US
+189.179.219.43,known fraud ring,DE
+158.71.105.209,identity theft,AU
+53.30.179.137,known fraud ring,DE
+72.86.165.251,bot traffic,IN
+181.149.148.147,known fraud ring,DE
+69.48.69.247,identity theft,IN
+193.210.30.71,known fraud ring,AU
+222.64.67.64,VPN abuse,IN
+38.164.126.195,identity theft,GB
+216.201.250.37,12 chargebacks,DE
+148.137.212.97,bot traffic,IN
+116.38.47.104,identity theft,US
+132.142.188.117,known fraud ring,US
+244.249.167.149,bot traffic,US
+1.47.234.163,identity theft,GB
+171.183.32.204,VPN abuse,DE
+137.203.111.248,bot traffic,FR
+110.108.253.69,bot traffic,AU
+83.145.172.141,known fraud ring,AU
+148.66.248.202,known fraud ring,DE
+88.24.23.26,known fraud ring,SG
+161.235.8.32,12 chargebacks,AU
+238.80.225.117,bot traffic,US
+1.219.103.177,12 chargebacks,SG
+233.67.154.41,bot traffic,AE
+224.140.47.168,12 chargebacks,AU
+93.128.42.96,bot traffic,US
+171.84.26.102,identity theft,US
+161.156.119.110,VPN abuse,US
+168.46.48.1,12 chargebacks,GB
+55.244.39.34,VPN abuse,AE
+152.115.227.3,VPN abuse,GB
+3.175.61.253,12 chargebacks,US
+221.216.67.123,VPN abuse,IN
+19.117.196.23,12 chargebacks,IN
+188.52.52.81,12 chargebacks,SG
+95.153.70.98,bot traffic,US
+199.68.73.18,VPN abuse,SG
+136.4.84.113,known fraud ring,FR
+90.109.77.236,12 chargebacks,SG
+106.226.111.23,bot traffic,SG
+230.51.71.193,known fraud ring,AU
+32.196.179.247,bot traffic,IN
+110.161.71.64,VPN abuse,DE
+71.43.127.142,12 chargebacks,SG
+154.145.13.218,VPN abuse,SG
+217.154.105.133,bot traffic,DE
+156.96.200.76,12 chargebacks,DE
+166.27.122.127,12 chargebacks,FR
+99.57.123.128,bot traffic,AU
+164.36.6.253,known fraud ring,SG
+93.162.67.100,identity theft,GB
+221.215.187.140,identity theft,SG
+175.88.241.245,VPN abuse,IN
+253.37.8.151,known fraud ring,GB
+18.7.134.56,bot traffic,SG
+11.30.203.130,bot traffic,GB
+74.212.216.180,bot traffic,AU
+103.42.78.72,bot traffic,FR
+22.158.40.131,12 chargebacks,AU
+236.104.79.138,known fraud ring,US
+84.200.33.80,identity theft,IN
+179.223.122.15,12 chargebacks,SG
+63.44.222.30,bot traffic,IN
+117.28.158.171,known fraud ring,AE
+190.89.61.4,VPN abuse,FR
+182.70.5.42,12 chargebacks,DE
+128.177.132.43,known fraud ring,SG
+96.64.137.188,identity theft,US
+227.60.15.86,identity theft,AU
+207.219.139.135,known fraud ring,GB
+17.134.39.128,known fraud ring,US
+117.184.28.128,identity theft,GB
+220.85.188.41,known fraud ring,FR
+66.52.59.59,VPN abuse,SG
+190.1.22.220,known fraud ring,AU
+221.6.125.12,VPN abuse,AE
+121.186.196.236,known fraud ring,FR
+39.91.18.142,known fraud ring,SG
+206.214.114.83,VPN abuse,AU
+64.213.163.70,12 chargebacks,US
+212.39.190.31,bot traffic,FR
+129.26.91.58,VPN abuse,AE
+206.23.205.18,bot traffic,US
+225.238.144.199,known fraud ring,GB
+217.159.167.23,identity theft,IN
+142.233.4.95,identity theft,US
+52.149.155.190,known fraud ring,GB
+160.124.237.95,identity theft,FR
+152.252.100.188,12 chargebacks,FR
+231.125.77.2,bot traffic,AU
+239.209.12.60,known fraud ring,US
+139.177.4.244,known fraud ring,US
+86.0.192.218,12 chargebacks,SG
+189.157.53.53,identity theft,GB
+136.121.214.126,bot traffic,IN
+247.30.72.183,known fraud ring,FR
+72.47.22.236,known fraud ring,DE
+60.211.190.118,identity theft,FR
+250.43.48.130,identity theft,DE
+35.201.38.152,12 chargebacks,AU
+146.31.222.170,known fraud ring,FR
+247.66.121.75,known fraud ring,GB
+67.161.201.180,12 chargebacks,AU
+213.167.162.116,known fraud ring,IN
+70.119.38.242,12 chargebacks,DE
+52.69.55.40,identity theft,AE
+28.84.230.120,identity theft,AU
+81.208.61.138,VPN abuse,DE
+92.106.231.79,identity theft,SG
+119.135.61.24,12 chargebacks,AU
+41.155.20.56,known fraud ring,FR
+214.167.75.24,VPN abuse,IN
+183.127.182.102,12 chargebacks,SG
+132.25.153.67,12 chargebacks,DE
+210.89.15.244,known fraud ring,IN
+104.231.127.25,12 chargebacks,GB
+119.52.71.32,12 chargebacks,DE
+4.31.113.34,identity theft,SG
+51.205.190.176,identity theft,AE
+162.43.132.235,VPN abuse,SG
+209.38.11.17,bot traffic,AU
+51.227.65.24,VPN abuse,DE
+232.169.62.11,known fraud ring,DE
+242.236.25.44,12 chargebacks,SG
+237.221.202.128,VPN abuse,AU
+8.195.218.45,identity theft,IN
+91.109.95.71,VPN abuse,US
+72.228.76.9,bot traffic,AU
+158.125.151.128,VPN abuse,US
+106.245.31.23,VPN abuse,IN
+72.196.70.108,known fraud ring,AE
+52.127.9.254,bot traffic,GB
+98.183.245.140,known fraud ring,GB
+201.248.176.234,12 chargebacks,FR
+145.164.198.70,identity theft,FR
+47.13.163.153,12 chargebacks,GB
+57.15.143.15,bot traffic,US
+208.241.183.197,VPN abuse,AE
+150.119.81.26,identity theft,GB
+64.123.136.137,12 chargebacks,DE
+209.28.112.148,VPN abuse,FR
+217.198.181.240,VPN abuse,FR
+215.88.90.61,identity theft,DE
+152.162.183.234,VPN abuse,US
+152.14.180.243,identity theft,AE
+146.72.96.215,bot traffic,DE
+253.252.158.45,bot traffic,AE
+126.19.46.15,VPN abuse,IN
+60.112.10.135,known fraud ring,DE
+123.0.169.235,bot traffic,GB
+158.103.66.88,identity theft,FR
+184.90.165.16,12 chargebacks,US
+6.75.72.199,known fraud ring,GB
+29.186.37.96,bot traffic,AU
+181.202.51.87,identity theft,IN
+78.165.69.250,12 chargebacks,SG
+41.223.249.167,identity theft,DE
+82.89.182.58,VPN abuse,DE
+171.89.193.79,identity theft,GB
+188.150.65.46,VPN abuse,AU
+187.0.200.218,12 chargebacks,FR
+198.16.93.155,12 chargebacks,AU
+82.113.53.240,bot traffic,US
+128.72.169.191,identity theft,SG
+20.121.177.252,bot traffic,FR
+82.85.45.211,identity theft,GB
+182.171.228.3,VPN abuse,DE
+68.107.127.178,VPN abuse,AU
+18.179.131.202,VPN abuse,DE
+28.0.24.99,known fraud ring,FR
+113.214.85.227,known fraud ring,DE
+106.252.193.90,known fraud ring,US
+140.192.51.213,bot traffic,SG
+123.115.83.116,known fraud ring,SG
+19.17.150.6,bot traffic,FR
+82.133.53.19,VPN abuse,IN
+88.87.192.42,bot traffic,SG
+188.38.47.87,VPN abuse,GB
+153.247.15.111,VPN abuse,FR
+242.84.222.41,12 chargebacks,AU
+14.51.169.53,known fraud ring,US
+250.97.209.179,VPN abuse,AE
+142.135.144.77,known fraud ring,DE
+61.49.25.101,VPN abuse,GB
+147.251.78.14,bot traffic,US
+93.1.218.23,known fraud ring,AE
+76.245.102.25,known fraud ring,US
+7.105.87.164,known fraud ring,SG
+75.41.242.217,12 chargebacks,US
+30.157.203.121,VPN abuse,US
+126.135.46.165,VPN abuse,US
+140.198.94.95,known fraud ring,AU
+227.195.189.48,known fraud ring,DE
+115.22.134.113,bot traffic,IN
+120.134.115.215,known fraud ring,US
+69.31.77.193,VPN abuse,IN
+179.49.43.172,identity theft,GB
+89.211.116.142,identity theft,SG
+16.198.214.248,12 chargebacks,IN
+138.243.120.122,identity theft,SG
+77.40.202.232,bot traffic,DE
+219.17.75.31,known fraud ring,FR
+244.229.88.243,12 chargebacks,US
+252.85.108.207,identity theft,DE
+50.64.21.109,VPN abuse,FR
+21.222.103.211,bot traffic,GB
+161.75.132.82,12 chargebacks,FR
+234.34.44.100,known fraud ring,SG
+143.203.166.220,identity theft,AU
+71.234.6.202,known fraud ring,US
+180.214.57.107,bot traffic,AE
+39.75.51.237,bot traffic,FR
+28.51.146.223,known fraud ring,GB
+138.176.210.68,known fraud ring,SG
+99.248.242.10,12 chargebacks,GB
+45.141.206.37,identity theft,IN
+159.205.19.102,bot traffic,GB
+228.169.121.13,bot traffic,US
+191.243.137.230,VPN abuse,GB
+96.10.172.210,VPN abuse,DE
+204.155.159.72,bot traffic,SG
+216.251.50.249,12 chargebacks,US
+223.116.68.77,bot traffic,DE
+250.226.164.69,identity theft,IN
+187.213.45.49,identity theft,AE
+114.108.208.190,bot traffic,AE
+125.191.28.132,bot traffic,FR
+203.81.33.80,bot traffic,US
+182.206.69.200,identity theft,SG
+218.14.88.50,VPN abuse,FR
+225.102.29.64,identity theft,US
+9.233.25.236,VPN abuse,DE
+93.101.140.95,VPN abuse,SG
+211.237.203.163,12 chargebacks,IN
+237.63.15.62,known fraud ring,IN
+96.250.228.46,bot traffic,AE
+246.242.179.89,known fraud ring,AU
+42.132.46.73,bot traffic,GB
+8.197.25.42,known fraud ring,US
+219.109.113.166,known fraud ring,AU
+58.105.137.167,identity theft,GB
+105.10.4.122,12 chargebacks,IN
+234.67.88.154,identity theft,IN
+206.4.114.65,VPN abuse,US
+156.156.140.109,VPN abuse,IN
+230.192.178.118,known fraud ring,AU
+65.111.238.78,VPN abuse,AE
+174.203.52.2,VPN abuse,AU
+131.191.144.77,identity theft,GB
+176.55.246.17,identity theft,US
+87.141.166.221,VPN abuse,AE
+71.133.152.49,12 chargebacks,AE
+39.123.29.207,bot traffic,SG
+220.206.163.175,12 chargebacks,AE

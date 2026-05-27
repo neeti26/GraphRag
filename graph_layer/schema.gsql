@@ -1,0 +1,111 @@
+// ─────────────────────────────────────────────────────────────
+//  FraudGraph Schema — Round 2 (100M token scale)
+//  Run this in TigerGraph Studio or via pyTigerGraph
+// ─────────────────────────────────────────────────────────────
+
+// ── Vertex Types ──────────────────────────────────────────────
+CREATE VERTEX Account (
+  PRIMARY_ID id         STRING,
+  name                  STRING,
+  email                 STRING,
+  created_at            STRING,
+  status                STRING DEFAULT "active",   // active | flagged | banned
+  risk_score            FLOAT  DEFAULT 0.0,
+  transaction_count     INT    DEFAULT 0,
+  total_amount          FLOAT  DEFAULT 0.0,
+  card_type             STRING DEFAULT ""
+) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+
+CREATE VERTEX DeviceID (
+  PRIMARY_ID device_id  STRING,
+  device_type           STRING,   // mobile | desktop | tablet
+  os                    STRING,
+  browser               STRING    DEFAULT ""
+) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+
+CREATE VERTEX IPAddress (
+  PRIMARY_ID ip         STRING,
+  country               STRING,
+  is_blacklisted        BOOL   DEFAULT FALSE,
+  blacklist_reason      STRING DEFAULT "",
+  login_count           INT    DEFAULT 0
+) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+
+CREATE VERTEX PhoneNumber (
+  PRIMARY_ID number     STRING,
+  carrier               STRING,
+  country               STRING DEFAULT "IN"
+) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+
+CREATE VERTEX PhysicalAddress (
+  PRIMARY_ID addr_id    STRING,
+  street                STRING,
+  city                  STRING,
+  pincode               STRING
+) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+
+CREATE VERTEX Merchant (
+  PRIMARY_ID merchant_id  STRING,
+  name                    STRING,
+  category                STRING,
+  fraud_rate              FLOAT  DEFAULT 0.0,
+  transaction_count       INT    DEFAULT 0
+) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+
+CREATE VERTEX Transaction (
+  PRIMARY_ID txn_id     STRING,
+  amount                FLOAT,
+  timestamp             STRING,
+  is_fraud              BOOL   DEFAULT FALSE,
+  fraud_score           FLOAT  DEFAULT 0.0,
+  product_category      STRING DEFAULT "",
+  payment_method        STRING DEFAULT ""
+) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true"
+
+// ── Edge Types ────────────────────────────────────────────────
+CREATE DIRECTED EDGE HAS_PHONE (
+  FROM Account, TO PhoneNumber,
+  since STRING
+)
+
+CREATE DIRECTED EDGE LOGGED_FROM_IP (
+  FROM Account, TO IPAddress,
+  last_seen   STRING,
+  login_count INT DEFAULT 1
+)
+
+CREATE DIRECTED EDGE USED_DEVICE (
+  FROM Account, TO DeviceID,
+  first_seen  STRING,
+  last_seen   STRING,
+  login_count INT DEFAULT 1
+)
+
+CREATE DIRECTED EDGE REGISTERED_AT (
+  FROM Account, TO PhysicalAddress,
+  verified BOOL DEFAULT FALSE
+)
+
+CREATE DIRECTED EDGE MADE_TRANSACTION (
+  FROM Account, TO Transaction,
+  timestamp STRING
+)
+
+CREATE DIRECTED EDGE AT_MERCHANT (
+  FROM Transaction, TO Merchant,
+  timestamp STRING
+)
+
+CREATE UNDIRECTED EDGE ENTITY_LINK (
+  FROM Account, TO Account,
+  shared_identifiers LIST<STRING>,
+  confidence_score   FLOAT
+)
+
+// ── Graph ─────────────────────────────────────────────────────
+CREATE GRAPH FraudGraph (
+  Account, DeviceID, IPAddress, PhoneNumber, PhysicalAddress,
+  Merchant, Transaction,
+  HAS_PHONE, LOGGED_FROM_IP, USED_DEVICE, REGISTERED_AT,
+  MADE_TRANSACTION, AT_MERCHANT, ENTITY_LINK
+)

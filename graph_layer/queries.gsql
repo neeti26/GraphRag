@@ -1,0 +1,245 @@
+// ─────────────────────────────────────────────────────────────
+//  FraudGraph GSQL Queries — Round 2 (100M token scale)
+//  Install in TigerGraph Studio after creating the schema
+// ─────────────────────────────────────────────────────────────
+
+// ── Query 1: Multi-hop Fraud Context (3 hops) ─────────────────
+// Core GraphRAG query: given a target account, traverse up to
+// 3 hops and return all connected entities + risk signals.
+// Optimized for large graphs with LIMIT guards.
+CREATE QUERY multi_hop_fraud_context(STRING target_account, INT max_hops = 3, INT evidence_limit = 30)
+FOR GRAPH FraudGraph {
+  SetAccum<VERTEX>  @@visited;
+  ListAccum<STRING> @@evidence;
+  SetAccum<STRING>  @@flagged_accounts;
+  SetAccum<STRING>  @@blacklisted_ips;
+  SetAccum<STRING>  @@shared_devices;
+
+  // Seed
+  seed = {Account.*};
+  seed = SELECT a FROM seed:a WHERE a.id == target_account;
+
+  // Hop 1: direct device connections
+  hop1_devices = SELECT d FROM seed:a -(USED_DEVICE)-> DeviceID:d
+    ACCUM @@visited += d,
+          @@evidence += "Account " + target_account + " used Device " + d.device_id;
+
+  // Hop 1: direct IP connections
+  hop1_ips = SELECT ip FROM seed:a -(LOGGED_FROM_IP)-> IPAddress:ip
+    ACCUM @@visited += ip,
+          IF ip.is_blacklisted THEN
+            @@evidence += "ALERT: Account " + target_account + " logged from BLACKLISTED IP " + ip.ip + " (" + ip.blacklist_reason + ")",
+            @@blacklisted_ips += ip.ip
+          END;
+
+  // Hop 2: other accounts sharing same device
+  hop2_accounts = SELECT a2 FROM hop1_devices:d -(USED_DEVICE)- Account:a2
+    WHERE a2.id != target_account
+    ACCUM @@visited += a2,
+          @@evidence += "Device " + d.device_id + " is ALSO used by Account " + a2.id,
+          IF a2.status == "flagged" OR a2.status == "banned" THEN
+            @@evidence += "ALERT: Account " + a2.id + " is " + a2.status + " (risk_score=" + (STRING)a2.risk_score + ")",
+            @@flagged_accounts += a2.id
+          END,
+          @@shared_devices += d.device_id;
+
+  // Hop 2b: other accounts sharing same IP
+  hop2_ip_accounts = SELECT a3 FROM hop1_ips:ip -(LOGGED_FROM_IP)- Account:a3
+    WHERE a3.id != target_account
+    ACCUM @@visited += a3,
+          @@evidence += "IP " + ip.ip + " is ALSO used by Account " + a3.id,
+          IF a3.status == "flagged" OR a3.status == "banned" THEN
+            @@evidence += "ALERT: Account " + a3.id + " sharing IP is " + a3.status,
+            @@flagged_accounts += a3.id
+          END;
+
+  // Hop 3: connections of flagged accounts (limited to prevent timeout on large graphs)
+  all_hop2 = hop2_accounts UNION hop2_ip_accounts;
+  hop3_devices = SELECT d2 FROM all_hop2:a -(USED_DEVICE)-> DeviceID:d2
+    WHERE d2 NOT IN @@visited
+    LIMIT 20
+    ACCUM @@visited += d2,
+          @@evidence += "Hop-3: Account " + a.id + " also used Device " + d2.device_id;
+
+  PRINT @@evidence AS evidence,
+        @@flagged_accounts AS flagged_accounts,
+        @@blacklisted_ips AS blacklisted_ips,
+        @@shared_devices AS shared_devices,
+        @@visited.size() AS total_nodes_traversed;
+}
+
+// ── Query 2: Neighborhood Summary ────────────────────────────
+// 3-hop BFS from target account, aggregates cluster stats,
+// returns a natural-language summary string.
+CREATE QUERY neighborhood_summary(STRING target_account)
+FOR GRAPH FraudGraph {
+  SetAccum<VERTEX<Account>>  @@visited_accounts;
+  SumAccum<INT>     @@cluster_size;
+  SumAccum<INT>     @@chargeback_count;
+  SumAccum<FLOAT>   @@total_risk;
+
+  seed = {Account.*};
+  seed = SELECT a FROM seed:a WHERE a.id == target_account;
+
+  hop1_devices = SELECT d FROM seed:a -(USED_DEVICE)-> DeviceID:d;
+  hop1_ips     = SELECT ip FROM seed:a -(LOGGED_FROM_IP)-> IPAddress:ip;
+
+  hop2_accounts = SELECT a2 FROM hop1_devices:d -(USED_DEVICE)- Account:a2
+    WHERE a2.id != target_account
+    ACCUM @@visited_accounts += a2;
+
+  hop2_accounts_ip = SELECT a2 FROM hop1_ips:ip -(LOGGED_FROM_IP)- Account:a2
+    WHERE a2.id != target_account
+    ACCUM @@visited_accounts += a2;
+
+  hop2_all = hop2_accounts UNION hop2_accounts_ip;
+
+  hop3_devices = SELECT d FROM hop2_all:a -(USED_DEVICE)-> DeviceID:d;
+  hop3_ips     = SELECT ip FROM hop2_all:a -(LOGGED_FROM_IP)-> IPAddress:ip;
+
+  hop3_accounts = SELECT a3 FROM hop3_devices:d -(USED_DEVICE)- Account:a3
+    WHERE a3.id != target_account
+    ACCUM @@visited_accounts += a3;
+
+  hop3_accounts_ip = SELECT a3 FROM hop3_ips:ip -(LOGGED_FROM_IP)- Account:a3
+    WHERE a3.id != target_account
+    ACCUM @@visited_accounts += a3;
+
+  all_cluster_accounts = {@@visited_accounts};
+  cluster_stats = SELECT a FROM all_cluster_accounts:a
+    ACCUM
+      @@cluster_size += 1,
+      IF a.status == "flagged" OR a.status == "banned" THEN @@chargeback_count += 1 END,
+      @@total_risk += a.risk_score;
+
+  INT    cs   = @@cluster_size;
+  INT    cc   = @@chargeback_count;
+  FLOAT  rate = cs > 0 ? (FLOAT)(@@chargeback_count) * 100.0 / (FLOAT)(cs) : 0.0;
+  STRING summary = "This account is part of a cluster with " + (STRING)cs +
+                   " other accounts, " + (STRING)rate +
+                   "% of which have been flagged for chargebacks in the last 72 hours.";
+
+  PRINT cs AS cluster_size,
+        cc AS chargeback_count,
+        rate AS chargeback_rate,
+        72 AS time_window_hours,
+        summary AS summary;
+}
+
+// ── Query 3: IP Transaction Volume ───────────────────────────
+CREATE QUERY ip_transaction_volume(STRING ip_address)
+FOR GRAPH FraudGraph {
+  SumAccum<INT>    @@total_login_count;
+  SetAccum<STRING> @@unique_accounts;
+  SumAccum<INT>    @@chargeback_accounts;
+
+  ip_vertex = {IPAddress.*};
+  ip_vertex = SELECT ip FROM ip_vertex:ip WHERE ip.ip == ip_address;
+
+  accounts = SELECT a FROM ip_vertex:ip -(LOGGED_FROM_IP:e)- Account:a
+    ACCUM
+      @@total_login_count += e.login_count,
+      @@unique_accounts += a.id,
+      IF a.status == "flagged" OR a.status == "banned" THEN @@chargeback_accounts += 1 END;
+
+  INT   ua   = @@unique_accounts.size();
+  FLOAT rate = ua > 0 ? (FLOAT)(@@chargeback_accounts) * 100.0 / (FLOAT)(ua) : 0.0;
+
+  PRINT @@total_login_count AS total_login_count,
+        ua AS unique_accounts,
+        rate AS chargeback_rate;
+}
+
+// ── Query 4: Entity Resolution ────────────────────────────────
+CREATE QUERY entity_resolution()
+FOR GRAPH FraudGraph {
+  SetAccum<STRING> @shared_ips;
+  SetAccum<STRING> @shared_devices;
+  ListAccum<STRING> @@links_created;
+
+  all_accounts = {Account.*};
+
+  ip_pairs = SELECT a2
+    FROM all_accounts:a1 -(LOGGED_FROM_IP)-> IPAddress:ip -(LOGGED_FROM_IP)- Account:a2
+    WHERE a1.id < a2.id
+    ACCUM a2.@shared_ips += ip.ip, a1.@shared_ips += ip.ip;
+
+  device_pairs = SELECT a2
+    FROM all_accounts:a1 -(USED_DEVICE)-> DeviceID:d -(USED_DEVICE)- Account:a2
+    WHERE a1.id < a2.id AND a2.@shared_ips.size() > 0
+    ACCUM a2.@shared_devices += d.device_id, a1.@shared_devices += d.device_id
+    POST-ACCUM
+      IF a2.@shared_devices.size() > 0 THEN
+        INSERT INTO ENTITY_LINK VALUES (a1, a2,
+          a1.@shared_ips.to_list() + a1.@shared_devices.to_list(),
+          (FLOAT)(a1.@shared_ips.size() + a1.@shared_devices.size()) / 4.0),
+        @@links_created += a1.id + " <-> " + a2.id + " (shared: " +
+          (STRING)a1.@shared_ips.size() + " IPs, " + (STRING)a1.@shared_devices.size() + " devices)"
+      END;
+
+  PRINT @@links_created AS entity_links_created;
+}
+
+// ── Query 5: Fraud Ring Detection (WCC-style) ─────────────────
+CREATE QUERY fraud_ring_detection(INT min_cluster_size = 3)
+FOR GRAPH FraudGraph {
+  MapAccum<STRING, INT>   @@ring_sizes;
+  ListAccum<STRING>       @@high_risk_rings;
+  SumAccum<INT>           @ring_id;
+
+  all_accounts = {Account.*};
+
+  // Find accounts sharing devices with flagged accounts
+  flagged_neighbors = SELECT a2
+    FROM all_accounts:a1 -(USED_DEVICE)-> DeviceID:d -(USED_DEVICE)- Account:a2
+    WHERE a1.status IN ("flagged", "banned") AND a2.id != a1.id
+    ACCUM a2.@ring_id += 1;
+
+  // Report rings with enough members
+  large_rings = SELECT a FROM all_accounts:a
+    WHERE a.@ring_id >= min_cluster_size
+    ACCUM @@high_risk_rings += a.id + " (connections=" + (STRING)a.@ring_id + ")";
+
+  PRINT @@high_risk_rings AS high_risk_accounts;
+}
+
+// ── Query 6: Merchant Fraud Rate ──────────────────────────────
+CREATE QUERY merchant_fraud_stats(INT top_n = 10)
+FOR GRAPH FraudGraph {
+  MapAccum<STRING, FLOAT> @@merchant_fraud_rates;
+  MapAccum<STRING, INT>   @@merchant_txn_counts;
+
+  all_txns = {Transaction.*};
+
+  merchant_stats = SELECT m
+    FROM all_txns:t -(AT_MERCHANT)-> Merchant:m
+    ACCUM
+      @@merchant_txn_counts += (m.merchant_id -> 1),
+      IF t.is_fraud THEN @@merchant_fraud_rates += (m.merchant_id -> 1.0) END;
+
+  PRINT @@merchant_fraud_rates AS fraud_counts,
+        @@merchant_txn_counts AS transaction_counts;
+}
+
+// ── Query 7: Account Transaction History ─────────────────────
+CREATE QUERY account_transaction_history(STRING account_id, INT limit = 20)
+FOR GRAPH FraudGraph {
+  ListAccum<STRING> @@txn_summary;
+  SumAccum<FLOAT>   @@total_amount;
+  SumAccum<INT>     @@fraud_count;
+
+  seed = {Account.*};
+  seed = SELECT a FROM seed:a WHERE a.id == account_id;
+
+  txns = SELECT t FROM seed:a -(MADE_TRANSACTION)-> Transaction:t
+    LIMIT limit
+    ACCUM
+      @@txn_summary += t.txn_id + ": $" + (STRING)t.amount + " at " + t.timestamp +
+                       (t.is_fraud ? " [FRAUD]" : " [OK]"),
+      @@total_amount += t.amount,
+      IF t.is_fraud THEN @@fraud_count += 1 END;
+
+  PRINT @@txn_summary AS transactions,
+        @@total_amount AS total_amount,
+        @@fraud_count AS fraud_count;
+}
