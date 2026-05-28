@@ -8,12 +8,11 @@ import AccuracyPanel from './components/AccuracyPanel.jsx'
 import TokenEconomics from './components/TokenEconomics.jsx'
 import CostMetrics from './components/CostMetrics.jsx'
 import LatencyBreakdown from './components/LatencyBreakdown.jsx'
+import ContextBloatVisualizer from './components/ContextBloatVisualizer.jsx'
 import FraudRingGraph from './components/FraudRingGraph.jsx'
 import LiveQuery from './components/LiveQuery.jsx'
 import DatasetBadge from './components/DatasetBadge.jsx'
 import { fetchResults } from './api.js'
-
-import ContextBloatVisualizer from './components/ContextBloatVisualizer.jsx'
 
 const TABS = [
   { id: 'race',      label: '⚡ Pipeline Race' },
@@ -82,7 +81,6 @@ export default function App() {
           {activeTab === 'latency'   && (
             <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
               <LatencyBreakdown records={records} />
-              {/* Per-pipeline latency comparison */}
               <div className="grid-3">
                 {[
                   { label:'Baseline LLM',  ms: summary?.pipeline_1_baseline?.avg_latency_ms, color:'var(--accent-red)' },
