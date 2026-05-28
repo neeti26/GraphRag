@@ -13,6 +13,20 @@ import json
 
 # ── LLM-as-a-Judge ────────────────────────────────────────────
 
+_judge_model = None
+
+def _get_judge():
+    global _judge_model
+    if _judge_model is None:
+        from transformers import pipeline as hf_pipeline
+        _judge_model = hf_pipeline(
+            "text-classification",
+            model="cross-encoder/nli-deberta-v3-small",
+            device=-1,
+        )
+    return _judge_model
+
+
 def llm_judge_single(
     question: str,
     answer: str,
@@ -22,14 +36,7 @@ def llm_judge_single(
 ) -> str:
     """Grade a single answer PASS or FAIL using an NLI model (model cached)."""
     try:
-        if "classifier" not in _cache:
-            from transformers import pipeline as hf_pipeline
-            _cache["classifier"] = hf_pipeline(
-                "text-classification",
-                model=model_name,
-                device=-1,
-            )
-        classifier = _cache["classifier"]
+        classifier = _get_judge()
         text = f"Question: {question}\nReference: {reference}\nAnswer: {answer}"
         result = classifier(text, truncation=True, max_length=512)
         label = result[0]["label"].upper()

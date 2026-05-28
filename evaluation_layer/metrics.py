@@ -2,6 +2,8 @@
 from dataclasses import dataclass, asdict, field
 from typing import List
 
+from inference_layer.graphrag_pipeline import LatencyProfile
+
 
 @dataclass
 class BenchmarkRecord:
@@ -39,6 +41,7 @@ class BenchmarkRecord:
 
     graphrag_risk_score: float         = 0.0
     graph_evidence: List[str]          = field(default_factory=list)
+    structured_tuples: List[str]       = field(default_factory=list)
     flagged_connections: List[str]     = field(default_factory=list)
     blacklisted_ips: List[str]         = field(default_factory=list)
     shared_devices: List[str]          = field(default_factory=list)
@@ -46,6 +49,10 @@ class BenchmarkRecord:
     neighborhood_summary: str          = ""
     agentic_loop_triggered: bool       = False
     agentic_refinement: str            = ""
+    self_correction_triggered: bool    = False
+    self_correction_result: str        = ""
+    relevance_score: float             = 0.0
+    latency_profile: dict              = field(default_factory=dict)
 
     # Accuracy scores (set by AccuracyEvaluator)
     baseline_llm_judge: str            = "PENDING"
@@ -107,6 +114,7 @@ def build_record(
         graphrag_correct=(graphrag_result.verdict == ground_truth),
         graphrag_risk_score=graphrag_result.risk_score,
         graph_evidence=graphrag_result.graph_evidence,
+        structured_tuples=getattr(graphrag_result, 'structured_tuples', []),
         flagged_connections=graphrag_result.flagged_connections,
         blacklisted_ips=graphrag_result.blacklisted_ips,
         shared_devices=graphrag_result.shared_devices,
@@ -114,6 +122,10 @@ def build_record(
         neighborhood_summary=graphrag_result.neighborhood_summary,
         agentic_loop_triggered=graphrag_result.agentic_loop_triggered,
         agentic_refinement=graphrag_result.agentic_refinement,
+        self_correction_triggered=getattr(graphrag_result, 'self_correction_triggered', False),
+        self_correction_result=getattr(graphrag_result, 'self_correction_result', ''),
+        relevance_score=getattr(graphrag_result, 'relevance_score', 0.0),
+        latency_profile=getattr(graphrag_result, 'latency_profile', LatencyProfile()).to_dict() if hasattr(getattr(graphrag_result, 'latency_profile', None), 'to_dict') else {},
 
         token_savings_vs_basic_rag_pct=savings(br.total_tokens, g.total_tokens),
         latency_improvement_pct=savings(br.latency_ms, g.latency_ms),

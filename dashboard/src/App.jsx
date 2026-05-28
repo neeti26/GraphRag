@@ -6,6 +6,8 @@ import PipelineRace from './components/PipelineRace.jsx'
 import BenchmarkTable from './components/BenchmarkTable.jsx'
 import AccuracyPanel from './components/AccuracyPanel.jsx'
 import TokenEconomics from './components/TokenEconomics.jsx'
+import CostMetrics from './components/CostMetrics.jsx'
+import LatencyBreakdown from './components/LatencyBreakdown.jsx'
 import FraudRingGraph from './components/FraudRingGraph.jsx'
 import LiveQuery from './components/LiveQuery.jsx'
 import DatasetBadge from './components/DatasetBadge.jsx'
@@ -15,6 +17,8 @@ const TABS = [
   { id: 'race',      label: '⚡ Pipeline Race' },
   { id: 'accuracy',  label: '🎯 Accuracy' },
   { id: 'tokens',    label: '📉 Token Economics' },
+  { id: 'cost',      label: '💰 Cost Metrics' },
+  { id: 'latency',   label: '⏱️ Latency Profile' },
   { id: 'benchmark', label: '📊 Benchmark Table' },
   { id: 'graph',     label: '🕸️ Fraud Ring Graph' },
   { id: 'live',      label: '🔍 Live Query' },
@@ -35,7 +39,7 @@ export default function App() {
   if (loading) return (
     <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100vh', flexDirection:'column', gap:16 }}>
       <div style={{ fontSize:48 }}>🐯</div>
-      <div style={{ color:'var(--text-secondary)', fontSize:16 }}>Loading FraudGraph...</div>
+      <div style={{ color:'var(--text-secondary)', fontSize:16 }}>Loading FraudGraph Round 2...</div>
       <div className="pulse" style={{ width:200, height:4, background:'var(--accent-blue)', borderRadius:2 }} />
     </div>
   )
@@ -70,6 +74,25 @@ export default function App() {
           {activeTab === 'race'      && <PipelineRace records={records} summary={summary} />}
           {activeTab === 'accuracy'  && <AccuracyPanel summary={summary} records={records} />}
           {activeTab === 'tokens'    && <TokenEconomics summary={summary} records={records} />}
+          {activeTab === 'cost'      && <CostMetrics summary={summary} />}
+          {activeTab === 'latency'   && (
+            <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
+              <LatencyBreakdown records={records} />
+              {/* Per-pipeline latency comparison */}
+              <div className="grid-3">
+                {[
+                  { label:'Baseline LLM',  ms: summary?.pipeline_1_baseline?.avg_latency_ms, color:'var(--accent-red)' },
+                  { label:'Basic RAG',     ms: summary?.pipeline_2_basic_rag?.avg_latency_ms, color:'var(--accent-blue)' },
+                  { label:'GraphRAG',      ms: summary?.pipeline_3_graphrag?.avg_latency_ms, color:'var(--accent-green)' },
+                ].map(p => (
+                  <div key={p.label} className="card" style={{ textAlign:'center', borderColor:`${p.color}44` }}>
+                    <div style={{ fontSize:32, fontWeight:800, color:p.color }}>{p.ms}ms</div>
+                    <div style={{ fontSize:12, color:'var(--text-muted)', marginTop:4 }}>{p.label} avg latency</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           {activeTab === 'benchmark' && <BenchmarkTable records={records} />}
           {activeTab === 'graph'     && <FraudRingGraph records={records} />}
           {activeTab === 'live'      && <LiveQuery />}
@@ -80,6 +103,8 @@ export default function App() {
         FraudGraph Round 2 · TigerGraph GraphRAG Hackathon 2026 · Built by Neeti Malu &amp; Sanket Patil
         <span style={{ margin:'0 8px' }}>·</span>
         <a href="https://github.com/neeti26/GraphRag" target="_blank" rel="noreferrer" style={{ color:'var(--accent-blue)', textDecoration:'none' }}>GitHub</a>
+        <span style={{ margin:'0 8px' }}>·</span>
+        <a href="https://graphrag-lime.vercel.app" target="_blank" rel="noreferrer" style={{ color:'var(--accent-green)', textDecoration:'none' }}>Live Demo</a>
         <span style={{ margin:'0 8px' }}>·</span>
         <span style={{ color:'var(--accent-tiger)' }}>#GraphRAGInferenceHackathon</span>
       </footer>
