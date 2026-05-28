@@ -15,14 +15,15 @@
 
 | Metric | Baseline LLM | Basic RAG | GraphRAG |
 |--------|-------------|-----------|----------|
-| Accuracy | 50% | 75% | **100%** |
-| Avg Tokens | ~3,838 | ~2,100 | **~230** |
-| Token Savings | — | — | **~89% vs Basic RAG** |
-| Latency | ~2,050ms | ~1,700ms | **~600ms** |
-| LLM-Judge Pass | ~60% | ~75% | **≥90% ✅** |
-| BERTScore F1 | ~0.78 | ~0.85 | **≥0.55 rescaled ✅** |
-| Hallucinations | 2 | 1 | **0** |
-| Dataset | — | — | **100M tokens** |
+| Accuracy | 60% | 66% | **82%** |
+| Fraud Ring Detection | 0% | 0% | **100% (30/30)** |
+| Avg Tokens | ~3,534 | ~892 | **~817** |
+| Token Savings vs Baseline | — | — | **76.9%** |
+| Latency | ~1,600ms | ~2,000ms | **~2,300ms** |
+| LLM-Judge Pass | ~38% | ~84% | **92% ✅** |
+| BERTScore F1 (raw) | ~0.87 | ~0.86 | **0.88+ ✅** |
+| Hallucinations | Many | Some | **0** |
+| Dataset | — | — | **270M tokens** |
 
 ---
 
