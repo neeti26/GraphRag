@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import GSQLViewer from './GSQLViewer.jsx'
 
 function VerdictBadge({ verdict, correct }) {
   const color = verdict === 'SUSPICIOUS' ? 'var(--accent-red)' : 'var(--accent-green)'
@@ -142,6 +143,8 @@ export default function BenchmarkTable({ records }) {
                           )}
                         </div>
                       </div>
+                      {/* GSQL Viewer — live parameter injection */}
+                      <GSQLViewer record={r} />
                     </td>
                   </tr>
                 )}

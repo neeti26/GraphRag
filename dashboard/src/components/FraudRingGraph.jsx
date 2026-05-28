@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import GSQLViewer from './GSQLViewer.jsx'
 
 const NODE_COLORS = {
   banned:    '#ef4444',
@@ -223,6 +224,9 @@ export default function FraudRingGraph({ records }) {
           )}
         </div>
       </div>
+
+      {/* GSQL Viewer */}
+      <GSQLViewer record={record} />
     </div>
   )
 }

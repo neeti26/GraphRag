@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import GSQLViewer from './GSQLViewer.jsx'
 
 const STAGES = {
   baseline: [
@@ -262,6 +263,9 @@ export default function PipelineRace({ records, summary }) {
               {record.agentic_refinement}
             </div>
           )}
+
+          {/* GSQL Viewer — collapsible traversal logic with live params */}
+          <GSQLViewer record={record} />
         </div>
       )}
     </div>

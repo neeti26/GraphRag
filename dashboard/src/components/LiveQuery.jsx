@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { runQuery } from '../api.js'
+import GSQLViewer from './GSQLViewer.jsx'
 
 const DEMO_ACCOUNTS = [
   { id: 'FR0000A00', label: '⚠️ Fraud Ring Member', hint: 'Shares device + blacklisted IP' },
@@ -180,6 +181,23 @@ export default function LiveQuery() {
         <PipelineResult title="Pipeline 2 — Basic RAG"    color="var(--accent-blue)"  result={br} loading={loading} />
         <PipelineResult title="Pipeline 3 — GraphRAG"     color="var(--accent-green)" result={g}  loading={loading} />
       </div>
+
+      {/* GSQL Viewer — shows live-injected traversal query after result */}
+      {g && !loading && (
+        <GSQLViewer
+          accountId={accountId.trim()}
+          record={{
+            account_id: accountId.trim(),
+            hops_traversed: 3,
+            nodes_visited: g.nodes_visited || 0,
+            flagged_connections: g.flagged_connections || [],
+            blacklisted_ips: g.blacklisted_ips || [],
+            graph_evidence: g.graph_evidence || [],
+            structured_tuples: g.structured_tuples || [],
+          }}
+          autoExpand={true}
+        />
+      )}
 
       {/* Comparison summary */}
       {cmp && (
