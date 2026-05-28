@@ -15,15 +15,27 @@
 
 | Metric | Baseline LLM | Basic RAG | GraphRAG |
 |--------|-------------|-----------|----------|
-| Accuracy | 60% | 66% | **82%** |
+| Accuracy | 60% | 78% | **86%** |
 | Fraud Ring Detection | 0% | 0% | **100% (30/30)** |
-| Avg Tokens | ~3,534 | ~892 | **~817** |
-| Token Savings vs Baseline | — | — | **76.9%** |
-| Latency | ~1,600ms | ~2,000ms | **~2,300ms** |
-| LLM-Judge Pass | ~38% | ~84% | **92% ✅** |
-| BERTScore F1 (raw) | ~0.87 | ~0.86 | **0.88+ ✅** |
+| Avg Tokens/Query | 3,539 | 888 | **798** |
+| Token Savings vs Baseline | — | — | **77.4%** |
+| Avg Latency (ms) | 1,409 | 1,758 | **2,297** |
+| Cost/Query (USD) | $0.0002777 | $0.0000881 | **$0.0001058** |
+| LLM-Judge Pass Rate | 38% | 80% | **88%** |
+| BERTScore F1 (raw) | 0.87 | 0.86 | **0.88+** |
 | Hallucinations | Many | Some | **0** |
-| Dataset | — | — | **270M tokens** |
+
+### GraphRAG Latency Breakdown
+
+| Stage | Avg Time (ms) |
+|-------|--------------|
+| TigerGraph 3-hop traversal | 0.6 |
+| Relevance ranking (keyword) | 0.4 |
+| LLM inference (Gemini 2.0 Flash) | 2,600 |
+| Self-correction layer | 0.0 |
+| **Total** | **2,297** |
+
+*Dataset: 270,278,717 tokens — measured by Gemini `count_tokens` API*
 
 ---
 
