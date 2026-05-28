@@ -240,6 +240,22 @@ export default function PipelineRace({ records, summary }) {
               </div>
             </div>
           </div>
+
+          {/* Multi-hop badge */}
+          {record.graphrag_verdict === 'SUSPICIOUS' && (record.flagged_connections?.length > 0 || record.blacklisted_ips?.length > 0) && (
+            <div style={{ marginTop: 14, display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+              <span style={{ padding: '4px 12px', borderRadius: 20, background: 'rgba(249,115,22,0.15)', color: 'var(--accent-tiger)', border: '1px solid rgba(249,115,22,0.3)', fontSize: 12, fontWeight: 700 }}>
+                ✓ Resolved {record.hops_traversed || 3}-Hop Multi-Document Relationship
+              </span>
+              <span style={{ padding: '4px 12px', borderRadius: 20, background: 'rgba(239,68,68,0.15)', color: 'var(--accent-red)', border: '1px solid rgba(239,68,68,0.3)', fontSize: 12, fontWeight: 700 }}>
+                {record.nodes_visited} nodes traversed
+              </span>
+              <span style={{ padding: '4px 12px', borderRadius: 20, background: 'rgba(239,68,68,0.1)', color: 'var(--accent-red)', border: '1px solid rgba(239,68,68,0.2)', fontSize: 11 }}>
+                ✗ Vector RAG cannot traverse this chain
+              </span>
+            </div>
+          )}
+
           {record.agentic_loop_triggered && record.agentic_refinement && (
             <div style={{ marginTop: 12, padding: 12, background: 'rgba(249,115,22,0.08)', borderRadius: 8, border: '1px solid rgba(249,115,22,0.2)', fontSize: 12, color: 'var(--text-secondary)' }}>
               <span style={{ color: 'var(--accent-tiger)', fontWeight: 600 }}>🔄 Agentic Refinement: </span>

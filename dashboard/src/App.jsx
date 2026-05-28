@@ -13,8 +13,11 @@ import LiveQuery from './components/LiveQuery.jsx'
 import DatasetBadge from './components/DatasetBadge.jsx'
 import { fetchResults } from './api.js'
 
+import ContextBloatVisualizer from './components/ContextBloatVisualizer.jsx'
+
 const TABS = [
   { id: 'race',      label: '⚡ Pipeline Race' },
+  { id: 'context',   label: '🔍 Context Bloat' },
   { id: 'accuracy',  label: '🎯 Accuracy' },
   { id: 'tokens',    label: '📉 Token Economics' },
   { id: 'cost',      label: '💰 Cost Metrics' },
@@ -72,6 +75,7 @@ export default function App() {
 
         <div style={{ marginTop:20 }} className="slide-in" key={activeTab}>
           {activeTab === 'race'      && <PipelineRace records={records} summary={summary} />}
+          {activeTab === 'context'   && <ContextBloatVisualizer records={records} />}
           {activeTab === 'accuracy'  && <AccuracyPanel summary={summary} records={records} />}
           {activeTab === 'tokens'    && <TokenEconomics summary={summary} records={records} />}
           {activeTab === 'cost'      && <CostMetrics summary={summary} />}
