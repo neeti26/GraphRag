@@ -1,0 +1,644 @@
+{
+  "summary": {
+    "total_questions": 10,
+    "elapsed_seconds": 84.8,
+    "dataset_tokens": "270,278,717 (Gemini count_tokens API)",
+    "tokenizer": "gemini-2.0-flash",
+    "router_efficiency": {
+      "total_queries": 10,
+      "baseline_tokens": 8000,
+      "actual_tokens": 7350,
+      "tokens_saved": 650,
+      "router_efficiency_pct": 8.1,
+      "intent_distribution": {
+        "MULTI_HOP": 9,
+        "POINT_LOOKUP": 1
+      },
+      "avg_confidence": 0.93
+    },
+    "pipeline_1_baseline": {
+      "accuracy_pct": 50.0,
+      "avg_tokens": 3545.5,
+      "avg_latency_ms": 1397.2,
+      "avg_cost_usd": 0.0002786
+    },
+    "pipeline_2_basic_rag": {
+      "accuracy_pct": 70.0,
+      "avg_tokens": 895.4,
+      "avg_latency_ms": 1709.4,
+      "avg_cost_usd": 9.03e-05
+    },
+    "pipeline_3_graphrag": {
+      "accuracy_pct": 90.0,
+      "avg_tokens": 708.5,
+      "avg_latency_ms": 1992.1,
+      "avg_cost_usd": 9.33e-05,
+      "fraud_ring_detection_pct": 100.0
+    },
+    "compressor_stats": {
+      "avg_token_reduction_pct": -12.1,
+      "total_dupes_removed": 0
+    },
+    "graphrag_vs_baseline": {
+      "token_savings_pct": 80.0
+    }
+  },
+  "results": [
+    {
+      "account_id": "FR0000A00",
+      "ground_truth": "SUSPICIOUS",
+      "question": "Is account FR0000A00 part of a fraud ring?",
+      "router": {
+        "intent": "MULTI_HOP",
+        "hops": 3,
+        "confidence": 1.0,
+        "estimated_tokens": 800,
+        "reason": "Fraud ring / chain detection \u2014 full 3-hop BFS required."
+      },
+      "baseline": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "tokens": 3597,
+        "latency_ms": 1870.7,
+        "cost_usd": 0.00029587499999999997
+      },
+      "basic_rag": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "tokens": 856,
+        "latency_ms": 1500.2,
+        "cost_usd": 7.927499999999999e-05
+      },
+      "graphrag": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "risk_score": 9.2,
+        "tokens": 900,
+        "latency_ms": 2087.0,
+        "cost_usd": 0.00011114999999999999,
+        "nodes_visited": 18,
+        "flagged": [
+          "FR0000A01"
+        ],
+        "blacklisted": [
+          "242.236.25.44"
+        ]
+      },
+      "compressor": {
+        "original_tokens": 107,
+        "compressed_tokens": 67,
+        "token_reduction_pct": 37.4,
+        "dedup_count": 0,
+        "entities": [
+          "FR0000A00",
+          "242.236.25.44",
+          "DSK-36391",
+          "DEV-13278",
+          "FR0000A01",
+          "FR0000A03",
+          "MOB-98475",
+          "DSK-12814",
+          "FR0000A02",
+          "MOB-11160",
+          "DEV-31688",
+          "TAB-36101",
+          "MOB-45581",
+          "DEV-59503",
+          "ACC0342765"
+        ],
+        "alerts": [
+          "FR0000A00 \u2192 BLACKLISTED IP 242.236.25.44",
+          "FR0000A01: FLAGGED (risk=8.7)"
+        ]
+      }
+    },
+    {
+      "account_id": "FR0001A01",
+      "ground_truth": "SUSPICIOUS",
+      "question": "Is account FR0001A01 suspicious?",
+      "router": {
+        "intent": "MULTI_HOP",
+        "hops": 3,
+        "confidence": 1.0,
+        "estimated_tokens": 800,
+        "reason": "Fraud ring / chain detection \u2014 full 3-hop BFS required."
+      },
+      "baseline": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "tokens": 3640,
+        "latency_ms": 1447.7,
+        "cost_usd": 0.0002901
+      },
+      "basic_rag": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "tokens": 922,
+        "latency_ms": 1688.3,
+        "cost_usd": 9.795e-05
+      },
+      "graphrag": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "risk_score": 9.5,
+        "tokens": 1072,
+        "latency_ms": 2716.1,
+        "cost_usd": 0.00014835,
+        "nodes_visited": 54,
+        "flagged": [
+          "FR0232A01",
+          "FR0185A01",
+          "FR0185A00",
+          "FR0025A00",
+          "FR0001A00",
+          "FR0025A01",
+          "FR0232A00"
+        ],
+        "blacklisted": [
+          "231.125.77.2"
+        ]
+      },
+      "compressor": {
+        "original_tokens": 96,
+        "compressed_tokens": 62,
+        "token_reduction_pct": 35.4,
+        "dedup_count": 0,
+        "entities": [
+          "FR0001A01",
+          "231.125.77.2",
+          "TAB-86070",
+          "TAB-21870",
+          "MOB-28289",
+          "DSK-34839",
+          "DEV-98802",
+          "DEV-48894",
+          "DEV-36534",
+          "FR0001A00",
+          "FR0185A01",
+          "FR0185A00",
+          "FR0025A03"
+        ],
+        "alerts": [
+          "FR0001A01 \u2192 BLACKLISTED IP 231.125.77.2",
+          "FR0001A00: BANNED (risk=8.08)"
+        ]
+      }
+    },
+    {
+      "account_id": "FR0002A00",
+      "ground_truth": "SUSPICIOUS",
+      "question": "Analyze account FR0002A00 for synthetic identity fraud.",
+      "router": {
+        "intent": "MULTI_HOP",
+        "hops": 3,
+        "confidence": 1.0,
+        "estimated_tokens": 800,
+        "reason": "Fraud ring / chain detection \u2014 full 3-hop BFS required."
+      },
+      "baseline": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "tokens": 3517,
+        "latency_ms": 1171.6,
+        "cost_usd": 0.000271875
+      },
+      "basic_rag": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "tokens": 850,
+        "latency_ms": 1282.7,
+        "cost_usd": 7.7475e-05
+      },
+      "graphrag": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "risk_score": 9.5,
+        "tokens": 979,
+        "latency_ms": 2119.9,
+        "cost_usd": 0.00012495,
+        "nodes_visited": 40,
+        "flagged": [
+          "FR0461A01",
+          "FR0461A00",
+          "FR0002A01"
+        ],
+        "blacklisted": [
+          "194.71.40.129"
+        ]
+      },
+      "compressor": {
+        "original_tokens": 106,
+        "compressed_tokens": 66,
+        "token_reduction_pct": 37.7,
+        "dedup_count": 0,
+        "entities": [
+          "FR0002A00",
+          "194.71.40.129",
+          "MOB-94540",
+          "DEV-87397",
+          "DEV-52973",
+          "DEV-49239",
+          "FR0002A01",
+          "FR0461A06",
+          "FR0461A05",
+          "FR0461A04",
+          "FR0461A03",
+          "FR0461A02",
+          "FR0461A01",
+          "FR0461A00"
+        ],
+        "alerts": [
+          "FR0002A00 \u2192 BLACKLISTED IP 194.71.40.129",
+          "FR0002A01: FLAGGED (risk=9.2)"
+        ]
+      }
+    },
+    {
+      "account_id": "FR0043A01",
+      "ground_truth": "SUSPICIOUS",
+      "question": "Is account FR0043A01 part of a fraud ring?",
+      "router": {
+        "intent": "MULTI_HOP",
+        "hops": 3,
+        "confidence": 1.0,
+        "estimated_tokens": 800,
+        "reason": "Fraud ring / chain detection \u2014 full 3-hop BFS required."
+      },
+      "baseline": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "tokens": 3542,
+        "latency_ms": 1226.7,
+        "cost_usd": 0.000279375
+      },
+      "basic_rag": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "tokens": 854,
+        "latency_ms": 1376.4,
+        "cost_usd": 7.777499999999999e-05
+      },
+      "graphrag": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "risk_score": 9.5,
+        "tokens": 1026,
+        "latency_ms": 2771.2,
+        "cost_usd": 0.00013635,
+        "nodes_visited": 54,
+        "flagged": [
+          "FR0203A00",
+          "FR0432A00",
+          "FR0344A01",
+          "FR0432A01",
+          "FR0043A00",
+          "FR0344A00",
+          "FR0203A01"
+        ],
+        "blacklisted": [
+          "26.211.169.184"
+        ]
+      },
+      "compressor": {
+        "original_tokens": 106,
+        "compressed_tokens": 54,
+        "token_reduction_pct": 49.1,
+        "dedup_count": 0,
+        "entities": [
+          "FR0043A01",
+          "26.211.169.184",
+          "TAB-41585",
+          "DSK-82063",
+          "DEV-48036",
+          "FR0043A00",
+          "FR0432A02",
+          "FR0432A01",
+          "FR0432A00",
+          "FR0344A03",
+          "FR0344A01"
+        ],
+        "alerts": [
+          "FR0043A01 \u2192 BLACKLISTED IP 26.211.169.184",
+          "FR0043A00: BANNED (risk=9.02)"
+        ]
+      }
+    },
+    {
+      "account_id": "FR0085A02",
+      "ground_truth": "SUSPICIOUS",
+      "question": "Check account FR0085A02 for fraud ring membership.",
+      "router": {
+        "intent": "MULTI_HOP",
+        "hops": 3,
+        "confidence": 0.75,
+        "estimated_tokens": 800,
+        "reason": "Fraud ring / chain detection \u2014 full 3-hop BFS required."
+      },
+      "baseline": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "tokens": 3517,
+        "latency_ms": 1355.9,
+        "cost_usd": 0.000271875
+      },
+      "basic_rag": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "tokens": 942,
+        "latency_ms": 1804.6,
+        "cost_usd": 0.000103275
+      },
+      "graphrag": {
+        "verdict": "SUSPICIOUS",
+        "correct": true,
+        "risk_score": 9.5,
+        "tokens": 1095,
+        "latency_ms": 2430.9,
+        "cost_usd": 0.000147825,
+        "nodes_visited": 54,
+        "flagged": [
+          "FR0125A00",
+          "FR0013A00",
+          "FR0156A01",
+          "FR0156A00",
+          "FR0085A00",
+          "FR0125A01",
+          "FR0448A01",
+          "FR0448A00",
+          "FR0013A01",
+          "FR0085A01"
+        ],
+        "blacklisted": [
+          "97.143.201.94"
+        ]
+      },
+      "compressor": {
+        "original_tokens": 104,
+        "compressed_tokens": 63,
+        "token_reduction_pct": 39.4,
+        "dedup_count": 0,
+        "entities": [
+          "FR0085A02",
+          "97.143.201.94",
+          "TAB-38358",
+          "MOB-93130",
+          "DSK-42683",
+          "DEV-33204",
+          "FR0085A01",
+          "FR0085A00",
+          "FR0448A02",
+          "FR0156A02",
+          "FR0156A00",
+          "FR0125A02",
+          "FR0125A00"
+        ],
+        "alerts": [
+          "FR0085A02 \u2192 BLACKLISTED IP 97.143.201.94",
+          "FR0085A01: FLAGGED (risk=7.95)",
+          "FR0085A00: BANNED (risk=9.78)"
+        ]
+      }
+    },
+    {
+      "account_id": "ACC0000042",
+      "ground_truth": "SAFE",
+      "question": "Is account ACC0000042 suspicious?",
+      "router": {
+        "intent": "MULTI_HOP",
+        "hops": 3,
+        "confidence": 1.0,
+        "estimated_tokens": 800,
+        "reason": "Fraud ring / chain detection \u2014 full 3-hop BFS required."
+      },
+      "baseline": {
+        "verdict": "SUSPICIOUS",
+        "correct": false,
+        "tokens": 3535,
+        "latency_ms": 1427.2,
+        "cost_usd": 0.000277275
+      },
+      "basic_rag": {
+        "verdict": "SAFE",
+        "correct": true,
+        "tokens": 858,
+        "latency_ms": 1374.6,
+        "cost_usd": 7.965e-05
+      },
+      "graphrag": {
+        "verdict": "SUSPICIOUS",
+        "correct": false,
+        "risk_score": 4.0,
+        "tokens": 445,
+        "latency_ms": 1805.3,
+        "cost_usd": 5.9925e-05,
+        "nodes_visited": 4,
+        "flagged": [],
+        "blacklisted": []
+      },
+      "compressor": {
+        "original_tokens": 13,
+        "compressed_tokens": 13,
+        "token_reduction_pct": 0.0,
+        "dedup_count": 0,
+        "entities": [
+          "ACC0000042",
+          "DEV-82575",
+          "ACC0481821"
+        ],
+        "alerts": []
+      }
+    },
+    {
+      "account_id": "ACC0001337",
+      "ground_truth": "SAFE",
+      "question": "Is account ACC0001337 part of any fraud ring?",
+      "router": {
+        "intent": "MULTI_HOP",
+        "hops": 3,
+        "confidence": 1.0,
+        "estimated_tokens": 800,
+        "reason": "Fraud ring / chain detection \u2014 full 3-hop BFS required."
+      },
+      "baseline": {
+        "verdict": "SUSPICIOUS",
+        "correct": false,
+        "tokens": 3535,
+        "latency_ms": 1200.0,
+        "cost_usd": 0.000277275
+      },
+      "basic_rag": {
+        "verdict": "SUSPICIOUS",
+        "correct": false,
+        "tokens": 1019,
+        "latency_ms": 2924.8,
+        "cost_usd": 0.000127275
+      },
+      "graphrag": {
+        "verdict": "SAFE",
+        "correct": true,
+        "risk_score": 1.0,
+        "tokens": 385,
+        "latency_ms": 1473.1,
+        "cost_usd": 4.9125e-05,
+        "nodes_visited": 3,
+        "flagged": [],
+        "blacklisted": []
+      },
+      "compressor": {
+        "original_tokens": 5,
+        "compressed_tokens": 9,
+        "token_reduction_pct": -80.0,
+        "dedup_count": 0,
+        "entities": [
+          "ACC0001337",
+          "DEV-56665"
+        ],
+        "alerts": []
+      }
+    },
+    {
+      "account_id": "ACC0000004",
+      "ground_truth": "SAFE",
+      "question": "Check account ACC0000004 for suspicious activity.",
+      "router": {
+        "intent": "POINT_LOOKUP",
+        "hops": 1,
+        "confidence": 0.5,
+        "estimated_tokens": 150,
+        "reason": "Single entity fact \u2014 1-hop point lookup sufficient. No traversal needed."
+      },
+      "baseline": {
+        "verdict": "SUSPICIOUS",
+        "correct": false,
+        "tokens": 3520,
+        "latency_ms": 1598.4,
+        "cost_usd": 0.000272775
+      },
+      "basic_rag": {
+        "verdict": "SUSPICIOUS",
+        "correct": false,
+        "tokens": 899,
+        "latency_ms": 1801.0,
+        "cost_usd": 9.0825e-05
+      },
+      "graphrag": {
+        "verdict": "SAFE",
+        "correct": true,
+        "risk_score": 1.0,
+        "tokens": 408,
+        "latency_ms": 1533.3,
+        "cost_usd": 5.602499999999999e-05,
+        "nodes_visited": 3,
+        "flagged": [],
+        "blacklisted": []
+      },
+      "compressor": {
+        "original_tokens": 5,
+        "compressed_tokens": 9,
+        "token_reduction_pct": -80.0,
+        "dedup_count": 0,
+        "entities": [
+          "ACC0000004",
+          "TAB-54979"
+        ],
+        "alerts": []
+      }
+    },
+    {
+      "account_id": "ACC0000007",
+      "ground_truth": "SAFE",
+      "question": "Is account ACC0000007 safe?",
+      "router": {
+        "intent": "MULTI_HOP",
+        "hops": 3,
+        "confidence": 1.0,
+        "estimated_tokens": 800,
+        "reason": "Fraud ring / chain detection \u2014 full 3-hop BFS required."
+      },
+      "baseline": {
+        "verdict": "SUSPICIOUS",
+        "correct": false,
+        "tokens": 3517,
+        "latency_ms": 1349.2,
+        "cost_usd": 0.000271875
+      },
+      "basic_rag": {
+        "verdict": "SUSPICIOUS",
+        "correct": false,
+        "tokens": 884,
+        "latency_ms": 1745.2,
+        "cost_usd": 8.7e-05
+      },
+      "graphrag": {
+        "verdict": "SAFE",
+        "correct": true,
+        "risk_score": 1.0,
+        "tokens": 385,
+        "latency_ms": 1496.0,
+        "cost_usd": 4.8899999999999996e-05,
+        "nodes_visited": 3,
+        "flagged": [],
+        "blacklisted": []
+      },
+      "compressor": {
+        "original_tokens": 5,
+        "compressed_tokens": 9,
+        "token_reduction_pct": -80.0,
+        "dedup_count": 0,
+        "entities": [
+          "ACC0000007",
+          "DSK-13581"
+        ],
+        "alerts": []
+      }
+    },
+    {
+      "account_id": "ACC0000013",
+      "ground_truth": "SAFE",
+      "question": "Analyze account ACC0000013 for fraud.",
+      "router": {
+        "intent": "MULTI_HOP",
+        "hops": 3,
+        "confidence": 1.0,
+        "estimated_tokens": 800,
+        "reason": "Fraud ring / chain detection \u2014 full 3-hop BFS required."
+      },
+      "baseline": {
+        "verdict": "SUSPICIOUS",
+        "correct": false,
+        "tokens": 3535,
+        "latency_ms": 1324.8,
+        "cost_usd": 0.000277275
+      },
+      "basic_rag": {
+        "verdict": "SAFE",
+        "correct": true,
+        "tokens": 870,
+        "latency_ms": 1596.1,
+        "cost_usd": 8.280000000000001e-05
+      },
+      "graphrag": {
+        "verdict": "SAFE",
+        "correct": true,
+        "risk_score": 1.0,
+        "tokens": 390,
+        "latency_ms": 1488.5,
+        "cost_usd": 5.039999999999999e-05,
+        "nodes_visited": 3,
+        "flagged": [],
+        "blacklisted": []
+      },
+      "compressor": {
+        "original_tokens": 5,
+        "compressed_tokens": 9,
+        "token_reduction_pct": -80.0,
+        "dedup_count": 0,
+        "entities": [
+          "ACC0000013",
+          "DSK-73733"
+        ],
+        "alerts": []
+      }
+    }
+  ]
+}

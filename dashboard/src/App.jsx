@@ -12,11 +12,13 @@ import ContextBloatVisualizer from './components/ContextBloatVisualizer.jsx'
 import FraudRingGraph from './components/FraudRingGraph.jsx'
 import LiveQuery from './components/LiveQuery.jsx'
 import DatasetBadge from './components/DatasetBadge.jsx'
+import RouterPanel from './components/RouterPanel.jsx'
 import { fetchResults } from './api.js'
 
 const TABS = [
   { id: 'race',      label: '⚡ Pipeline Race' },
   { id: 'context',   label: '🔍 Context Bloat' },
+  { id: 'router',    label: '🧭 Query Router' },
   { id: 'accuracy',  label: '🎯 Accuracy' },
   { id: 'tokens',    label: '📉 Token Economics' },
   { id: 'cost',      label: '💰 Cost Metrics' },
@@ -75,6 +77,7 @@ export default function App() {
         <div style={{ marginTop:20 }} className="slide-in" key={activeTab}>
           {activeTab === 'race'      && <PipelineRace records={records} summary={summary} />}
           {activeTab === 'context'   && <ContextBloatVisualizer records={records} />}
+          {activeTab === 'router'    && <RouterPanel records={records} summary={summary} />}
           {activeTab === 'accuracy'  && <AccuracyPanel summary={summary} records={records} />}
           {activeTab === 'tokens'    && <TokenEconomics summary={summary} records={records} />}
           {activeTab === 'cost'      && <CostMetrics summary={summary} />}

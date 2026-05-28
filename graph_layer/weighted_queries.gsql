@@ -1,0 +1,133 @@
+// ─────────────────────────────────────────────────────────────
+//  Weighted GSQL Queries — Improvement #2
+//  Uses TigerGraph parallel accumulators for real-time scoring
+//  POST-ACCUM calculates node weight based on relationship density
+//  and hop distance — no external Python ranking needed
+// ─────────────────────────────────────────────────────────────
+
+// ── Query 1: Weighted Fraud Context (accumulator-ranked) ──────
+// Uses SumAccum + MaxAccum to score each node by:
+//   - Relationship density (how many connections)
+//   - Hop distance (closer = higher weight)
+//   - Fraud signal strength (flagged/banned status)
+CREATE QUERY weighted_fraud_context(STRING target_account, INT max_hops = 3)
+FOR GRAPH FraudGraph {
+
+  // ── Accumulators ──────────────────────────────────────────
+  SumAccum<FLOAT>   @node_weight;      // per-vertex: computed risk weight
+  SumAccum<INT>     @hop_distance;     // per-vertex: hops from target
+  SumAccum<INT>     @connection_count; // per-vertex: number of connections
+  OrAccum           @is_flagged;       // per-vertex: any fraud signal
+  MaxAccum<FLOAT>   @@max_risk;        // global: highest risk score seen
+  ListAccum<STRING> @@ranked_evidence; // global: evidence sorted by weight
+  MapAccum<STRING, FLOAT> @@node_scores; // global: final node → weight map
+
+  // ── Seed ──────────────────────────────────────────────────
+  seed = {Account.*};
+  seed = SELECT a FROM seed:a WHERE a.id == target_account
+    POST-ACCUM a.@hop_distance = 0, a.@node_weight = 1.0;
+
+  // ── Hop 1: direct connections (weight = 1.0 / hop_distance) ─
+  hop1_devices = SELECT d FROM seed:a -(USED_DEVICE)-> DeviceID:d
+    ACCUM d.@hop_distance += 1,
+          d.@connection_count += 1,
+          a.@connection_count += 1
+    POST-ACCUM
+          // Weight = base / hop_distance, boosted by connection density
+          d.@node_weight = 1.0 / (d.@hop_distance + 1) * (1 + d.@connection_count * 0.1);
+
+  hop1_ips = SELECT ip FROM seed:a -(LOGGED_FROM_IP)-> IPAddress:ip
+    ACCUM ip.@hop_distance += 1,
+          ip.@connection_count += 1
+    POST-ACCUM
+          // Blacklisted IPs get 3x weight boost
+          ip.@node_weight = (ip.is_blacklisted ? 3.0 : 1.0) / (ip.@hop_distance + 1),
+          ip.@is_flagged  = ip.is_blacklisted,
+          @@max_risk      += (ip.is_blacklisted ? ip.@node_weight : 0);
+
+  // ── Hop 2: accounts sharing devices (weight decays with distance) ─
+  hop2_accounts = SELECT a2 FROM hop1_devices:d -(USED_DEVICE)- Account:a2
+    WHERE a2.id != target_account
+    ACCUM a2.@hop_distance += 2,
+          a2.@connection_count += 1,
+          d.@connection_count  += 1
+    POST-ACCUM
+          // Flagged/banned accounts get 5x weight boost
+          a2.@node_weight = (a2.status IN ("flagged","banned") ? 5.0 : 1.0)
+                            / (a2.@hop_distance + 1)
+                            * (1 + a2.@connection_count * 0.2),
+          a2.@is_flagged  = (a2.status IN ("flagged","banned")),
+          @@max_risk      += (a2.status IN ("flagged","banned") ? a2.@node_weight : 0);
+
+  // ── Hop 2b: accounts sharing IPs ─────────────────────────
+  hop2_ip_accounts = SELECT a3 FROM hop1_ips:ip -(LOGGED_FROM_IP)- Account:a3
+    WHERE a3.id != target_account
+    ACCUM a3.@hop_distance += 2,
+          a3.@connection_count += 1
+    POST-ACCUM
+          a3.@node_weight = (a3.status IN ("flagged","banned") ? 5.0 : 1.0)
+                            / (a3.@hop_distance + 1),
+          a3.@is_flagged  = (a3.status IN ("flagged","banned"));
+
+  // ── Hop 3: third-degree connections ──────────────────────
+  all_hop2 = hop2_accounts UNION hop2_ip_accounts;
+  hop3 = SELECT d2 FROM all_hop2:a -(USED_DEVICE)-> DeviceID:d2
+    WHERE d2.@hop_distance == 0
+    ACCUM d2.@hop_distance += 3,
+          d2.@connection_count += 1
+    POST-ACCUM
+          d2.@node_weight = 0.5 / (d2.@hop_distance + 1);
+
+  // ── Build ranked evidence list ────────────────────────────
+  // Collect all visited nodes with their weights
+  all_accounts = hop2_accounts UNION hop2_ip_accounts;
+  ranked = SELECT a FROM all_accounts:a
+    WHERE a.@node_weight > 0
+    ORDER BY a.@node_weight DESC
+    LIMIT 15
+    ACCUM
+      @@ranked_evidence += (a.@is_flagged ? "ALERT: " : "") +
+                           "Account " + a.id +
+                           " [weight=" + (STRING)(ROUND(a.@node_weight * 100) / 100) +
+                           ", hops=" + (STRING)a.@hop_distance +
+                           ", status=" + a.status + "]",
+      @@node_scores += (a.id -> a.@node_weight);
+
+  PRINT @@ranked_evidence AS weighted_evidence;
+  PRINT @@node_scores     AS node_scores;
+  PRINT @@max_risk        AS max_risk_signal;
+}
+
+// ── Query 2: 1-Hop Point Lookup (for POINT_LOOKUP routing) ───
+CREATE QUERY point_lookup(STRING account_id)
+FOR GRAPH FraudGraph {
+  SumAccum<FLOAT> @risk;
+
+  seed = {Account.*};
+  result = SELECT a FROM seed:a
+    WHERE a.id == account_id
+    POST-ACCUM a.@risk = a.risk_score;
+
+  PRINT result[result.id, result.status, result.risk_score] AS account_info;
+}
+
+// ── Query 3: 2-Hop Relationship Check (for RELATIONSHIP routing) ─
+CREATE QUERY relationship_check(STRING account_a, STRING account_b)
+FOR GRAPH FraudGraph {
+  SetAccum<STRING> @@shared_devices;
+  SetAccum<STRING> @@shared_ips;
+
+  seed = {Account.*};
+  a_devices = SELECT d FROM seed:a -(USED_DEVICE)-> DeviceID:d
+    WHERE a.id == account_a
+    ACCUM @@shared_devices += d.device_id;
+
+  b_devices = SELECT d FROM seed:a -(USED_DEVICE)-> DeviceID:d
+    WHERE a.id == account_b
+    ACCUM IF d.device_id IN @@shared_devices THEN
+            @@shared_devices += d.device_id
+          END;
+
+  PRINT @@shared_devices AS shared_devices;
+  PRINT @@shared_ips     AS shared_ips;
+}

@@ -143,12 +143,18 @@ class GraphRAGPipeline:
         # ── Stage 2: Relevance ranking ────────────────────────
         t0 = time.time()
         from inference_layer.relevance_ranker import rank_evidence, compute_relevance_score
+        from inference_layer.intent_router import route
+        from utils.context_compressor import compress_evidence
+
         query_context   = f"fraud detection for account {account_id}"
         ranked_evidence = rank_evidence(query_context, evidence, top_k=15)
         relevance_score = compute_relevance_score(query_context, ranked_evidence)
+
+        # Route decision — determines hop depth used
+        route_decision  = route(query_context, account_id)
         profile.relevance_ranking_ms = (time.time() - t0) * 1000
 
-        # Build structured tuples for display (not used in prompt — keeps LLM-Judge high)
+        # Build structured tuples for display
         structured_tuples = _build_structured_tuples(ranked_evidence)
 
         # ── Stage 3: Build prompt (natural language — best for LLM-Judge) ──
