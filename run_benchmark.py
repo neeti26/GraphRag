@@ -70,22 +70,9 @@ def main():
 
     # ── Initialise TigerGraph ────────────────────────────────────
     _banner("Initialising TigerGraph")
-    if args.demo_graph:
-        print("  Mode: DEMO (graph calls return canned data)")
-        from graph_layer.tigergraph_client import TigerGraphClient
-        tg = TigerGraphClient.__new__(TigerGraphClient)
-        tg.conn = None          # triggers fallback in all query methods
-    else:
-        try:
-            from graph_layer.tigergraph_client import TigerGraphClient
-            tg = TigerGraphClient()
-            print("  Connected to TigerGraph ✓")
-        except Exception as e:
-            print(f"  ⚠ TigerGraph connection failed: {e}")
-            print("  Falling back to demo graph data (use --demo-graph to suppress this warning)")
-            from graph_layer.tigergraph_client import TigerGraphClient
-            tg = TigerGraphClient.__new__(TigerGraphClient)
-            tg.conn = None
+    from graph_layer.tigergraph_client import TigerGraphClient
+    tg = TigerGraphClient(force_demo=args.demo_graph)
+    print(f"  TigerGraph mode: {tg.mode}")
 
     # ── Build pipelines ──────────────────────────────────────────
     baseline  = BaselinePipeline(llm)
@@ -108,6 +95,9 @@ def main():
 
     # ── Summary ──────────────────────────────────────────────────
     summary = runner.summary()
+    summary["tigergraph_mode"] = tg.mode
+    summary["llm_model"]       = llm.model
+    summary["llm_provider"]    = llm.provider
     _banner("BENCHMARK SUMMARY")
     print(f"  Accounts tested       : {summary['total_accounts']}")
     print(f"  Total wall time       : {elapsed:.1f}s")
