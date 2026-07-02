@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.env
+dashboard/node_modules/
+dashboard/dist/
+*.pyc
+.DS_Store
+Thumbs.db
+.vscode/
+evaluation_layer/__pycache__/
+inference_layer/__pycache__/
+graph_layer/__pycache__/
+llm_layer/__pycache__/
+data/__pycache__/
