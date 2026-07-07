@@ -1,0 +1,368 @@
+{
+  "summary": {
+    "run_timestamp": "2026-07-03T09:25:18.379232+00:00",
+    "llm_model": "models/gemini-2.5-flash",
+    "llm_provider": "gemini",
+    "tigergraph_mode": "DEMO",
+    "total_accounts": 4,
+    "baseline_accuracy_pct": 25.0,
+    "basic_rag_accuracy_pct": 25.0,
+    "graphrag_accuracy_pct": 100.0,
+    "avg_baseline_bert_score": 0.492,
+    "avg_basic_rag_bert_score": 0.464,
+    "avg_graphrag_bert_score": 0.712,
+    "avg_baseline_judge_score": 4.42,
+    "avg_basic_rag_judge_score": 4.42,
+    "avg_graphrag_judge_score": 6.67,
+    "avg_token_savings_pct": 85.8,
+    "avg_latency_improvement_pct": 10.5,
+    "avg_cost_savings_pct": 0.0,
+    "total_baseline_tokens": 12489,
+    "total_basic_rag_tokens": 3022,
+    "total_graphrag_tokens": 1779,
+    "total_baseline_cost_usd": 0.0,
+    "total_basic_rag_cost_usd": 0.0,
+    "total_graphrag_cost_usd": 0.0,
+    "hallucination_cases": [
+      "8821",
+      "1002",
+      "5566"
+    ],
+    "basic_rag_hallucination_cases": [
+      "8821",
+      "1002",
+      "5566"
+    ]
+  },
+  "records": [
+    {
+      "account_id": "8821",
+      "ground_truth": "SUSPICIOUS",
+      "baseline_verdict": "SAFE",
+      "baseline_reasoning": "SAFE.\n\nAccount #8821 consistently logs in from the same",
+      "baseline_tokens": 3122,
+      "baseline_latency_ms": 4751.7,
+      "baseline_cost_usd": 0.0,
+      "baseline_correct": false,
+      "baseline_bert_score": 0.5336,
+      "baseline_judge_score": 3.67,
+      "baseline_judge_detail": {
+        "accuracy": 1,
+        "completeness": 5,
+        "grounding": 5,
+        "avg_score": 3.67
+      },
+      "basic_rag_verdict": "SAFE",
+      "basic_rag_reasoning": "SAFE\n\nAll login attempts for Account #8821 occurred on the",
+      "basic_rag_tokens": 755,
+      "basic_rag_latency_ms": 2487.6,
+      "basic_rag_cost_usd": 0.0,
+      "basic_rag_correct": false,
+      "basic_rag_bert_score": 0.5422,
+      "basic_rag_judge_score": 3.67,
+      "basic_rag_judge_detail": {
+        "accuracy": 1,
+        "completeness": 5,
+        "grounding": 5,
+        "avg_score": 3.67
+      },
+      "basic_rag_retrieved_chunks": [
+        "2024-08-15 09:12:01 | Account #8821 | IP: 10.0.0.55    | Device: XYZ-999 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 12:30:01 | Account #8821 | IP: 10.0.0.55    | Device: XYZ-999 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 11:40:01 | Account #8821 | IP: 10.0.0.55    | Device: XYZ-999 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 10:50:01 | Account #8821 | IP: 10.0.0.55    | Device: XYZ-999 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 13:15:55 | Account #8821 | IP: 10.0.0.55    | Device: XYZ-999 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 10:10:44 | Account #8821 | IP: 10.0.0.55    | Device: XYZ-999 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 09:40:02 | Account #8821 | IP: 10.0.0.55    | Device: XYZ-999 | Action: TRANSFER | Amount: \u20b9500",
+        "2024-08-15 09:25:33 | Account #8821 | IP: 10.0.0.55    | Device: XYZ-999 | Action: PURCHASE | Amount: \u20b92,400",
+        "2024-08-15 10:05:22 | Account #5512 | IP: 10.0.0.66    | Device: VWX-888 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 09:22:10 | Account #4490 | IP: 10.0.0.88    | Device: GHI-333 | Action: LOGIN  | Status: SUCCESS"
+      ],
+      "graphrag_verdict": "SUSPICIOUS",
+      "graphrag_reasoning": "Verdict: SUSPICIOUS\nRisk Score: 9.5/10\nReasoning: Account #8",
+      "graphrag_tokens": 487,
+      "graphrag_latency_ms": 3190.0,
+      "graphrag_cost_usd": 0.0,
+      "graphrag_correct": true,
+      "graphrag_risk_score": 9.5,
+      "graphrag_bert_score": 0.619,
+      "graphrag_judge_score": 6.67,
+      "graphrag_judge_detail": {
+        "accuracy": 10,
+        "completeness": 5,
+        "grounding": 5,
+        "avg_score": 6.67
+      },
+      "graph_evidence": [
+        "Account 8821 used Device XYZ-999",
+        "Device XYZ-999 is ALSO used by Account 1002",
+        "ALERT: Account 1002 is flagged (risk_score=7.4)",
+        "Device XYZ-999 is ALSO used by Account 0001",
+        "ALERT: Account 0001 is banned (risk_score=9.8)",
+        "ALERT: Account 8821 logged from BLACKLISTED IP 192.168.1.1 (Known fraud proxy \u2014 linked to 12 chargebacks)",
+        "IP 192.168.1.1 is ALSO used by Account 0001",
+        "IP 192.168.1.1 is ALSO used by Account 1002"
+      ],
+      "flagged_connections": [
+        "1002",
+        "0001"
+      ],
+      "blacklisted_ips": [
+        "192.168.1.1"
+      ],
+      "shared_devices": [
+        "XYZ-999"
+      ],
+      "nodes_visited": 8,
+      "token_savings_pct": 84.4,
+      "latency_improvement_pct": 32.9,
+      "cost_savings_pct": 0.0,
+      "neighborhood_summary": "This account is part of a cluster with 4 other accounts, 75.0% of which have been flagged for chargebacks in the last 72 hours.",
+      "agentic_loop_triggered": false,
+      "agentic_refinement": "",
+      "entity_link": null
+    },
+    {
+      "account_id": "3344",
+      "ground_truth": "SAFE",
+      "baseline_verdict": "SAFE",
+      "baseline_reasoning": "SAFE.\nAccount #3344 shows consistent login and transaction activity",
+      "baseline_tokens": 3122,
+      "baseline_latency_ms": 2743.4,
+      "baseline_cost_usd": 0.0,
+      "baseline_correct": true,
+      "baseline_bert_score": 0.5382,
+      "baseline_judge_score": 6.67,
+      "baseline_judge_detail": {
+        "accuracy": 10,
+        "completeness": 5,
+        "grounding": 5,
+        "avg_score": 6.67
+      },
+      "basic_rag_verdict": "SAFE",
+      "basic_rag_reasoning": "SAFE\n\nBased solely on the provided log entries, Account #3344",
+      "basic_rag_tokens": 756,
+      "basic_rag_latency_ms": 2471.6,
+      "basic_rag_cost_usd": 0.0,
+      "basic_rag_correct": true,
+      "basic_rag_bert_score": 0.6057,
+      "basic_rag_judge_score": 6.67,
+      "basic_rag_judge_detail": {
+        "accuracy": 10,
+        "completeness": 5,
+        "grounding": 5,
+        "avg_score": 6.67
+      },
+      "basic_rag_retrieved_chunks": [
+        "2024-08-15 09:14:22 | Account #3344 | IP: 203.0.113.42 | Device: DEF-222 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 09:22:10 | Account #4490 | IP: 10.0.0.88    | Device: GHI-333 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 12:50:33 | Account #6678 | IP: 10.0.0.66    | Device: VWX-444 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 10:45:55 | Account #1134 | IP: 10.0.0.22    | Device: NOP-444 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 12:00:33 | Account #9934 | IP: 10.0.0.33    | Device: XYZ-666 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 10:40:11 | Account #9912 | IP: 10.0.0.33    | Device: KLM-333 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 11:50:44 | Account #4423 | IP: 10.0.0.11    | Device: RST-444 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 09:30:01 | Account #2201 | IP: 10.0.0.44    | Device: JKL-444 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 11:55:01 | Account #2234 | IP: 10.0.0.44    | Device: UVW-555 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 09:35:17 | Account #6634 | IP: 10.0.0.77    | Device: MNO-555 | Action: LOGIN  | Status: SUCCESS"
+      ],
+      "graphrag_verdict": "SAFE",
+      "graphrag_reasoning": "Verdict: SAFE\nRisk Score: 0.0/10\nReasoning: Account #33",
+      "graphrag_tokens": 315,
+      "graphrag_latency_ms": 3870.1,
+      "graphrag_cost_usd": 0.0,
+      "graphrag_correct": true,
+      "graphrag_risk_score": 0.0,
+      "graphrag_bert_score": 0.6399,
+      "graphrag_judge_score": 6.67,
+      "graphrag_judge_detail": {
+        "accuracy": 10,
+        "completeness": 5,
+        "grounding": 5,
+        "avg_score": 6.67
+      },
+      "graph_evidence": [
+        "Account 3344 used Device DEF-222",
+        "Device DEF-222 is used only by Account 3344",
+        "IP 203.0.113.42 is clean \u2014 no blacklist flags",
+        "No flagged accounts within 3 hops"
+      ],
+      "flagged_connections": [],
+      "blacklisted_ips": [],
+      "shared_devices": [],
+      "nodes_visited": 3,
+      "token_savings_pct": 89.9,
+      "latency_improvement_pct": -41.1,
+      "cost_savings_pct": 0.0,
+      "neighborhood_summary": "This account is isolated with no connections to flagged or banned accounts within 3 hops.",
+      "agentic_loop_triggered": false,
+      "agentic_refinement": "",
+      "entity_link": null
+    },
+    {
+      "account_id": "1002",
+      "ground_truth": "SUSPICIOUS",
+      "baseline_verdict": "SAFE",
+      "baseline_reasoning": "SAFE.\nAccount #1002 does not appear in any of",
+      "baseline_tokens": 3122,
+      "baseline_latency_ms": 5111.6,
+      "baseline_cost_usd": 0.0,
+      "baseline_correct": false,
+      "baseline_bert_score": 0.5031,
+      "baseline_judge_score": 3.67,
+      "baseline_judge_detail": {
+        "accuracy": 1,
+        "completeness": 5,
+        "grounding": 5,
+        "avg_score": 3.67
+      },
+      "basic_rag_verdict": "SAFE",
+      "basic_rag_reasoning": "SAFE\n\nThe provided log entries do not contain any activity for Account #10",
+      "basic_rag_tokens": 757,
+      "basic_rag_latency_ms": 2543.2,
+      "basic_rag_cost_usd": 0.0,
+      "basic_rag_correct": false,
+      "basic_rag_bert_score": 0.4071,
+      "basic_rag_judge_score": 3.67,
+      "basic_rag_judge_detail": {
+        "accuracy": 1,
+        "completeness": 5,
+        "grounding": 5,
+        "avg_score": 3.67
+      },
+      "basic_rag_retrieved_chunks": [
+        "2024-08-15 13:00:02 | Account #1167 | IP: 10.0.0.22    | Device: YZA-555 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 12:25:55 | Account #7756 | IP: 10.0.0.99    | Device: JKL-000 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 11:10:33 | Account #2223 | IP: 10.0.0.44    | Device: ZAB-888 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 10:20:33 | Account #4401 | IP: 10.0.0.11    | Device: BCD-000 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 11:25:44 | Account #6656 | IP: 10.0.0.66    | Device: FGH-000 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 10:10:44 | Account #8821 | IP: 10.0.0.55    | Device: XYZ-999 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 10:05:22 | Account #5512 | IP: 10.0.0.66    | Device: VWX-888 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 10:30:02 | Account #6645 | IP: 10.0.0.55    | Device: EFG-111 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 09:22:10 | Account #4490 | IP: 10.0.0.88    | Device: GHI-333 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 11:20:02 | Account #9923 | IP: 10.0.0.33    | Device: CDE-999 | Action: LOGIN  | Status: SUCCESS"
+      ],
+      "graphrag_verdict": "SUSPICIOUS",
+      "graphrag_reasoning": "Verdict: SUSPICIOUS\nRisk Score: 9.5/10\nReasoning: Account #1002 is flagged as SUSPICIOUS due to multiple critical risk factors identified through graph analysis. The account itself is already flagged with a risk_score of",
+      "graphrag_tokens": 425,
+      "graphrag_latency_ms": 3985.6,
+      "graphrag_cost_usd": 0.0,
+      "graphrag_correct": true,
+      "graphrag_risk_score": 9.5,
+      "graphrag_bert_score": 0.6951,
+      "graphrag_judge_score": 6.67,
+      "graphrag_judge_detail": {
+        "accuracy": 10,
+        "completeness": 5,
+        "grounding": 5,
+        "avg_score": 6.67
+      },
+      "graph_evidence": [
+        "Account 1002 used Device XYZ-999",
+        "ALERT: Account 1002 is flagged (risk_score=7.4)",
+        "Device XYZ-999 also used by Account 0001 (BANNED)",
+        "ALERT: Account 1002 logged from BLACKLISTED IP 192.168.1.1",
+        "WCC cluster size: 4 accounts"
+      ],
+      "flagged_connections": [
+        "0001"
+      ],
+      "blacklisted_ips": [
+        "192.168.1.1"
+      ],
+      "shared_devices": [
+        "XYZ-999"
+      ],
+      "nodes_visited": 7,
+      "token_savings_pct": 86.4,
+      "latency_improvement_pct": 22.0,
+      "cost_savings_pct": 0.0,
+      "neighborhood_summary": "This account is part of a cluster with 4 other accounts, 75.0% of which have been flagged for chargebacks in the last 72 hours.",
+      "agentic_loop_triggered": false,
+      "agentic_refinement": "",
+      "entity_link": null
+    },
+    {
+      "account_id": "5566",
+      "ground_truth": "SUSPICIOUS",
+      "baseline_verdict": "SAFE",
+      "baseline_reasoning": "SAFE.\nAccount #5566 does not appear in the provided login",
+      "baseline_tokens": 3123,
+      "baseline_latency_ms": 5013.4,
+      "baseline_cost_usd": 0.0,
+      "baseline_correct": false,
+      "baseline_bert_score": 0.3913,
+      "baseline_judge_score": 3.67,
+      "baseline_judge_detail": {
+        "accuracy": 1,
+        "completeness": 5,
+        "grounding": 5,
+        "avg_score": 3.67
+      },
+      "basic_rag_verdict": "SAFE",
+      "basic_rag_reasoning": "SAFE\n\nThe provided log entries do not contain any activity for the",
+      "basic_rag_tokens": 754,
+      "basic_rag_latency_ms": 2907.8,
+      "basic_rag_cost_usd": 0.0,
+      "basic_rag_correct": false,
+      "basic_rag_bert_score": 0.301,
+      "basic_rag_judge_score": 3.67,
+      "basic_rag_judge_detail": {
+        "accuracy": 1,
+        "completeness": 5,
+        "grounding": 5,
+        "avg_score": 3.67
+      },
+      "basic_rag_retrieved_chunks": [
+        "2024-08-15 13:05:44 | Account #5556 | IP: 10.0.0.77    | Device: BCD-666 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 09:35:17 | Account #6634 | IP: 10.0.0.77    | Device: MNO-555 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 11:55:01 | Account #2234 | IP: 10.0.0.44    | Device: UVW-555 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 09:45:55 | Account #9901 | IP: 10.0.0.33    | Device: PQR-666 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 11:25:44 | Account #6656 | IP: 10.0.0.66    | Device: FGH-000 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 10:55:22 | Account #5523 | IP: 10.0.0.77    | Device: QRS-555 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 12:50:33 | Account #6678 | IP: 10.0.0.66    | Device: VWX-444 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 11:35:55 | Account #5534 | IP: 10.0.0.77    | Device: LMN-222 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 11:00:44 | Account #7734 | IP: 10.0.0.88    | Device: TUV-666 | Action: LOGIN  | Status: SUCCESS",
+        "2024-08-15 12:10:02 | Account #6667 | IP: 10.0.0.66    | Device: ABC-777 | Action: LOGIN  | Status: SUCCESS"
+      ],
+      "graphrag_verdict": "SUSPICIOUS",
+      "graphrag_reasoning": "Verdict: SUSPICIOUS\nRisk Score: 9.5/10\nReasoning: Account #5566 is flagged as SUSPICIOUS due to multiple high-risk connections and behaviors identified through graph analysis. The account shares Device XYZ-999 with Account 0001 (BANNED) and Account 1002 (FLAGGED), establishing a direct link to known fraudulent entities. Furthermore, Account #5566 logged in from BLACKLISTED IP 198.51.100.7, a known VPN exit node, and is part of a cluster where 66.7% of accounts have been flagged for chargebacks in the last 72 hours. This pattern, including a 3-hop connection to banned Account #0001, strongly indicates coordinated fraudulent",
+      "graphrag_tokens": 552,
+      "graphrag_latency_ms": 3606.5,
+      "graphrag_cost_usd": 0.0,
+      "graphrag_correct": true,
+      "graphrag_risk_score": 9.5,
+      "graphrag_bert_score": 0.8947,
+      "graphrag_judge_score": 6.67,
+      "graphrag_judge_detail": {
+        "accuracy": 10,
+        "completeness": 5,
+        "grounding": 5,
+        "avg_score": 6.67
+      },
+      "graph_evidence": [
+        "Account 5566 used Device XYZ-999",
+        "Device XYZ-999 also used by Account 0001 (BANNED) and Account 1002 (FLAGGED)",
+        "ALERT: Account 5566 logged from BLACKLISTED IP 198.51.100.7 (VPN exit node)",
+        "3-hop connection to banned Account #0001"
+      ],
+      "flagged_connections": [
+        "0001",
+        "1002"
+      ],
+      "blacklisted_ips": [
+        "198.51.100.7"
+      ],
+      "shared_devices": [
+        "XYZ-999"
+      ],
+      "nodes_visited": 6,
+      "token_savings_pct": 82.3,
+      "latency_improvement_pct": 28.1,
+      "cost_savings_pct": 0.0,
+      "neighborhood_summary": "This account is part of a cluster with 3 other accounts, 66.7% of which have been flagged for chargebacks in the last 72 hours.",
+      "agentic_loop_triggered": false,
+      "agentic_refinement": "",
+      "entity_link": null
+    }
+  ]
+}
